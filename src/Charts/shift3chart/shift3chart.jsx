@@ -117,7 +117,7 @@ function Shift3Chart({ selectedDay, OnDayChangeShift3 }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/shift_eff/3");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/shift_eff/3");
         const { average_shift_efficiency } = response.data;
 
         setData(average_shift_efficiency);
