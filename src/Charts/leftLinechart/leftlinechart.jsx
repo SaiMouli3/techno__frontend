@@ -59,7 +59,7 @@ const LeftChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/emp/efficiency");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/emp/efficiency");
         console.log("Fetched data:", response.data.efficiency_data);
         setEfficiencyData(response.data.efficiency_data);
       } catch (error) {
