@@ -14,30 +14,13 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Define colorRange outside of the useEffect hook
-  const colorRange = [
-    "#C8E6C9",
-    "#A5D6A7",
-    "#81C784",
-    "#66BB6A",
-    "#4CAF50",
-    "#43A047",
-    "#388E3C",
-    "#2E7D32",
-    "#1B5E20",
-  ];
-
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get("http://127.0.0.1:8000/webapp/shift_eff/2");
-        const efficiencyData = response.data;
+        const { average_shift_efficiency } = response.data;
 
-        // Extract shift efficiency data
-        const shiftEfficiency = efficiencyData[0].shift_efficiency;
-
-        // Set shift efficiency data to state
-        setData(shiftEfficiency);
+        setData(average_shift_efficiency);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -45,10 +28,10 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
     }
 
     fetchData();
-  }, []); // Empty dependency array to run only once on component mount
+  }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading indicator while data is being fetched
+    return <div>Loading...</div>;
   }
 
   const angleValue = (data / 100) * Math.PI;
@@ -68,8 +51,8 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
               "#F44336", // Dark red
             ]}
             arcWidth={0.3}
-            percent={angleValue / Math.PI} // Convert angle to a 0-1 scale
-            textColor={"#FFFFFF"}
+            percent={angleValue / Math.PI}
+            textColor="#FFFFFF"
             needleColor="#ffffff"
             needleBaseColor="#ffffff"
             hideText
@@ -80,9 +63,9 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
             position: "absolute",
             width: "100%",
             textAlign: "center",
-            bottom: "-0px", // Adjust the distance from the bottom of the gauge
-            color: "#FFFFFF", // Text color
-            fontSize: "18px", // Adjust text size as needed
+            bottom: "-0px",
+            color: "#FFFFFF",
+            fontSize: "18px",
           }}
         >
           {((angleValue / Math.PI) * 100).toFixed(2)}%
