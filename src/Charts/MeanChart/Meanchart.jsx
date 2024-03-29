@@ -85,9 +85,9 @@ function MeanChart() {
 
   useEffect(() => {
     const shiftUrls = [
-      "http://127.0.0.1:8000/webapp/shift_eff/1",
-      "http://127.0.0.1:8000/webapp/shift_eff/2",
-      "http://127.0.0.1:8000/webapp/shift_eff/3",
+      "https://techno.pythonanywhere.com/webapp/shift_eff/1",
+      "https://techno.pythonanywhere.com/webapp/shift_eff/2",
+      "https://techno.pythonanywhere.com/webapp/shift_eff/3",
     ];
 
     const fetchData = async () => {
