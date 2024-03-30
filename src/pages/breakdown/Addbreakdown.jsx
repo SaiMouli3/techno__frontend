@@ -26,7 +26,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   useEffect(() => {
     const fetchToolOptions = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/api/tools/");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
         setToolOptions(response.data);
       } catch (error) {
         console.error("Error fetching tool options:", error);
