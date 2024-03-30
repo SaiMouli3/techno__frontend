@@ -20,7 +20,7 @@ const Daily = () => {
     queryKey: ["machines"],
     queryFn: async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/api/machines");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
         return response.data; // Return the data from the response
       } catch (error) {
         throw new Error("Error fetching machines"); // Throw an error if request fails
@@ -82,7 +82,7 @@ const Daily = () => {
         console.log(formData)
         // Create a separate POST request for each record and push it to postRequests array
         postRequests.push(
-          axios.post("http://127.0.0.1:8000/webapp/api/submit-performance", formData)
+          axios.post("https://techno.pythonanywhere.com/webapp/api/submit-performance", formData)
         );
       });
   
