@@ -50,7 +50,7 @@ const [selectedEndDate, setSelectedEndDate] = useState(new Date());
       console.log(startDate)
       console.log(endDate)
       const response = await axios.get(
-        `http://127.0.0.1:8000/webapp/calculate-shift-efficiency/${startDate}/${endDate}/${chartNumber}`
+        `https://techno.pythonanywhere.com/webapp/calculate-shift-efficiency/${startDate}/${endDate}/${chartNumber}`
       );
         const data = response.data;
         switch (chartNumber) {
@@ -82,7 +82,7 @@ const [selectedEndDate, setSelectedEndDate] = useState(new Date());
       const endDate = selectedEndDate.toISOString().slice(0, 10); // Extract yyyy-mm-dd from the ISO string
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/webapp/api/avg/${startDate}/${endDate}`
+        `https://techno.pythonanywhere.com/webapp/api/avg/${startDate}/${endDate}`
       );
       const data = response.data;
 
