@@ -37,7 +37,7 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
   const angleValue = (data / 100) * Math.PI;
 
   return (
-    <Link to="/chart">
+    <Link to="/chart2">
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         <div style={{ width: "100%", display: "inline-block" }}>
           <GaugeChart
