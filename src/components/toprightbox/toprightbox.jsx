@@ -11,7 +11,7 @@ const TopRightbox = () => {
 
   const fetchLeastEmployees = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/least_employee");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/least_employee");
       setLeastEmployees(response.data);
     } catch (error) {
       console.error("Error fetching least employees:", error);
