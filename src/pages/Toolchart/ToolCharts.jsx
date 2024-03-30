@@ -39,7 +39,7 @@ const ToolCharts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/webapp/api/tools/');
+        const response = await fetch('https://techno.pythonanywhere.com/webapp/api/tools/');
         const data = await response.json();
         setToolsData(data);
       } catch (error) {
