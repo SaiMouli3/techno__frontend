@@ -24,7 +24,7 @@ const Job = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/jobs/");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs/");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -34,7 +34,7 @@ const Job = () => {
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {
       try {
-        await axios.delete(`http://127.0.0.1:8000/webapp/api/jobs/${args.data[0].id}`);
+        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/jobs/${args.data[0].id}`);
         // After deleting, you can fetch updated data from the backend
         fetchData();
       } catch (error) {
@@ -45,7 +45,7 @@ const Job = () => {
 
   const handleAddJob = async (newJob) => {
     try {
-      await axios.post("http://127.0.0.1:8000/webapp/api/jobs/create", newJob);
+      await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
       // After adding, you can fetch updated data from the backend
       fetchData();
     } catch (error) {
