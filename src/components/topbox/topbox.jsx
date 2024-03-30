@@ -11,7 +11,7 @@ const Topbox = () => {
 
   const fetchTopEmployees = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/top_employees");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/top_employees");
       setTopEmployees(response.data);
     } catch (error) {
       console.error("Error fetching top employees:", error);
