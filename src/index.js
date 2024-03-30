@@ -6,7 +6,7 @@ import { registerLicense } from "@syncfusion/ej2-base";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ContextProvider } from "./context/ContextProvider";
 registerLicense(
-  "Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCfUx1RXxbf1x0ZFdMYVxbQXJPMyBoS35RckVgW3xecnVVQ2RVUEB+"
+  "Ngo9BigBOggjHTQxAR8/V1NBaF5cXmRCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxdcHRVR2FcVEV/WUI="
 );
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient()
