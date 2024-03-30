@@ -29,7 +29,7 @@ const Tool = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/tools/");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -41,7 +41,7 @@ const Tool = () => {
       try {
         // Iterate over the new tools and send a POST request for each tool
         for (const newTool of args.data) {
-          await axios.post("http://127.0.0.1:8000/webapp/api/tools/create", newTool);
+          await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/create", newTool);
         }
         fetchData();
       } catch (error) {
@@ -49,7 +49,7 @@ const Tool = () => {
       }
     } else if (args.requestType === "delete") {
       try {
-        await axios.delete(`http://127.0.0.1:8000/webapp/api/tools/${args.data[0].id}`);
+        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/tools/${args.data[0].id}`);
         fetchData();
       } catch (error) {
         console.error("Error deleting data:", error);
@@ -120,7 +120,7 @@ const Tool = () => {
   const handleAddTool = async (newTools) => {
     try {
       for (const newTool of newTools) {
-        await axios.post("http://127.0.0.1:8000/webapp/api/tools/create", newTool);
+        await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/create", newTool);
       }
       fetchData();
       setOpenAddDialog(false);
