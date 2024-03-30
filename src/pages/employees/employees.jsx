@@ -21,7 +21,7 @@ const Employee = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/employees/");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -41,7 +41,7 @@ const Employee = () => {
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
       try {
-        await axios.post("http://127.0.0.1:8000/webapp/api/employees/create/", args.data);
+        await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", args.data);
         fetchData();
       } catch (error) {
         console.error("Error inserting data:", error);
@@ -49,7 +49,7 @@ const Employee = () => {
     } else if (args.requestType === "delete") {
       try {
         const csrfToken = getCsrfToken();
-        await axios.delete(`http://127.0.0.1:8000/webapp/api/employees/${args.data[0].emp_ssn}`, {
+        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
         headers: {
         'X-CSRFToken': csrfToken
         }
