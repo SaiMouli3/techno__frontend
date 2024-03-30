@@ -17,16 +17,16 @@ const Homepage = () => {
 
   const fetchData = async () => {
     try {
-      const employeesResponse = await axios.get('http://127.0.0.1:8000/webapp/num_employees/');
+      const employeesResponse = await axios.get('https://techno.pythonanywhere.com/webapp/num_employees/');
       setTotalEmployees(employeesResponse.data.num_employees);
 
-      const machinesResponse = await axios.get('http://127.0.0.1:8000/webapp/num_machines');
+      const machinesResponse = await axios.get('https://techno.pythonanywhere.com/webapp/num_machines');
       setTotalMachines(machinesResponse.data.num_machines);
 
-      const toolsResponse = await axios.get('http://127.0.0.1:8000/webapp/num_tools');
+      const toolsResponse = await axios.get('https://techno.pythonanywhere.com/webapp/num_tools');
       setTotalTools(toolsResponse.data.num_tools);
 
-      const jobsResponse = await axios.get('http://127.0.0.1:8000/webapp/num_jobs');
+      const jobsResponse = await axios.get('https://techno.pythonanywhere.com/webapp/num_jobs');
       setTotalJobs(jobsResponse.data.num_jobs);
     } catch (error) {
       console.error('Error fetching data:', error);
