@@ -35,7 +35,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
 
     const fetchMachineOptions = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/api/machines");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
         setMachineOptions(response.data);
       } catch (error) {
         console.error("Error fetching machine options:", error);
