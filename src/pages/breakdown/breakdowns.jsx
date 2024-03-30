@@ -26,7 +26,7 @@ const BreakDown = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/breakdown");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -36,7 +36,7 @@ const BreakDown = () => {
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
       try {
-        await axios.post("http://127.0.0.1:8000/webapp/api/breakdown/create", args.data);
+        await axios.post("https://techno.pythonanywhere.com/webapp/api/breakdown/create", args.data);
         fetchData();
       } catch (error) {
         console.error("Error inserting data:", error);
@@ -44,7 +44,7 @@ const BreakDown = () => {
     } else if (args.requestType === "delete") {
     try {
       const toolCode = args.data[0].tool_code;
-      await axios.delete(`http://127.0.0.1:8000/webapp/api/breakdown/${toolCode}`);
+      await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${toolCode}`);
       fetchData();
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -62,7 +62,7 @@ const BreakDown = () => {
 
   const handleAddBreakdown = (newBreakdown) => {
 //     console.log(newBreakdown)
-    axios.post('http://127.0.0.1:8000/webapp/api/breakdown/create', newBreakdown)
+    axios.post('https://techno.pythonanywhere.com/webapp/api/breakdown/create', newBreakdown)
       .then(response => {
         console.log('Breakdown added successfully:', response.data);
         fetchData();
