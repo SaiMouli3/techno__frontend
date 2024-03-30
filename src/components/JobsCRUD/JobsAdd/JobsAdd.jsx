@@ -25,7 +25,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   useEffect(() => {
     const fetchTools = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/webapp/api/tools/");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
         setToolOptions(response.data);
       } catch (error) {
         console.error("Error fetching tools:", error);
@@ -54,7 +54,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           };
 
           const response = await axios.post(
-            "http://127.0.0.1:8000/webapp/api/jobs/create",
+            "https://techno.pythonanywhere.com/webapp/api/jobs/create",
             newJob
           );
 
