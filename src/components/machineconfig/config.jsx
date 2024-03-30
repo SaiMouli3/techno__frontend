@@ -19,7 +19,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/webapp/api/jobs/");
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs/");
       setJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -35,7 +35,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
   const fetchToolCodes = async (partNo) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/webapp/get-tool-codes/${partNo}`);
+      const response = await axios.get(`https://techno.pythonanywhere.com/webapp/get-tool-codes/${partNo}`);
       setToolCodes(response.data);
     } catch (error) {
       console.error("Error fetching tool codes:", error);
@@ -65,7 +65,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
       try {
         console.log("Machine data being sent:", machineData);
-        const response = await axios.post("http://127.0.0.1:8000/webapp/api/machines/create", machineData);
+        const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
         console.log("Machine data submitted:", response.data);
         return response.data;
       } catch (error) {
