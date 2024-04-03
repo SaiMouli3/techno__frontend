@@ -16,7 +16,7 @@ import ToolCharts from "./pages/Toolchart/ToolCharts";
 import Jobs from "./pages/jobs/jobs";
 import Daily from "./pages/Daily/dailyy";
 import Charts from "./pages/chart2/chart"
-
+import Resolve from './pages/breakdown/Resolve'
 const App = () => {
   const {
     setCurrentColor,
@@ -63,6 +63,7 @@ const App = () => {
                 <Route path="/job" element={<Jobs/>}></Route>
                 <Route path="/dailyentry" element={<Daily/>}></Route>
                 <Route path="/chart2" element={<Charts/>}></Route>
+                <Route path="/resolve" element={<Resolve/>}></Route>
               </Routes>
             </div>
           </div>

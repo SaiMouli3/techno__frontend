@@ -35,7 +35,7 @@ const Navbarr = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
+    <div className="flex justify-between z-[100] p-2 md:ml-6 md:mr-6 relative">
       <TooltipComponent content="Menu" position="BottomCenter">
         <button
           type="button"

@@ -1,6 +1,20 @@
 import React from "react";
+import axios from "axios";
 
-const ResolveBreakDown = ({openView, selectedBreakdown, handleCloseView }) => {
+const ResolveBreakDown = ({ openView, selectedBreakdown, handleCloseView }) => {
+  const deleteRecord = async () => {
+    try {
+      // Send a DELETE request to the backend API endpoint with the tool code
+      await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${selectedBreakdown.toolCode}`);
+      // Handle successful deletion, such as showing a success message or updating the UI
+      console.log("Breakdown deleted successfully");
+      handleCloseView();
+    } catch (error) {
+      // Handle errors, such as displaying an error message to the user
+      console.error("Error deleting breakdown:", error);
+    }
+  };
+
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -13,7 +27,7 @@ const ResolveBreakDown = ({openView, selectedBreakdown, handleCloseView }) => {
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                 <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">Breakdown Details</h3>
-                <div className="mt-2">
+                    <div className="mt-2">
                   <p className="text-sm text-gray-500">Date: {selectedBreakdown.date}</p>
                   <p className="text-sm text-gray-500">Length Used: {selectedBreakdown.lengthUsed}</p>
                   <p className="text-sm text-gray-500">Expected Length Remaining: {selectedBreakdown.expectedLengthRemaining}</p>
@@ -29,6 +43,9 @@ const ResolveBreakDown = ({openView, selectedBreakdown, handleCloseView }) => {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button onClick={handleCloseView} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+              Close
+            </button>
+            <button onClick={deleteRecord} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
               Resolve
             </button>
           </div>

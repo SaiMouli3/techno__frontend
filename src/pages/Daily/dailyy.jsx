@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 import {useQuery} from '@tanstack/react-query'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Daily = () => {
   const [employeeName, setEmployeeName] = useState("");
   const [selectedShift, setSelectedShift] = useState("");
@@ -88,11 +90,32 @@ const Daily = () => {
   
       // Execute all POST requests concurrently using Promise.all
       const responses = await Promise.all(postRequests);
+
       // Log each response from the server
       responses.forEach((response) => {
         console.log(response.data);
       });
+      toast.success("Daily entry added successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
     } catch (error) {
+    toast.error(error.message, {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
       console.error("Error:", error);
     }
   };
@@ -120,6 +143,7 @@ const Daily = () => {
         <h1 className="text-3xl font-bold text-center mb-8">
           Daily Submissions
         </h1>
+        <ToastContainer className="z-[10001]"/>
        
         <div className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-4">
           {submittedData && (

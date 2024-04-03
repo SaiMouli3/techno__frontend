@@ -13,7 +13,9 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import AddBreakdown from "./Addbreakdown";
 import ResolveBreakDown from "./ResolveBreakDown";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from 'react-router-dom'
 const BreakDown = () => {
   const [data, setData] = useState([]);
   const [openAddBreakdown, setOpenAddBreakdown] = useState(false);
@@ -32,17 +34,29 @@ const BreakDown = () => {
       console.error("Error fetching data:", error);
     }
   };
+  const navigate = useNavigate()
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
       try {
         await axios.post("https://techno.pythonanywhere.com/webapp/api/breakdown/create", args.data);
+        toast.success("BreakDown added successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
         fetchData();
       } catch (error) {
         console.error("Error inserting data:", error);
       }
     } else if (args.requestType === "delete") {
     try {
+
       const toolCode = args.data[0].tool_code;
       await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${toolCode}`);
       fetchData();
@@ -83,6 +97,7 @@ const BreakDown = () => {
   };
 
   const breakdownGrid = [
+     {field:"checkbox"},
     { field: "date", headerText: "Date", width: "120", textAlign: "Center" },
     { field: "length_used", headerText: "Length Used", width: "150", textAlign: "Center" },
     { field: "expected_length_remaining", headerText: "Expected Length Remaining", width: "200", textAlign: "Center" },
@@ -100,10 +115,29 @@ const BreakDown = () => {
     allowEditing: true,
     mode: "Dialog"
   };
+const handleResolveBreakDown = (props) => {
+  const { date, length_used, expected_length_remaining, replaced_by, reason, change_time, no_of_min_into_shift, machine_id, tool_code } = props;
+  navigate("/resolve", {
+    state: {
+      breakdown: {
+        date,
+        length_used,
+        expected_length_remaining,
+        replaced_by,
+        reason,
+        change_time,
+        no_of_min_into_shift,
+        machine_id,
+        tool_code
+      }
+    }
+  });
+};
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddBreakdown}>Add breakdown</button>
+      <ToastContainer/>
       <AddBreakdown
         open={openAddBreakdown}
         handleClose={handleCloseAddBreakdown}
@@ -132,10 +166,15 @@ const BreakDown = () => {
               headerText={item.headerText}
             />
           ))}
-          <ColumnDirective />
+         <ColumnDirective headerText="View Transport History" width="150" template={(props) => (
+                        <button className="bg-blue-500 rounded-sm py-2 px-4 text-white">
+                            <button onClick={() => handleResolveBreakDown(props)}>Resolve</button>
+                        </button>
+                    )}></ColumnDirective>
         </ColumnsDirective>
         <Inject services={[Toolbar, Edit, Page, Group, Filter]} />
       </GridComponent>
+
       {openView && selectedBreakdown && (
         <ResolveBreakDown
           selectedBreakdown={selectedBreakdown}
