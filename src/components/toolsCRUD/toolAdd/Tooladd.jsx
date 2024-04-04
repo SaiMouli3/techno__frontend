@@ -13,9 +13,9 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
   const [maxLength, setMaxLength] = useState("");
   const [cost, setCost] = useState("");
   const [numTools, setNumTools] = useState(1);
-  const [toolNumbers, setToolNumbers] = useState([]);
+  const [toolNumbers, setToolNumbers] = useState([1]);
   const [toolCodes, setToolCodes] = useState({}); // State to store tool codes
-
+    console.log(toolNumbers)
   const handleAdd = () => {
     if (toolName && maxLength && cost && numTools && Object.keys(toolCodes).length === numTools) {
       const newTools = [];
@@ -37,7 +37,7 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
       setMaxLength("");
       setCost("");
       setNumTools(1);
-      setToolNumbers([]);
+      setToolNumbers(1);
       setToolCodes({});
       handleClose();
     } else {

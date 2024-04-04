@@ -29,11 +29,15 @@ const BreakDown = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
+
       setData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  useEffect(()=> {
+  fetchData()},[]);
   const navigate = useNavigate()
 
   const handleActionComplete = async (args) => {
@@ -75,7 +79,7 @@ const BreakDown = () => {
   };
 
   const handleAddBreakdown = (newBreakdown) => {
-//     console.log(newBreakdown)
+   console.log(newBreakdown)
     axios.post('https://techno.pythonanywhere.com/webapp/api/breakdown/create', newBreakdown)
       .then(response => {
         console.log('Breakdown added successfully:', response.data);
@@ -83,7 +87,7 @@ const BreakDown = () => {
         handleCloseAddBreakdown();
       })
       .catch(error => {
-        console.error('Error adding breakdown:', error);
+        console.error('Error adding breakdown:', error.message);
       });
   };
 
@@ -117,21 +121,19 @@ const BreakDown = () => {
   };
 const handleResolveBreakDown = (props) => {
   const { date, length_used, expected_length_remaining, replaced_by, reason, change_time, no_of_min_into_shift, machine_id, tool_code } = props;
-  navigate("/resolve", {
-    state: {
-      breakdown: {
-        date,
-        length_used,
-        expected_length_remaining,
-        replaced_by,
-        reason,
-        change_time,
-        no_of_min_into_shift,
-        machine_id,
-        tool_code
-      }
-    }
-  });
+  console.log(tool_code);
+
+
+
+  axios.get(`https://techno.pythonanywhere.com/webapp/api/break/${tool_code}/${date}`)
+      .then(response => {
+        toast.success('Breakdown resolved successfully:');
+        fetchData();
+      })
+      .catch(error => {
+      toast.error(error.message);
+        console.error('Error adding breakdown:', error);
+      });
 };
 
   return (
@@ -152,7 +154,7 @@ const handleResolveBreakDown = (props) => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
+
         actionComplete={handleActionComplete}
         rowSelected={handleBreakdownClick}
       >
@@ -174,15 +176,15 @@ const handleResolveBreakDown = (props) => {
         </ColumnsDirective>
         <Inject services={[Toolbar, Edit, Page, Group, Filter]} />
       </GridComponent>
+ </div>
+//       {openView && selectedBreakdown && (
+//         <ResolveBreakDown
+//           selectedBreakdown={selectedBreakdown}
+//           handleCloseView={handleCloseView}
+//           openView={openView}
+//         />
+//       )}
 
-      {openView && selectedBreakdown && (
-        <ResolveBreakDown
-          selectedBreakdown={selectedBreakdown}
-          handleCloseView={handleCloseView}
-          openView={openView}
-        />
-      )}
-    </div>
   );
 };
 

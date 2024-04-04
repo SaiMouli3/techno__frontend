@@ -119,7 +119,7 @@ const Employee = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
+
         actionComplete={handleActionComplete}
       >
         <ColumnsDirective>

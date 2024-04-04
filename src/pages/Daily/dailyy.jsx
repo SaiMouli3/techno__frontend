@@ -39,8 +39,9 @@ const Daily = () => {
   const [achieved,setAchieved] = useState(0)
   const [showHoursInput, setShowHoursInput] = useState(false);
   const [hours,setHours] = useState(8)
- 
+ const [date,setDate] = useState("");
   const [machineData, setMachineData] = useState([]);
+  const [breakdown, setBreakdown] = useState(false);
 
   const handleData = () => {
     const formData = {
@@ -53,10 +54,16 @@ const Daily = () => {
       label: machine.label,
       achieved: 0,
       target: 0,
+      breakdown: breakdown ? 1 : 0
     }));
     setMachineData(initialData);
   };
-
+    const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -71,7 +78,9 @@ const Daily = () => {
       // Loop through machineData to create separate records for each machine
       machineData.forEach((machine) => {
         const machineId = machine.label.split(" - ")[1];
+        console.log(date)
         const formData = {
+        date : date,
           emp_ssn: employeeName,
           shift_number: shiftNumberMap[selectedShift],
           shift_duration: 8,
@@ -79,6 +88,7 @@ const Daily = () => {
           achieved: machine.achieved,
           target: machine.target,
           partial_shift: hours,
+
         };
   
         console.log(formData)
@@ -129,7 +139,11 @@ const Daily = () => {
     // Reset machineData when machines change
     setMachineData([]);
   };
-
+  const handleBreakdownChange = (index, checked) => {
+    const updatedData = [...machineData];
+    updatedData[index]['breakdown'] = checked ? 1 : 0;
+    setMachineData(updatedData);
+  };
   const handleInputChange = (index, key, value) => {
     const updatedData = [...machineData];
     updatedData[index][key] = value;
@@ -175,7 +189,9 @@ const Daily = () => {
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
                   onChange={(e) => handleInputChange(index, 'target', e.target.value)}
                 />
+
               </div>
+
             ))}
             <label className="flex items-center mt-2">
               <input
@@ -207,14 +223,34 @@ const Daily = () => {
     );
   }
 
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-md w-full px-8 py-6 bg-white shadow-md rounded-lg">
         <h2 className="text-3xl font-semibold mb-6 text-center">
           Daily Entry Form
         </h2>
+
         <form className="space-y-6">
+        <div>
+
+            <label
+              htmlFor="date"
+              className="block text-lg font-medium text-gray-700"
+            >
+              Date:
+            </label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
+            />
+          </div>
           <div>
+
             <label
               htmlFor="employeeName"
               className="block text-lg font-medium text-gray-700"

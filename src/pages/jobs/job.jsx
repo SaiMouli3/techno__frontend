@@ -45,7 +45,8 @@ const Job = () => {
 
   const handleAddJob = async (newJob) => {
     try {
-      await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
+    console.log(newJob)
+//      await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
       // After adding, you can fetch updated data from the backend
       fetchData();
     } catch (error) {
@@ -129,7 +130,7 @@ const Job = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Edit", "Delete"]}
+
         actionComplete={handleActionComplete}
       >
         <ColumnsDirective>

@@ -12,13 +12,14 @@ import axios from "axios";
 
 const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   const [date, setDate] = useState("");
+  const [emp_ssn, setEmpSSN] = useState("");
   const [toolCode, setToolCode] = useState("");
   const [machineId, setMachineId] = useState("");
   const [lengthUsed, setLengthUsed] = useState("");
   const [expectedLengthRemaining, setExpectedLengthRemaining] = useState("");
   const [replacedBy, setReplacedBy] = useState("");
   const [reason, setReason] = useState("");
-  const [changeTime, setChangeTime] = useState("");
+  const [changeTime, setChangeTime] = useState(0);
   const [noOfMinIntoShift, setNoOfMinIntoShift] = useState("");
   const [toolOptions, setToolOptions] = useState([]);
   const [machineOptions, setMachineOptions] = useState([]);
@@ -47,8 +48,10 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   }, []);
 
   const handleAdd = () => {
+
     if (
       date &&
+      emp_ssn &&
       toolCode &&
       machineId &&
 
@@ -59,6 +62,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
     ) {
       const breakdownInfo = {
         date,
+        emp_ssn: emp_ssn,
         tool_code: toolCode,
         machine_id: machineId,
         length_used: 10,
@@ -84,6 +88,16 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          variant="outlined"
+          fullWidth
+          size="large"
+          margin="normal"
+        />
+        <TextField
+          label="Employee SSN"
+          type="text"
+          value={emp_ssn}
+          onChange={(e) => setEmpSSN(e.target.value)}
           variant="outlined"
           fullWidth
           size="large"
@@ -168,7 +182,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
         />
         <TextField
           label="Change Time"
-          type="time"
+          type="number"
           value={changeTime}
           onChange={(e) => setChangeTime(e.target.value)}
           variant="outlined"

@@ -1,11 +1,13 @@
 import React from "react";
 import axios from "axios";
 
-const ResolveBreakDown = ({ openView, selectedBreakdown, handleCloseView }) => {
+const ResolveBreakDown = ({ openView, selectedBreakdown, handleCloseView,handleResolveBreakdown }) => {
   const deleteRecord = async () => {
     try {
+      console.log("Data being sent:", selectedBreakdown.toolCode);
       // Send a DELETE request to the backend API endpoint with the tool code
       await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${selectedBreakdown.toolCode}`);
+
       // Handle successful deletion, such as showing a success message or updating the UI
       console.log("Breakdown deleted successfully");
       handleCloseView();
@@ -45,7 +47,7 @@ const ResolveBreakDown = ({ openView, selectedBreakdown, handleCloseView }) => {
             <button onClick={handleCloseView} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
               Close
             </button>
-            <button onClick={deleteRecord} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+            <button onClick={handleResolveBreakdown} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
               Resolve
             </button>
           </div>

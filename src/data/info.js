@@ -70,6 +70,11 @@ export const links = [
         icon: <AiOutlineStock />,
         link: "breakdown"
       },
+      {
+        name: "Resolve",
+        icon: <AiOutlineStock />,
+        link: "resolve"
+      },
     ],
   },
   {

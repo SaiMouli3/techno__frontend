@@ -12,6 +12,7 @@ import {
   Select,
   Grid,
 } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 
 import axios from 'axios';
 
@@ -52,13 +53,14 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             no_of_holes: tools[i].holes,
             depth_of_cut: tools[i].length
           };
+           console.log(newJob)
 
           const response = await axios.post(
             "https://techno.pythonanywhere.com/webapp/api/jobs/create",
             newJob
           );
 
-          handleAddJob(response.data);
+          console.log(response.data)
         }
 
         handleClose();
@@ -133,8 +135,10 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
                       <MenuItem key={index} value={option.tool_code}>{option.tool_name}</MenuItem>
                     ))}
                   </Select>
+
                 </FormControl>
               </Grid>
+
               <Grid item xs={4}>
                 <TextField
                   label={`Length for ${tool.tool}`}
