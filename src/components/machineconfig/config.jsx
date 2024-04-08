@@ -33,14 +33,18 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     setToolCodeNames([]); // Reset tool code names when job changes
   };
 
-  const fetchToolCodes = async (partNo) => {
-    try {
-      const response = await axios.get(`https://techno.pythonanywhere.com/webapp/get-tool-codes/${partNo}`);
-      setToolCodes(response.data);
-    } catch (error) {
-      console.error("Error fetching tool codes:", error);
-    }
-  };
+ const fetchToolCodes = async (partNo) => {
+  try {
+    const response = await axios.get(`https://techno.pythonanywhere.com/webapp/get-tool-codes/${partNo}`);
+    const decodedToolCodes = response.data.map((tool) => decodeURIComponent(tool));
+    setToolCodes(decodedToolCodes);
+
+    console.log("Tool Names:", decodedToolCodes);
+  } catch (error) {
+    console.error("Error fetching tool codes:", error);
+  }
+};
+
 
   const handleToolChange = (selectedOptions) => {
     setSelectedTools(selectedOptions);
@@ -59,9 +63,9 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       machine_id: selectedMachine.machine_id,
       machine_name: selectedMachine.machine_id,
       part_no: selectedJob.value,
-      tool_code: tool.value
+      tool_code: tool.label
     }));
-
+    console.log("Data being sent:", machineDataArray);
     const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
       try {
         console.log("Machine data being sent:", machineData);
@@ -125,11 +129,12 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
         <div>
           <label>Select Tool:</label>
           <Select
-            options={toolCodes.map(tool => ({ value: tool.tool_code, label: tool.tool_code }))}
+            options={toolCodes.map(tool => ({ value: tool, label: tool }))}
             value={selectedTools}
-            onChange={handleToolChange}
+             onChange={handleToolChange}
             isMulti={true}
-          />
+            />
+
         </div>
       )}
       {selectedJob && selectedTools.length > 0 && (
