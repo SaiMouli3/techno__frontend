@@ -4,9 +4,16 @@ import axios from "axios";
 import "./BigChart.css";
 
 const chart1_2_options = {
-  // Your chart options
   scales: {
     x: {
+      title: {
+        display: true,
+        text: 'Date',
+        color: 'rgba(255, 255, 255, 0.7)',
+        font: {
+          weight: 'bold'
+        }
+      },
       ticks: {
         color: "rgba(255, 255, 255, 0.7)",
         font: {
@@ -15,6 +22,14 @@ const chart1_2_options = {
       }
     },
     y: {
+      title: {
+        display: true,
+        text: 'Target v/s Achieved',
+        color: 'rgba(255, 255, 255, 0.7)',
+        font: {
+          weight: 'bold'
+        }
+      },
       ticks: {
         color: "rgba(255, 255, 255, 0.7)",
         font: {
@@ -24,6 +39,7 @@ const chart1_2_options = {
     }
   }
 };
+
 
 const BigChart = () => {
   const chartRef = useRef();

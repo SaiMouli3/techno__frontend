@@ -13,21 +13,47 @@ const chart1_2_options = {
   },
   scales: {
     x: {
+      title: {
+        display: true,
+        text: 'Date',
+        color: 'white',
+        font: {
+          size: 6,
+          weight: 'bold'
+        }
+      },
       ticks: {
         display: true,
         autoSkip: true,
         maxRotation: 5,
         color: "white",
+        font: {
+          size: 6,
+          weight: 'bold'
+        }
       },
       grid: {
         display: false,
       },
     },
     y: {
+      title: {
+        display: true,
+        text: 'No of Jobs per Shift',
+        color: 'white',
+        font: {
+          size: 6,
+          weight: 'bold'
+        }
+      },
       ticks: {
         display: true,
         autoSkip: true,
         color: "white",
+        font: {
+          size: 6,
+          weight: 'bold'
+        }
       },
       grid: {
         display: false,
@@ -36,7 +62,7 @@ const chart1_2_options = {
   },
   plugins: {
     legend: {
-      display: false,
+      display: true, // Display legend for shift colors
     },
     backgroundColor: "grey",
   },
@@ -54,14 +80,14 @@ const chart1_2_options = {
 const LeftChart = () => {
   const chartRef = useRef();
   const chartInstance = useRef(null);
-  const [efficiencyData, setEfficiencyData] = useState([]);
+  const [shiftData, setShiftData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/emp/efficiency");
-        console.log("Fetched data:", response.data.efficiency_data);
-        setEfficiencyData(response.data.efficiency_data);
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/shift_counts/");
+        console.log("Fetched data:", response.data);
+        setShiftData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,41 +97,47 @@ const LeftChart = () => {
   }, []);
 
   useEffect(() => {
-    if (efficiencyData.length > 0 && chartRef.current) {
+    if (shiftData.length > 0 && chartRef.current) {
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
 
       const ctx = chartRef.current.getContext("2d");
 
+      // Extract data for each shift
+      const shift1Data = shiftData.map((item) => item["1"]);
+      const shift2Data = shiftData.map((item) => item["2"]);
+      const shift3Data = shiftData.map((item) => item["3"]);
+
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: efficiencyData.map((item) => item.emp_ssn),
+          labels: shiftData.map((item) => item.date),
           datasets: [
             {
-              label: "Efficiency",
-              fill: true,
-              backgroundColor: "rgba(29,140,248,0.2)",
-              borderColor: "#283739",
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: "#93deff",
-              pointBorderColor: "rgba(255,255,255,0)",
-              pointHoverBackgroundColor: "#1f8ef1",
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: efficiencyData.map((item) => item.emp_efficiency),
+              label: "Shift 1",
+              data: shift1Data,
+              borderColor: "rgba(255, 99, 132, 1)",
+              fill: false,
+            },
+            {
+              label: "Shift 2",
+              data: shift2Data,
+              borderColor: "rgba(29,140,248,1)",
+              fill: false,
+            },
+            {
+              label: "Shift 3",
+              data: shift3Data,
+              borderColor: "rgba(255, 206, 86, 1)",
+              fill: false,
             },
           ],
         },
         options: chart1_2_options,
       });
     }
-  }, [efficiencyData]);
+  }, [shiftData]);
 
   return (
     <div className="big-chart-container">

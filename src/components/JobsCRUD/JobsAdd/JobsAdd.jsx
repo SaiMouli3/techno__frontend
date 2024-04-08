@@ -141,7 +141,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 
               <Grid item xs={4}>
                 <TextField
-                  label={`Length for ${tool.tool}`}
+                  label={`Depth of Cut in mm`}
                   value={tool.length}
                   onChange={(e) => handleToolChange(index, e)}
                   name="length"
@@ -153,7 +153,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
               </Grid>
               <Grid item xs={3}>
                 <TextField
-                  label={`Number of Holes for ${tool.tool}`}
+                  label={`Number of Holes`}
                   value={tool.holes}
                   onChange={(e) => handleToolChange(index, e)}
                   name="holes"

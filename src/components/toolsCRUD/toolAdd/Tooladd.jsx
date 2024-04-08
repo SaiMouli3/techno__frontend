@@ -71,7 +71,7 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
           margin="normal"
         />
         <TextField
-          label="Max Length"
+          label="Max Length in mm"
           value={maxLength}
           onChange={(e) => setMaxLength(e.target.value)}
           variant="outlined"
