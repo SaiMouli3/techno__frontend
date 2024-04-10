@@ -12,7 +12,7 @@ import Shift1Chart from "../../Charts/shift1chart/shift1chart.jsx";
 import Shift2Chart from "../../Charts/shift2chart/shift2chart.jsx";
 import Shift3Chart from "../../Charts/shift3chart/shift3chart.jsx";
 import MeanChart from "../../Charts/MeanChart/Meanchart.jsx";
-
+import { Link } from 'react-router-dom';
 const Home = () => {
   const days = [
     "Sunday",
@@ -62,7 +62,7 @@ const Home = () => {
         />
       </div>
       <div className="box box4">
-        TOPRIGHT BOX
+{/*         TOPRIGHT BOX */}
         <TopRightbox />
       </div>
       <div className="box box5">
@@ -84,9 +84,11 @@ const Home = () => {
         MAINCHART
         <BigChart />
       </div>
-      <div className="box box8">
-        LEFTCHART
-        <LeftChart />
+          <div className="box box8">
+           <Link to="/home" >
+      LEFTCHART
+      <LeftChart />
+    </Link>
       </div>
       {/* <div className="box box9">
         <BarChart />

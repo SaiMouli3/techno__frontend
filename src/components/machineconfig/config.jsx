@@ -56,14 +56,15 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     newToolCodeNames[index] = e.target.value;
     setToolCodeNames(newToolCodeNames);
   };
+    console.log(toolCodeNames)
 
   const handleSubmit = async () => {
   try {
-    const machineDataArray = selectedTools.map(tool => ({
+    const machineDataArray = selectedTools.map((tool,index) => ({
       machine_id: selectedMachine.machine_id,
       machine_name: selectedMachine.machine_id,
       part_no: selectedJob.value,
-      tool_code: tool.label
+      tool_code: toolCodeNames[index]
     }));
     console.log("Data being sent:", machineDataArray);
     const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {

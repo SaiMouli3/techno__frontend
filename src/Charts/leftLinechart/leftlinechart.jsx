@@ -67,7 +67,7 @@ const chart1_2_options = {
     backgroundColor: "grey",
   },
   animation: {
-    duration: 20000,
+    duration: 2000,
     easing: "easeInOutQuart",
   },
   datasets: {

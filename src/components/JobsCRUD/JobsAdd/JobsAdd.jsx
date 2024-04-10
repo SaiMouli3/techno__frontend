@@ -11,23 +11,36 @@ import {
   InputLabel,
   Select,
   Grid,
+  Snackbar,
 } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-
 import axios from 'axios';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const AddJob = ({ open, handleClose, handleAddJob }) => {
   const [partNo, setPartNo] = useState("");
   const [componentName, setComponentName] = useState("");
   const [operationNumber, setOperationNumber] = useState("");
-  const [tools, setTools] = useState([{ tool: "", length: "", holes: "" }]);
+  const [tools, setTools] = useState([{ tool: null, length: "", holes: "" }]); // Initialize with null
   const [toolOptions, setToolOptions] = useState([]);
+  const [filteredToolOptions, setFilteredToolOptions] = useState([]);
+  const [jobAdded, setJobAdded] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const fetchTools = async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
-        setToolOptions(response.data);
+        const uniqueTools = response.data.reduce((acc, current) => {
+          const existingTool = acc.find((tool) => tool.tool_name === current.tool_name);
+          if (!existingTool) {
+            return [...acc, current];
+          } else {
+            return acc;
+          }
+        }, []);
+        setToolOptions(uniqueTools);
+        setFilteredToolOptions(uniqueTools);
       } catch (error) {
         console.error("Error fetching tools:", error);
       }
@@ -36,13 +49,15 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
     fetchTools();
   }, []);
 
+  useEffect(() => {
+    const filteredOptions = toolOptions.filter(option =>
+      option.tool_name.toLowerCase().startsWith(searchTerm.toLowerCase())
+    );
+    setFilteredToolOptions(filteredOptions);
+  }, [searchTerm, toolOptions]);
+
   const handleAdd = async () => {
-    if (
-      partNo &&
-      componentName &&
-      operationNumber &&
-      tools.length > 0
-    ) {
+    if (partNo && componentName && operationNumber && tools.length > 0) {
       try {
         for (let i = 0; i < tools.length; i++) {
           const newJob = {
@@ -53,16 +68,10 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             no_of_holes: tools[i].holes,
             depth_of_cut: tools[i].length
           };
-           console.log(newJob)
-
-          const response = await axios.post(
-            "https://techno.pythonanywhere.com/webapp/api/jobs/create",
-            newJob
-          );
-
-          console.log(response.data)
+          const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
+          console.log(response.data);
         }
-
+        setJobAdded(true);
         handleClose();
       } catch (error) {
         console.error("Error adding job:", error);
@@ -79,13 +88,17 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   const addTool = () => {
-    setTools([...tools, { tool: "", length: "", holes: "" }]);
+    setTools([...tools, { tool: null, length: "", holes: "" }]); // Initialize with null
   };
 
   const removeTool = (index) => {
     const newTools = [...tools];
     newTools.splice(index, 1);
     setTools(newTools);
+  };
+
+  const handleCloseSnackbar = () => {
+    setJobAdded(false);
   };
 
   return (
@@ -120,25 +133,34 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             size="large"
             margin="normal"
           />
+
           {tools.map((tool, index) => (
             <Grid container spacing={2} key={index}>
               <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Tool</InputLabel>
-                  <Select
-              value={tool.tool_code}  // Set the value to tool_code instead of tool
-              onChange={(e) => handleToolChange(index, e)}
-              name="tool"
-              variant="outlined"
-                    >
-                    {toolOptions.map((option, index) => (
-                      <MenuItem key={index} value={option.tool_code}>{option.tool_name}</MenuItem>
-                    ))}
-                  </Select>
-
+                  <div className={`relative ${isFocused ? 'bg-transparent' : 'bg-white'}`}>
+                    <Autocomplete
+                      disablePortal
+                      id={`combo-box-demo-${index}`}
+                      options={filteredToolOptions}
+                      getOptionLabel={(option) => option.tool_name}
+                      value={tool.tool}
+                      onChange={(event, newValue) => handleToolChange(index, { target: { name: "tool", value: newValue } })}
+                      onFocus={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Tool"
+                          className="w-full"
+                          InputProps={{ className: 'focus:bg-transparent' }}
+                        />
+                      )}
+                    />
+                  </div>
                 </FormControl>
               </Grid>
-
               <Grid item xs={4}>
                 <TextField
                   label={`Depth of Cut in mm`}
@@ -164,11 +186,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
                 />
               </Grid>
               <Grid item xs={1}>
-                <Button
-                  onClick={() => removeTool(index)}
-                  color="primary"
-                  top="50px"
-                >
+                <Button onClick={() => removeTool(index)} color="primary">
                   X
                 </Button>
               </Grid>
@@ -185,6 +203,12 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={jobAdded}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message="Job added successfully"
+      />
     </div>
   );
 };

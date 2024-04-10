@@ -22,7 +22,7 @@ const tool_chart1_2_options = {
         display: true,
       },
       borderColor: "white",
-      borderWidth: 5,
+      borderWidth: 5    ,
     },
     y: {
       ticks: {
@@ -187,7 +187,7 @@ const Toolchart = ({ tool }) => {
   }, [chartData]);
 
   return (
-    <div className="tool-chart-container text-gray-100 flex flex-col w-full h-[300px] overflow-x-hidden">
+    <div className="tool-chart-container text-gray-100 flex flex-col w-full h-[400px] overflow-x-hidden">
       <canvas className="tool-chart" ref={tool_chartRef}></canvas>
     </div>
   );

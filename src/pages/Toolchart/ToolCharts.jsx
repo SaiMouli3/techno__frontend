@@ -69,7 +69,7 @@ const ToolCharts = () => {
             </div>
           </div>
         </div>
-        <div className='w-[100%] h-[100%]'>
+        <div className='w-[100%]  h-[100%]'>
           {/* Assuming Toolchart component is correctly implemented */}
           <Toolchart tool={selectedTool} />
         </div>
