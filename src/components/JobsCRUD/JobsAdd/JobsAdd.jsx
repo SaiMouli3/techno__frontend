@@ -142,7 +142,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             <Grid container spacing={2} key={index} >
               <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Tool</InputLabel>
+{/*                   <InputLabel>Tool</InputLabel> */}
 {/*                   <Select */}
 {/*                     value={tool.tool} */}
 {/*                     onChange={(e) => handleToolChange(index, e)} */}

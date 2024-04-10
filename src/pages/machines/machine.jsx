@@ -11,7 +11,8 @@ import {
   Filter,
 } from "@syncfusion/ej2-react-grids";
 import Config from "../../components/machineconfig/config";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Machine = () => {
   const [data, setData] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
@@ -30,9 +31,7 @@ const Machine = () => {
     }
   };
 
-  const handleActionComplete = async (args) => {
-    // Your code for saving or deleting data
-  };
+
 
   const MachinesGrid = [
     {
@@ -55,6 +54,34 @@ const Machine = () => {
 
   const handleCloseView = () => {
     setOpenView(false);
+  };
+  const handleActionComplete = async (args) => {
+    if (args.requestType === "save") {
+      try {
+        console.log(args.data)
+//         const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", args.data);
+//         console.log(response)
+         toast.success("Shed added successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
+      } catch (error) {
+        console.error("Error inserting data:", error);
+      }
+    } else if (args.requestType === "delete") {
+      try {
+        console.log(args.data[0].shed_id)
+        await axios.delete(`your-backend-endpoint/${args.data[0].id}`);
+      } catch (error) {
+        console.error("Error deleting data:", error);
+      }
+    }
   };
 
 

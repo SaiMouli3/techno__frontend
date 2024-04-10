@@ -1,5 +1,5 @@
 import { Dialog } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import Select from "react-select";
 import axios from "axios";
 
@@ -7,9 +7,28 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [selectedJob, setSelectedJob] = useState("");
   const [selectedTools, setSelectedTools] = useState([]);
   const [toolCodeNames, setToolCodeNames] = useState([]);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState(null);
   const [toolCodes, setToolCodes] = useState([]);
   const [machineName, setMachineName] = useState("");
+
+
+const [tools,setTools] = useState([]);
+const toolOptions = useMemo(() => {
+  // Extract all tool names from the tools data
+  const allToolNames = tools.map(tool => Object.keys(tool)[0]);
+
+  // Filter the tool codes based on the selected tool names
+  const filteredToolCodes = tools.filter(tool => selectedTools.some(selectedTool => {
+    const selectedToolName = selectedTool.value.trim().toLowerCase();
+    const toolName = Object.keys(tool)[0].trim().toLowerCase();
+    return toolName === selectedToolName;
+  }));
+
+  return filteredToolCodes.map((item) => {
+    const toolName = Object.values(item)[0];
+    return { value: toolName, label: toolName };
+  });
+}, [tools, selectedTools]);
 
   useEffect(() => {
     if (openView) {
@@ -20,24 +39,44 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const fetchData = async () => {
     try {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs/");
+
       setJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
   };
+   const fetchDataa = async () => {
+    try {
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tool_reply/");
+
+      setTools(response.data);
+      console.log(tools);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
+  useEffect(()=> {
+  fetchDataa()
+  },[])
 
   const handleJobChange = (selectedOption) => {
     setSelectedJob(selectedOption);
     fetchToolCodes(selectedOption.value);
-    setSelectedTools([]); // Reset selected tools when job changes
+    console.log(toolCodes)
+//     setSelectedTools([]); // Reset selected tools when job changes
     setToolCodeNames([]); // Reset tool code names when job changes
   };
 
  const fetchToolCodes = async (partNo) => {
   try {
     const response = await axios.get(`https://techno.pythonanywhere.com/webapp/get-tool-codes/${partNo}`);
-    const decodedToolCodes = response.data.map((tool) => decodeURIComponent(tool));
-    setToolCodes(decodedToolCodes);
+    const decodedToolCodes = response.data.map((tool) => ({
+      value: tool,
+      label: tool
+    }));
+    console.log(decodedToolCodes);
+    setSelectedTools(decodedToolCodes);
 
     console.log("Tool Names:", decodedToolCodes);
   } catch (error) {
@@ -51,20 +90,22 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     setToolCodeNames(Array(selectedOptions.length).fill("")); // Set empty tool code names based on selected tools
   };
 
-  const handleToolCodeNameChange = (e, index) => {
-    const newToolCodeNames = [...toolCodeNames];
-    newToolCodeNames[index] = e.target.value;
-    setToolCodeNames(newToolCodeNames);
-  };
+  const handleToolCodeNameChange = (selectedOption, index) => {
+  const newToolCodeNames = [...toolCodeNames];
+  console.log(selectedOption)
+  newToolCodeNames[index] = selectedOption.value; // Set the value of toolCodeNames to the selected option's value
+  setTools(newToolCodeNames);
+};
+
     console.log(toolCodeNames)
 
   const handleSubmit = async () => {
   try {
-    const machineDataArray = selectedTools.map((tool,index) => ({
+    const machineDataArray = selectedTools?.map((tool,index) => ({
       machine_id: selectedMachine.machine_id,
       machine_name: selectedMachine.machine_id,
       part_no: selectedJob.value,
-      tool_code: toolCodeNames[index]
+      tool_code: Object.values(tools[index])[0]
     }));
     console.log("Data being sent:", machineDataArray);
     const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
@@ -86,7 +127,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   }
 };
 
-
+const uniqueJobs = jobs?.filter((job, index) => jobs?.findIndex(j => j.part_no === job.part_no) === index);
 
   return (
     <Dialog
@@ -124,13 +165,14 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       <p>Selected Machine: {selectedMachine.id}</p>
       <div>
         <label>Select Job:</label>
-        <Select options={jobs.map(job => ({ value: job.part_no, label: job.part_no }))} value={selectedJob} onChange={handleJobChange} />
+
+        <Select options={uniqueJobs?.map(job => ({ value: job.part_no, label: job.part_no }))} value={selectedJob} onChange={handleJobChange} />
       </div>
       {selectedJob && (
         <div>
           <label>Select Tool:</label>
           <Select
-            options={toolCodes.map(tool => ({ value: tool, label: tool }))}
+            options={selectedTools.map(tool => ({ value: tool, label: tool }))}
             value={selectedTools}
              onChange={handleToolChange}
             isMulti={true}
@@ -138,15 +180,17 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
         </div>
       )}
-      {selectedJob && selectedTools.length > 0 && (
+
+
+{selectedJob && selectedTools.length > 0 && (
         <div>
-          {selectedTools.map((tool, index) => (
+          {selectedTools.map((selectedTool, index) => (
             <div key={index}>
-              <label>Tool Code Name ({tool.label}):</label>
-              <input
-                type="text"
-                value={toolCodeNames[index]}
-                onChange={(e) => handleToolCodeNameChange(e, index)}
+              <label>Tool Code Name:</label>
+              <Select
+                options={toolOptions}
+                value={toolOptions.find(option => option.value === toolCodeNames[index])}
+                onChange={(selectedOption) => handleToolCodeNameChange(selectedOption, index)}
               />
             </div>
           ))}
