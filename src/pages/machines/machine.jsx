@@ -45,8 +45,6 @@ const Machine = () => {
 
   const editing = {
     allowAdding: true,
-    allowDeleting: true,
-    allowEditing: true,
     mode: "Dialog",
   };
 
@@ -59,6 +57,7 @@ const Machine = () => {
     setOpenView(false);
   };
 
+
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <GridComponent
@@ -67,9 +66,10 @@ const Machine = () => {
         allowPaging
         allowSorting
         allowFiltering
+        allowAdding
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-
+        toolbar={['Add']}
         actionComplete={handleActionComplete}
         rowSelected={handleMachineClick}
       >

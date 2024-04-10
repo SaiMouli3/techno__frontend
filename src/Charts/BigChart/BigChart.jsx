@@ -15,6 +15,7 @@ const chart1_2_options = {
         }
       },
       ticks: {
+      display:false,
         color: "rgba(255, 255, 255, 0.7)",
         font: {
           weight: 'bold'

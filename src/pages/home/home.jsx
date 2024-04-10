@@ -29,7 +29,7 @@ const Home = () => {
   const [onDayChangeShift1, setOnDayChangeShift1] = useState([]);
   const [onDayChangeShift2, setOnDayChangeShift2] = useState([]);
   const [onDayChangeShift3, setOnDayChangeShift3] = useState([]);
-
+  const fontSize=2;
   useEffect(() => {
     const fetchData = async () => {
       const dataForSelectedDay1 = await fetchShiftsForDay1(selectedDay);
@@ -87,7 +87,7 @@ const Home = () => {
           <div className="box box8">
            <Link to="/home" >
       LEFTCHART
-      <LeftChart />
+      <LeftChart fontSize={fontSize} />
     </Link>
       </div>
       {/* <div className="box box9">

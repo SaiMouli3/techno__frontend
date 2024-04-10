@@ -14,6 +14,7 @@ const Homepage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const fontSize=1;
 
   const fetchData = async () => {
     try {
@@ -65,7 +66,7 @@ const Homepage = () => {
 
       <div className='flex flex-row gap-x-5'>
         <div className='w-[50%] '>
-          <LeftChart/>
+          <LeftChart fontSize={fontSize}/>
         </div>
         <div className='w-[50%] '>
           <BigChart/>

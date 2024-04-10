@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
 import axios from "axios";
+import { useLocation } from "react-router-dom"; // Import useLocation from React Router
 import "./leftlinechart.css";
 
 const chart1_2_options = {
@@ -81,6 +82,7 @@ const LeftChart = () => {
   const chartRef = useRef();
   const chartInstance = useRef(null);
   const [shiftData, setShiftData] = useState([]);
+  const location = useLocation(); // Get the current URL path using useLocation
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +111,9 @@ const LeftChart = () => {
       const shift2Data = shiftData.map((item) => item["2"]);
       const shift3Data = shiftData.map((item) => item["3"]);
 
+      // Check if the current URL is '/home' and adjust the font size accordingly
+      const fontSize = location.pathname === '/home' ? 2 : 1;
+
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
@@ -134,10 +139,50 @@ const LeftChart = () => {
             },
           ],
         },
-        options: chart1_2_options,
+        options: {
+          ...chart1_2_options,
+          scales: {
+            ...chart1_2_options.scales,
+            x: {
+              ...chart1_2_options.scales.x,
+              title: {
+                ...chart1_2_options.scales.x.title,
+                font: {
+                  ...chart1_2_options.scales.x.title.font,
+                  size: 8 * fontSize, // Adjust font size based on the URL condition
+                },
+              },
+              ticks: {
+                ...chart1_2_options.scales.x.ticks,
+                font: {
+                  ...chart1_2_options.scales.x.ticks.font,
+                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                },
+                display:false
+              },
+            },
+            y: {
+              ...chart1_2_options.scales.y,
+              title: {
+                ...chart1_2_options.scales.y.title,
+                font: {
+                  ...chart1_2_options.scales.y.title.font,
+                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                },
+              },
+              ticks: {
+                ...chart1_2_options.scales.y.ticks,
+                font: {
+                  ...chart1_2_options.scales.y.ticks.font,
+                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                },
+              },
+            },
+          },
+        },
       });
     }
-  }, [shiftData]);
+  }, [shiftData, location.pathname]);
 
   return (
     <div className="big-chart-container">
