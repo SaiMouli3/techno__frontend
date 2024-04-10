@@ -21,7 +21,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   const [partNo, setPartNo] = useState("");
   const [componentName, setComponentName] = useState("");
   const [operationNumber, setOperationNumber] = useState("");
-  const [tools, setTools] = useState([{ tool: "", length: "", holes: "" }]);
+  const [tools, setTools] = useState([{ tool: null, length: "", holes: "" }]);
   const [toolOptions, setToolOptions] = useState([]);
   const [filteredToolOptions, setFilteredToolOptions] = useState([]); // State to hold filtered tool options
   const [jobAdded, setJobAdded] = useState(false);
@@ -62,14 +62,16 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
     if (partNo && componentName && operationNumber && tools.length > 0) {
       try {
         for (let i = 0; i < tools.length; i++) {
+        const toolName = tools[i].tool.tool_code;
           const newJob = {
             part_no: partNo,
             component_name: componentName,
             operation_no: operationNumber,
-            tool_code: tools[i].tool,
+            tool_code: toolName,
             no_of_holes: tools[i].holes,
             depth_of_cut: tools[i].length
           };
+          console.log(newJob)
           const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
           console.log(response.data);
         }
@@ -90,7 +92,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   const addTool = () => {
-    setTools([...tools, { tool: "", length: "", holes: "" }]);
+    setTools([...tools, { tool: null, length: "", holes: "" }]);
   };
 
   const removeTool = (index) => {
@@ -104,8 +106,8 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   return (
-    <div className="z-[100001]">
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+    <div className="z-[100001] py-5">
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg" fullHeight={true} maxHeight="lg">
         <DialogTitle>Add New Job</DialogTitle>
         <DialogContent>
           <TextField
@@ -137,7 +139,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           />
 
           {tools.map((tool, index) => (
-            <Grid container spacing={2} key={index}>
+            <Grid container spacing={2} key={index} >
               <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Tool</InputLabel>
@@ -155,6 +157,9 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 {/*                   </Select> */}
 <Autocomplete
       disablePortal
+      className="h-30"
+      clearOnBlur
+      blurOnSelect
       id="combo-box-demo"
       options={filteredToolOptions}
       getOptionLabel={(option) => option.tool_name}
