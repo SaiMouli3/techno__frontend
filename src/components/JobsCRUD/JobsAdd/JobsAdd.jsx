@@ -1,3 +1,4 @@
+// AddJob component
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -20,12 +21,11 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   const [partNo, setPartNo] = useState("");
   const [componentName, setComponentName] = useState("");
   const [operationNumber, setOperationNumber] = useState("");
-  const [tools, setTools] = useState([{ tool: null, length: "", holes: "" }]); // Initialize with null
+  const [tools, setTools] = useState([{ tool: "", length: "", holes: "" }]);
   const [toolOptions, setToolOptions] = useState([]);
-  const [filteredToolOptions, setFilteredToolOptions] = useState([]);
+  const [filteredToolOptions, setFilteredToolOptions] = useState([]); // State to hold filtered tool options
   const [jobAdded, setJobAdded] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold search term
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -40,7 +40,8 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           }
         }, []);
         setToolOptions(uniqueTools);
-        setFilteredToolOptions(uniqueTools);
+        setFilteredToolOptions(uniqueTools); // Initialize filtered tool options with all tool options
+        console.log("Unique Tools:", uniqueTools);
       } catch (error) {
         console.error("Error fetching tools:", error);
       }
@@ -50,6 +51,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   }, []);
 
   useEffect(() => {
+    // Filter tool options based on search term
     const filteredOptions = toolOptions.filter(option =>
       option.tool_name.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
@@ -71,7 +73,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
           console.log(response.data);
         }
-        setJobAdded(true);
+        setJobAdded(true); // Set job added status to true
         handleClose();
       } catch (error) {
         console.error("Error adding job:", error);
@@ -88,7 +90,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   const addTool = () => {
-    setTools([...tools, { tool: null, length: "", holes: "" }]); // Initialize with null
+    setTools([...tools, { tool: "", length: "", holes: "" }]);
   };
 
   const removeTool = (index) => {
@@ -98,7 +100,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   };
 
   const handleCloseSnackbar = () => {
-    setJobAdded(false);
+    setJobAdded(false); // Reset job added status when Snackbar is closed
   };
 
   return (
@@ -139,26 +141,27 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
               <Grid item xs={4}>
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Tool</InputLabel>
-                  <div className={`relative ${isFocused ? 'bg-transparent' : 'bg-white'}`}>
-                    <Autocomplete
-                      disablePortal
-                      id={`combo-box-demo-${index}`}
-                      options={filteredToolOptions}
-                      getOptionLabel={(option) => option.tool_name}
-                      value={tool.tool}
-                      onChange={(event, newValue) => handleToolChange(index, { target: { name: "tool", value: newValue } })}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => setIsFocused(false)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Tool"
-                          className="w-full"
-                          InputProps={{ className: 'focus:bg-transparent' }}
-                        />
-                      )}
-                    />
-                  </div>
+{/*                   <Select */}
+{/*                     value={tool.tool} */}
+{/*                     onChange={(e) => handleToolChange(index, e)} */}
+{/*                     name="tool" */}
+{/*                     variant="outlined" */}
+{/*                   > */}
+{/*                     {filteredToolOptions.map((option) => ( */}
+{/*                       <MenuItem key={option.tool_code} value={option.tool_code}> */}
+{/*                         {option.tool_name} */}
+{/*                       </MenuItem> */}
+{/*                     ))} */}
+{/*                   </Select> */}
+<Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={filteredToolOptions}
+      getOptionLabel={(option) => option.tool_name}
+      value={tool.tool}
+      onChange={(event, newValue) => handleToolChange(index, { target: { name: "tool", value: newValue } })}
+      renderInput={(params) => <TextField {...params} label="Tool" />}
+sx={{ '& .MuiInputBase-root.Mui-focused': { backgroundColor: 'transparent' } }}    />
                 </FormControl>
               </Grid>
               <Grid item xs={4}>
@@ -203,6 +206,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* Snackbar to display job added message */}
       <Snackbar
         open={jobAdded}
         autoHideDuration={6000}

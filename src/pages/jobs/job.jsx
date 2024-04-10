@@ -16,11 +16,14 @@ import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 const Job = () => {
   const [data, setData] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
-
-  useEffect(() => {
+ useEffect(() => {
     // Fetch initial data from the backend when the component mounts
     fetchData();
   }, []);
+  useEffect(() => {
+    // Fetch initial data from the backend when the component mounts
+    fetchData();
+  }, [openAddDialog]);
 
   const fetchData = async () => {
     try {
