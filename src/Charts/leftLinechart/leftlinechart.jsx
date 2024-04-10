@@ -40,7 +40,7 @@ const chart1_2_options = {
     y: {
       title: {
         display: true,
-        text: 'No of Jobs per Shift',
+        text: 'No of Employees per Shift',
         color: 'white',
         font: {
           size: 6,
