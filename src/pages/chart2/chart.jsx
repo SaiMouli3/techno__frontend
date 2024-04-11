@@ -4,23 +4,10 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import NeedleChart from "../../components/chart/NeedleChart.jsx";
-import FilterMenu from "../../Charts/FilterMenu.js";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const Charts = ({ onDayChange }) => {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const date = new Date();
-  const currentDay = days[date.getDay()];
-  const [selectedDay, setSelectedDay] = useState(currentDay);
+  
   const [onDayChangeShift1, setOnDayChangeShift1] = useState(0);
   const [onDayChangeShift2, setOnDayChangeShift2] = useState(0);
   const [onDayChangeShift3, setOnDayChangeShift3] = useState(0);
@@ -38,9 +25,7 @@ const [selectedEndDate, setSelectedEndDate] = useState(new Date());
     setSelectedStartDate(selectedStartDate);
   };
 
-  const handleDayChange = (selectedDay) => {
-    setSelectedDay(selectedDay);
-  };
+
 
   useEffect(() => {
     const fetchDataForChart = async (chartNumber) => {
@@ -96,22 +81,11 @@ const [selectedEndDate, setSelectedEndDate] = useState(new Date());
 }, [selectedStartDate,selectedEndDate]);
 
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%",padding:'25px' }}>
       <div className="c2-filterBox ">
         <div className="c2-fromInput inputContainer ">
           <h2 className="c2-fromLabel">From:</h2>
-{/*           <DatePicker */}
-{/*             onChange={handleStartDateChange} */}
-{/*             value={selectedStartDate} */}
-{/*             className="c2-customDatePicker" */}
-{/*             locale="en" */}
-{/*             startDate={"01/01/2024"} */}
-{/*             endDate={selectedEndDate} */}
-{/*             format="dd/MM/yyyy" */}
-{/*             selectsRange */}
-{/*             showDisabledMonthNavigation */}
-{/*             showIcon */}
-{/*           /> */}
+
 <DatePicker
   onChange={handleStartDateChange}
   value={selectedStartDate}

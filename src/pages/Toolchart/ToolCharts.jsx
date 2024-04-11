@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Toolchart from './toolchart'
 const ToolTable = ({ data, onToolSelect }) => {
   const handleToolClick = (tool) => {
-    // Call the function passed from the parent component with the selected tool data
-    onToolSelect(tool);
-  };
+  onToolSelect(tool);
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth" 
+  });
+};
+
 
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-400">

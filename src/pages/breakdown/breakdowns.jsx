@@ -12,10 +12,9 @@ import {
   Group
 } from "@syncfusion/ej2-react-grids";
 import AddBreakdown from "./Addbreakdown";
-import ResolveBreakDown from "./ResolveBreakDown";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate} from 'react-router-dom'
+
 const BreakDown = () => {
   const [data, setData] = useState([]);
   const [openAddBreakdown, setOpenAddBreakdown] = useState(false);
@@ -38,7 +37,7 @@ const BreakDown = () => {
   };
   useEffect(()=> {
   fetchData()},[]);
-  const navigate = useNavigate()
+
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
@@ -96,9 +95,7 @@ const BreakDown = () => {
     setOpenView(true);
   };
 
-  const handleCloseView = () => {
-    setOpenView(false);
-  };
+
 
   const breakdownGrid = [
      {field:"checkbox"},
@@ -120,7 +117,7 @@ const BreakDown = () => {
     mode: "Dialog"
   };
 const handleResolveBreakDown = (props) => {
-  const { date, length_used, expected_length_remaining, replaced_by, reason, change_time, no_of_min_into_shift, machine_id, tool_code } = props;
+  const { date,  tool_code } = props;
   console.log(tool_code);
 
 
@@ -168,7 +165,7 @@ const handleResolveBreakDown = (props) => {
               headerText={item.headerText}
             />
           ))}
-         <ColumnDirective headerText="View Transport History" width="150" template={(props) => (
+         <ColumnDirective headerText="Resolve" width="150" template={(props) => (
                         <button className="bg-blue-500 rounded-sm py-2 px-4 text-white">
                             <button onClick={() => handleResolveBreakDown(props)}>Resolve</button>
                         </button>
@@ -177,13 +174,7 @@ const handleResolveBreakDown = (props) => {
         <Inject services={[Toolbar, Edit, Page, Group, Filter]} />
       </GridComponent>
  </div>
-//       {openView && selectedBreakdown && (
-//         <ResolveBreakDown
-//           selectedBreakdown={selectedBreakdown}
-//           handleCloseView={handleCloseView}
-//           openView={openView}
-//         />
-//       )}
+
 
   );
 };

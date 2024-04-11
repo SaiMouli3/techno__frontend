@@ -1,9 +1,8 @@
 import { Dialog } from "@mui/material";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import {TextField} from "@mui/material"
 import "react-toastify/dist/ReactToastify.css";
 
 const Config = ({ selectedMachine, handleCloseView, openView }) => {
@@ -12,8 +11,6 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [toolCodeNames, setToolCodeNames] = useState([]);
   const [jobs, setJobs] = useState(null);
   const [target,setTarget] = useState(null)
-  const [toolCodes, setToolCodes] = useState([]);
-  const [machineName, setMachineName] = useState("");
   const [tools, setTools] = useState([]);
 
   useEffect(() => {
@@ -65,9 +62,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
   const getToolCodeNames = (selectedTool) => {
     if (!selectedTool) return [];
-    // console.log(selectedTool);
   const tool = tools?.find((item) => item.tool_name.toLowerCase() === selectedTool.value.toLowerCase());
-        // console.log(tool)
 
     return tool ? tool.tool_codes : [];
   };

@@ -39,9 +39,9 @@ const Homepage = () => {
 
   return (
     <>
-      <div className='bg-main-dark-bg m-10 flex flex-col gap-y-8 mt-24'>
+      <div className='bg-main-dark-bg m-10 flex flex-col gap-y-8 mt-12'>
         <div className='w-full flex flex-col gap-x-5 gap-y-2'>
-          <p className='font-bold text-3xl text-white'>Dashboard</p>
+          <p className='font-bold text-3xl text-white mb-4'>Dashboard</p>
           <div className='flex lg:flex-row flex-col gap-y-5 gap-x-5'>
             <div className='bg-gray-800 p-8 lg:w-[25%] w-[100%] '>
               <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><BsPersonWorkspace color='#2e1cc9'/></span>Total Employees</p>
@@ -67,7 +67,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      <div className='flex flex-row gap-x-5'>
+      <div className='flex flex-row gap-x-5 px-5 mb-4 justify-center items-center w-full'>
         <div className='w-[50%] '>
           <LeftChart fontSize={fontSize}/>
         </div>

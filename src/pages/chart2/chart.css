@@ -2,17 +2,21 @@
 
 .c2-ChartsContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns */
-  grid-template-rows: repeat(2, 1fr); /* Two columns */
+  grid-template-columns: repeat(2, 1fr);
+  /* Two columns */
+  grid-template-rows: repeat(2, 1fr);
+  /* Two columns */
   column-gap: 15px;
 
-  row-gap: 15px; /* Gap between the boxes */
+  row-gap: 15px;
+  /* Gap between the boxes */
 }
 
 .c2-chartbox {
   width: 100%;
   height: 100%;
-  margin-bottom: 10px; /* Add margin to create space between chart boxes */
+  margin-bottom: 10px;
+  /* Add margin to create space between chart boxes */
 }
 
 .c2-chartbox:hover {
@@ -37,24 +41,31 @@
 }
 
 .c2-box1 {
-  grid-column: auto; /* Place in the first column */
+  grid-column: auto;
+  /* Place in the first column */
   grid-row: auto;
   /* Place in the first row */
 }
 
 .c2-box2 {
-  grid-column: auto; /* Place in the second column */
-  grid-row: auto; /* Place in the first row */
+  grid-column: auto;
+  /* Place in the second column */
+  grid-row: auto;
+  /* Place in the first row */
 }
 
 .c2-box3 {
-  grid-column: auto; /* Place in the first column */
-  grid-row: auto; /* Place in the second row */
+  grid-column: auto;
+  /* Place in the first column */
+  grid-row: auto;
+  /* Place in the second row */
 }
 
 .c2-box4 {
-  grid-column: auto; /* Place in the second column */
-  grid-row: auto; /* Place in the second row */
+  grid-column: auto;
+  /* Place in the second column */
+  grid-row: auto;
+  /* Place in the second row */
 }
 
 .c2-chart.filterChart {
@@ -106,7 +117,7 @@
   justify-content: center;
   border-radius: 10px;
   width: 60px;
-  align-items: center ;
+  align-items: center;
   display: flex;
 }
 
@@ -124,16 +135,16 @@
   text-align: center;
 }
 
-.c2-customDatePicker > div {
+.c2-customDatePicker>div {
   border: none;
 }
 
-.c2-customDatePicker > div > button:nth-of-type(1) {
+.c2-customDatePicker>div>button:nth-of-type(1) {
   position: absolute;
   visibility: hidden;
 }
 
-.c2-customDatePicker > div > button:nth-of-type(2) {
+.c2-customDatePicker>div>button:nth-of-type(2) {
   padding-left: 40px;
 }
 
@@ -143,7 +154,7 @@
   font-size: 2rem;
   text-align: center;
   display: flex;
-  color:white;
+  color: white;
 }
 
 .c2-daysFilter {
@@ -164,5 +175,5 @@
   border-radius: 10px;
   width: 130px;
   display: flex;
-  align-items: center ;
+  align-items: center;
 }

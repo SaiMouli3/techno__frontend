@@ -5,7 +5,6 @@ import { useStateContext } from "./context/ContextProvider";
 import Navbarr from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/home/home";
-import Toolchart from "./pages/Toolchart/toolchart";
 import Employee from "./pages/employees/employees";
 import Machine from "./pages/machines/machine";
 import Job from "./pages/jobs/job";
@@ -19,20 +18,17 @@ import Charts from "./pages/chart2/chart"
 import Resolve from './pages/breakdown/Resolve'
 const App = () => {
   const {
-    setCurrentColor,
-    setCurrentMode,
+
     currentMode,
     activeMenu,
-    currentColor,
-    themeSettings,
-    setThemeSettings,
+   
   } = useStateContext();
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
         <div className="flex relative bg-main-dark-bg">
           {activeMenu ? (
-            <div className="w-72 fixed sidebar ">
+            <div className="w-72 fixed z-[100001] sidebar ">
               <Sidebar />
             </div>
           ) : (

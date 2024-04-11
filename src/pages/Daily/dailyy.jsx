@@ -10,15 +10,8 @@ const Dailyy = () => {
   const [selectedShift, setSelectedShift] = useState("");
   
   const [selectedMachines, setSelectedMachines] = useState([]);
-  const [machines] = useState([
-    { label: "M1", value: "M1" },
-    { label: "M2", value: "M2" },
-    { label: "M3", value: "M3" },
-    { label: "M4", value: "M4" },
-    { label: "M5", value: "M5" },
-    { label: "M6", value: "M6" },
-  ]);
-  const { data: machiness, isLoading, isError } = useQuery({
+
+  const { data: machiness } = useQuery({
     queryKey: ["machines"],
     queryFn: async () => {
       try {
@@ -35,13 +28,11 @@ const Dailyy = () => {
   }));
 
   const [submittedData, setSubmittedData] = useState(null);
-  const [target, setTarget] = useState(0);
-  const [achieved,setAchieved] = useState(0)
   const [showHoursInput, setShowHoursInput] = useState(false);
   const [hours,setHours] = useState(8)
  const [date,setDate] = useState("");
   const [machineData, setMachineData] = useState([]);
-  const [breakdown, setBreakdown] = useState(false);
+
    const [employeeData, setEmployeeData] = useState([]);
   const fetchData = async () => {
     try {
@@ -65,16 +56,10 @@ const Dailyy = () => {
       label: machine.label,
       achieved: 0,
       target: 0,
-      breakdown: breakdown ? 1 : 0
     }));
     setMachineData(initialData);
   };
-    const formatDate = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -89,7 +74,6 @@ const Dailyy = () => {
       if(!date){
         toast.error("Please fill in all the deatils")
       }
-      // Loop through machineData to create separate records for each machine
       machineData.forEach((machine) => {
         const machineId = machine.label.split(" - ")[1];
         console.log(date)
@@ -98,7 +82,7 @@ const Dailyy = () => {
           emp_ssn: employeeName.label,
           shift_number: shiftNumberMap[selectedShift],
           shift_duration: 8,
-          machine_id: machineId, // Send only the current machine's data
+          machine_id: machineId, 
           achieved: machine.achieved,
           target: machine.target,
           partial_shift: hours,
@@ -106,16 +90,13 @@ const Dailyy = () => {
         };
   
         console.log(formData)
-        // Create a separate POST request for each record and push it to postRequests array
         postRequests.push(
           axios.post("https://techno.pythonanywhere.com/webapp/api/submit-performance", formData)
         );
       });
   
-      // Execute all POST requests concurrently using Promise.all
       const responses = await Promise.all(postRequests);
 
-      // Log each response from the server
       responses.forEach((response) => {
         console.log(response.data);
       });
@@ -153,11 +134,7 @@ const Dailyy = () => {
     // Reset machineData when machines change
     setMachineData([]);
   };
-  const handleBreakdownChange = (index, checked) => {
-    const updatedData = [...machineData];
-    updatedData[index]['breakdown'] = checked ? 1 : 0;
-    setMachineData(updatedData);
-  };
+
   const handleInputChange = (index, key, value) => {
     const updatedData = [...machineData];
     updatedData[index][key] = value;
