@@ -164,7 +164,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
       options={filteredToolOptions}
       getOptionLabel={(option) => option.tool_name}
       value={tool.tool}
-      onChange={(event, newValue) => handleToolChange(index, { target: { name: "tool", value: newValue } })}
+      onChange={( newValue) => handleToolChange(index, { target: { name: "tool", value: newValue } })}
       renderInput={(params) => <TextField {...params} label="Tool" />}
 sx={{ '& .MuiInputBase-root.Mui-focused': { backgroundColor: 'transparent' } }}    />
                 </FormControl>

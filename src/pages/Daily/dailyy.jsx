@@ -5,7 +5,7 @@ import axios from "axios";
 import {useQuery} from '@tanstack/react-query'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const Daily = () => {
+const Dailyy = () => {
   const [employeeName, setEmployeeName] = useState("");
   const [selectedShift, setSelectedShift] = useState("");
   
@@ -42,7 +42,18 @@ const Daily = () => {
  const [date,setDate] = useState("");
   const [machineData, setMachineData] = useState([]);
   const [breakdown, setBreakdown] = useState(false);
-
+   const [employeeData, setEmployeeData] = useState([]);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      setEmployeeData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(()=> {
+    fetchData();
+  },[])
   const handleData = () => {
     const formData = {
       employeeName,
@@ -75,13 +86,16 @@ const Daily = () => {
         shift2: 2,
         shift3: 3,
       };
+      if(!date){
+        toast.error("Please fill in all the deatils")
+      }
       // Loop through machineData to create separate records for each machine
       machineData.forEach((machine) => {
         const machineId = machine.label.split(" - ")[1];
         console.log(date)
         const formData = {
         date : date,
-          emp_ssn: employeeName,
+          emp_ssn: employeeName.label,
           shift_number: shiftNumberMap[selectedShift],
           shift_duration: 8,
           machine_id: machineId, // Send only the current machine's data
@@ -153,8 +167,8 @@ const Daily = () => {
 
   if (submittedData) {
     return (
-      <div className="bg-gray-200 min-h-screen py-8 px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">
+      <div className=" min-h-screen py-8 px-4">
+        <h1 className="text-3xl text-white font-bold text-center mb-8">
           Daily Submissions
         </h1>
         <ToastContainer className="z-[10001]"/>
@@ -250,42 +264,59 @@ const Daily = () => {
             />
           </div>
           <div>
+  <label
+    htmlFor="employeeName"
+    className="block text-lg font-medium text-gray-700"
+  >
+    Employee SSN:
+  </label>
+ <Select
+    options={employeeData.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
+    value={employeeName} // Use the employeeName state variable as the value prop
+    onChange={(selectedOption) => setEmployeeName(selectedOption)} // Update the employeeName state variable with the selected SSN
+    isSearchable
+    placeholder="Select Employee SSN"
+  />
 
-            <label
-              htmlFor="employeeName"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Employee SSN:
-            </label>
-            <input
-              type="text"
-              id="employeeName"
-              value={employeeName}
-              onChange={(e) => setEmployeeName(e.target.value)}
-              required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="shift"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Shift:
-            </label>
-            <select
-              id="shift"
-              value={selectedShift}
-              onChange={(e) => setSelectedShift(e.target.value)}
-              required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
-            >
-              <option value="">Select Shift</option>
-              <option value="shift1">Shift 1</option>
-              <option value="shift2">Shift 2</option>
-              <option value="shift3">Shift 3</option>
-            </select>
-          </div>
+</div>
+         <div>
+  <label className="block text-lg font-medium text-gray-700">Shift:</label>
+  <div className="flex items-center space-x-4">
+    <label htmlFor="shift1" className="flex items-center">
+      <input
+        type="radio"
+        id="shift1"
+        value="shift1"
+        checked={selectedShift === "shift1"}
+        onChange={(e) => setSelectedShift(e.target.value)}
+        className="mr-2"
+      />
+      Shift 1
+    </label>
+    <label htmlFor="shift2" className="flex items-center">
+      <input
+        type="radio"
+        id="shift2"
+        value="shift2"
+        checked={selectedShift === "shift2"}
+        onChange={(e) => setSelectedShift(e.target.value)}
+        className="mr-2"
+      />
+      Shift 2
+    </label>
+    <label htmlFor="shift3" className="flex items-center">
+      <input
+        type="radio"
+        id="shift3"
+        value="shift3"
+        checked={selectedShift === "shift3"}
+        onChange={(e) => setSelectedShift(e.target.value)}
+        className="mr-2"
+      />
+      Shift 3
+    </label>
+  </div>
+</div>
           <div>
             <label className="block text-lg font-medium text-gray-700">
               Machines:
@@ -317,4 +348,4 @@ const Daily = () => {
   );
 };
 
-export default Daily;
+export default Dailyy;

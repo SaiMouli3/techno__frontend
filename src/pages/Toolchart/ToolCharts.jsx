@@ -13,8 +13,8 @@ const ToolTable = ({ data, onToolSelect }) => {
           <th className="px-6 py-3">Tool name</th>
           <th className="px-6 py-3">Code</th>
           <th className="px-6 py-3">BreakPoints</th>
-          <th className="px-6 py-3">Max Length</th>
-          <th className="px-6 py-3">Cost</th>
+          {/* <th className="px-6 py-3">Max Length</th>
+          <th className="px-6 py-3">Cost</th> */}
         </tr>
       </thead>
       <tbody className='overflow-y-auto h-screen'>
@@ -23,8 +23,8 @@ const ToolTable = ({ data, onToolSelect }) => {
             <td className="px-6 py-4 whitespace-nowrap">{tool.tool_name}</td>
             <td className="px-6 py-4">{tool.tool_code}</td>
             <td className="px-6 py-4">{tool.no_of_brk_points}</td>
-            <td className="px-6 py-4">{tool.max_life_expectancy_in_mm}</td>
-            <td className="px-6 py-4">{tool.cost}</td>
+            {/* <td className="px-6 py-4">{tool.max_life_expectancy_in_mm}</td>
+            <td className="px-6 py-4">{tool.cost}</td> */}
           </tr>
         ))}
       </tbody>
