@@ -59,9 +59,9 @@ const Machine = () => {
     if (args.requestType === "save") {
       try {
         console.log(args.data)
-//         const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", args.data);
-//         console.log(response)
-         toast.success("Shed added successfully", {
+        const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/nmview/", args.data);
+       
+         toast.success("Machine added successfully", {
         position: "top-center",
         autoClose: 1000,
         style: {
@@ -71,6 +71,7 @@ const Machine = () => {
         closeButton: false,
         progress: undefined,
       });
+      
       } catch (error) {
         console.error("Error inserting data:", error);
       }

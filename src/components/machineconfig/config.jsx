@@ -2,6 +2,8 @@ import { Dialog } from "@mui/material";
 import React, { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [selectedJob, setSelectedJob] = useState("");
@@ -92,13 +94,23 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
           const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
+          toast.success("Machine configured successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
           return response.data;
         } catch (error) {
           console.error("Error submitting machine data:", error);
           throw error;
         }
       }));
-      console.log(responseDataArray)
+            
       handleCloseView();
       setSelectedJob(null);
       setSelectedTools([]);
@@ -143,6 +155,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
           Selected Job: {selectedJob.label}
         </p>
       )}
+      <ToastContainer className="z-[1000001]"/>
       <p>Selected Machine: {selectedMachine.id}</p>
       <div>
         <label>Select Job:</label>
