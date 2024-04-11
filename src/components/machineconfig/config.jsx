@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Select from "react-select";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import {TextField} from "@mui/material"
 import "react-toastify/dist/ReactToastify.css";
 
 const Config = ({ selectedMachine, handleCloseView, openView }) => {
@@ -10,6 +11,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [selectedTools, setSelectedTools] = useState([]);
   const [toolCodeNames, setToolCodeNames] = useState([]);
   const [jobs, setJobs] = useState(null);
+  const [target,setTarget] = useState(null)
   const [toolCodes, setToolCodes] = useState([]);
   const [machineName, setMachineName] = useState("");
   const [tools, setTools] = useState([]);
@@ -84,10 +86,11 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
   const handleSubmit = async () => {
     try {
-      console.log(toolCodeNames)
+      console.log(selectedJob)
       const machineDataArray = selectedTools?.map((tool, index) => ({
         machine_id: selectedMachine.machine_id,
         machine_name: selectedMachine.machine_id,
+        target:target,
         part_no: selectedJob.value,
         tool_code: toolCodeNames[index]
       }));
@@ -104,13 +107,16 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
         closeButton: false,
         progress: undefined,
       });
+      
           return response.data;
-        } catch (error) {
+        }
+        
+        catch (error) {
           console.error("Error submitting machine data:", error);
           throw error;
         }
       }));
-            
+          console.log(responseDataArray)  
       handleCloseView();
       setSelectedJob(null);
       setSelectedTools([]);
@@ -156,10 +162,22 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
         </p>
       )}
       <ToastContainer className="z-[1000001]"/>
-      <p>Selected Machine: {selectedMachine.id}</p>
+      <p>Selected Machine: {selectedMachine.machine_id}</p>
       <div>
         <label>Select Job:</label>
         <Select options={uniqueJobs?.map(job => ({ value: job.part_no, label: job.part_no }))} value={selectedJob} onChange={handleJobChange} />
+      </div>
+      <div>
+        <label>Enter target:</label>
+         <input
+                type="target"
+                placeholder="Enter target"
+                value={target}
+                  onChange={(e)=> {
+                    setTarget(e.target.value)
+                  }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[2px] focus:ring-blue-500"
+              />
       </div>
       {selectedJob && (
         <div>
