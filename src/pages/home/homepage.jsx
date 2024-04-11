@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BsPersonWorkspace } from 'react-icons/bs';
+import { FaTools } from "react-icons/fa";
 import LeftChart from "../../Charts/leftLinechart/leftlinechart.jsx";
 import BigChart from '../../Charts/BigChart/BigChart.jsx';
+import { GrVirtualMachine } from "react-icons/gr";
+import { ImFileOpenoffice } from "react-icons/im";
 // import LineChart from './LineChart.jsx';
 
 const Homepage = () => {
@@ -46,17 +49,17 @@ const Homepage = () => {
               <p className='text-sm text-gray-500'>Active</p>
             </div>
             <div className='bg-gray-800 p-8 lg:w-[25%] w-[100%] '>
-              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><BsPersonWorkspace color='#2e1cc9'/></span>Total Machines</p>
+              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><GrVirtualMachine color='#2e1cc9'/></span>Total Machines</p>
               <p className='mt-3 font-semibold text-white text-2xl'>{totalMachines}</p>
               <p className='text-sm text-gray-500'>Active</p>
             </div>
             <div className='bg-gray-800 p-8 lg:w-[25%] w-[100%] '>
-              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><BsPersonWorkspace color='#2e1cc9'/></span>Total Tools</p>
+              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><FaTools color='#2e1cc9'/></span>Total Tools</p>
               <p className='mt-3 font-semibold text-white text-2xl'>{totalTools}</p>
               <p className='text-sm text-gray-500'>Active</p>
             </div>
             <div className='bg-gray-800 p-8 lg:w-[25%] w-[100%] '>
-              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><BsPersonWorkspace color='#2e1cc9'/></span>Total Jobs</p>
+              <p className='text-light-gray-500 flex flex-row justify-start items-center gap-x-3 text-xl text-white'><span className='p-1 bg-[#8177d5] rounded-md'><ImFileOpenoffice color='#2e1cc9'/></span>Total Jobs</p>
               <p className='mt-3 font-semibold text-white text-2xl'>{totalJobs}</p>
               <p className='text-sm text-gray-500'>Active</p>
             </div>
