@@ -12,35 +12,36 @@ import {
   Sort,
   Group,
 } from "@syncfusion/ej2-react-grids";
+import { useQuery } from "@tanstack/react-query";
 import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 
 const Job = () => {
-  const [data, setData] = useState([]);
+ 
   const [openAddDialog, setOpenAddDialog] = useState(false);
- useEffect(() => {
-    // Fetch initial data from the backend when the component mounts
-    fetchData();
-  }, []);
-  useEffect(() => {
-    // Fetch initial data from the backend when the component mounts
-    fetchData();
-  }, [openAddDialog]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobss/");
-      setData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  useEffect(() => {
+    refetch();
+  }, [openAddDialog]);
+ const { data ,refetch} = useQuery({
+    queryKey: ["jobs"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[data,refetch])
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {
       try {
         await axios.delete(`https://techno.pythonanywhere.com/webapp/api/jobs/${args.data[0].id}`);
-        // After deleting, you can fetch updated data from the backend
-        fetchData();
+        refetch()
       } catch (error) {
         console.error("Error deleting data:", error);
       }
@@ -52,7 +53,7 @@ const Job = () => {
     console.log(newJob)
 //      await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
       // After adding, you can fetch updated data from the backend
-      fetchData();
+      refetch();
     } catch (error) {
       console.error("Error adding data:", error);
     }

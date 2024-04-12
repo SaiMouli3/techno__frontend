@@ -11,7 +11,7 @@ const Dailyy = () => {
   const [selectedMachines, setSelectedMachines] = useState([]);
 
   const { data: machiness } = useQuery({
-    queryKey: ["machines"],
+    queryKey: ["daily"],
     queryFn: async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
@@ -25,6 +25,20 @@ const Dailyy = () => {
     label: `${machine.machine_name} - ${machine.machine_id}`,
     value: machine.id,
   }));
+
+const filterDuplicateMachineOptions = (options) => {
+  const uniqueOptions = [];
+  const uniqueMachineIds = new Set();
+
+  options.forEach((option) => {
+    if (!uniqueMachineIds.has(option.label)) {
+      uniqueMachineIds.add(option.label);
+      uniqueOptions.push(option);
+    }
+  });
+
+  return uniqueOptions;
+};
 
   const [submittedData, setSubmittedData] = useState(null);
   const [showHoursInput, setShowHoursInput] = useState(false);
@@ -321,8 +335,8 @@ const Dailyy = () => {
               Machines:
             </label>
             <Select
-              options={machiness ? machineOptions : []}
-              value={selectedMachines}
+options={filterDuplicateMachineOptions(machiness ? machineOptions : [])}              
+value={selectedMachines}
               onChange={handleMachineChange}
               isMulti
               placeholder="Select Machines"

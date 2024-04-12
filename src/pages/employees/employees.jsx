@@ -13,6 +13,9 @@ import {
   Group,
 } from "@syncfusion/ej2-react-grids";
 import { useQuery } from "@tanstack/react-query";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Employee = () => {
  
@@ -54,14 +57,18 @@ const Employee = () => {
     } else if (args.requestType === "delete") {
       try {
         const csrfToken = getCsrfToken();
-        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
+        
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
         headers: {
         'X-CSRFToken': csrfToken
         }
+        
     });
-
+console.log(response);
+toast.success("Employee deleted successfully")
         
       } catch (error) {
+        toast.error(error.message)
         console.error("Error deleting data:", error);
       }
     }
@@ -108,7 +115,7 @@ const Employee = () => {
 
   const editing = {
     allowAdding: true,
-
+    allowDeleting:true,
    
     mode: "Dialog",
   };
@@ -124,9 +131,10 @@ const Employee = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add"]}
+        toolbar={["Add","Delete"]}
         actionComplete={handleActionComplete}
       >
+        <ToastContainer className="z-[100001]"/>
         <ColumnsDirective>
           {employeesGrid.map((item, index) => (
             <ColumnDirective

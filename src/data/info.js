@@ -34,6 +34,11 @@ export const links = [
         link: "dailyentrytable"
       },
       {
+        name: "Daily Entry Efficiency",
+        icon: <IoMdContacts />,
+        link: "dailyentryefficiency"
+      },
+      {
         name: "Employees",
         icon: <RiContactsLine />,
         link:"employees"

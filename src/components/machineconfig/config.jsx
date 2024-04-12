@@ -4,7 +4,7 @@ import Select from "react-select";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useQuery } from "@tanstack/react-query";
 const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [selectedJob, setSelectedJob] = useState("");
   const [selectedTools, setSelectedTools] = useState([]);
@@ -40,6 +40,23 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       console.error("Error fetching tools:", error);
     }
   };
+  const [machineId,setMachineId] = useState(selectedMachine.machine_id);
+
+  console.log(selectedMachine)
+  const [configured,setConfigured] = useState(false);
+  const { data: machiness } = useQuery({
+    queryKey: ["machineconfig"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${machineId}`);
+        setConfigured(true)
+        console.log(response.data)
+        return response.data; // Return the data from the response
+      } catch (error) {
+        throw new Error("Error fetching machines"); // Throw an error if request fails
+      }
+    },
+  });
 
   const handleJobChange = (selectedOption) => {
     setSelectedJob(selectedOption);
@@ -91,7 +108,9 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       }));
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
+          console.log(machineData)
           const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
+          
           toast.success("Machine configured successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -114,6 +133,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
           console.log(responseDataArray)  
       handleCloseView();
       setSelectedJob(null);
+      setMachineId(null)
       setSelectedTools([]);
       setToolCodeNames([])
     } catch (error) {
@@ -131,13 +151,15 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       sx={{
         "& .MuiDialog-paper": {
           width: "70%",
-          maxHeight: "130vh",
+          height:"100%",
+          maxHeight: "140vh",
           paddingInline: "40px",
           padding: "20px",
           borderRadius: "10px",
           display: "flex",
           flexDirection: "column",
           rowGap: "20px",
+          overflowY:"auto"
         },
         "& .MuiDialogTitle-root": {
           textAlign: "center",
@@ -160,11 +182,15 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       <p>Selected Machine: {selectedMachine.machine_id}</p>
       <div>
         <label>Select Job:</label>
-        <Select options={uniqueJobs?.map(job => ({ value: job.part_no, label: job.part_no }))} value={selectedJob} onChange={handleJobChange} />
+        {
+          configured ? <div className="w-full py-2 px-2 rounded-md border-[1px] border-black/30">{machiness.part_no}</div> :         <Select options={uniqueJobs?.map(job => ({ value: job.part_no, label: job.part_no }))} value={selectedJob} onChange={handleJobChange} />
+
+        }
       </div>
       <div>
-        <label>Enter target:</label>
-         <input
+        <label>{configured? "Target" : "Enter target:"}</label>
+          {
+            configured ?  <div className="w-full py-2 px-2 rounded-md border-[1px] border-black/30">{machiness.target}</div> : <input
                 type="target"
                 placeholder="Enter target"
                 value={target}
@@ -173,23 +199,36 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
                   }}
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[2px] focus:ring-blue-500"
               />
+          }
+         
       </div>
-      {selectedJob && (
+      {!configured &&selectedJob && (
         <div>
           <label>Select Tool:</label>
           <Select options={selectedTools.map(tool => ({ value: tool, label: tool }))} value={selectedTools} onChange={handleToolChange} isMulti={true} />
         </div>
       )}
-      {selectedJob && selectedTools.length > 0 && (
+      {configured && (
+  <div>
+    <label>Tool Code Name:</label>
+    <div className="w-full py-2 px-2 rounded-md border-[1px] border-black/30">
+      {machiness?.tool_code?.map((code, index) => (
+        <div key={index}>{code}</div>
+      ))}
+    </div>
+  </div>
+)}
+      {!configured && selectedJob && selectedTools.length > 0 && (
         <div>
           {selectedTools.map((selectedTool, index) => (
             <div key={index}>
-              <label>Tool Code Name:</label>
+              <label>Tool Code Name:{selectedTool.value}</label>
 <Select
   options={getToolCodeNames(selectedTool).map((code) => ({ value: code, label: code }))}
   value={{ value: toolCodeNames[index], label: toolCodeNames[index] }}
   onChange={(selectedOption) => handleToolCodeNameChange(selectedOption, index)}
 />
+
 
             </div>
           ))}
@@ -197,6 +236,8 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       )}
       <button className="px-5 py-2 bg-blue-500 rounded-md hover:bg-blue-700 font-semibold text-white w-[20%] mx-auto" onClick={handleSubmit}>Submit</button>
       <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={handleCloseView}>Close Config</button>
+            <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={()=>setConfigured(false)}>Update Config</button>
+
     </Dialog>
   );
 };

@@ -10,27 +10,29 @@ import {
   Page,
   Filter,
 } from "@syncfusion/ej2-react-grids";
+import { useQuery } from "@tanstack/react-query";
 import Config from "../../components/machineconfig/config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Machine = () => {
-  const [data, setData] = useState([]);
+
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [openView, setOpenView] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/nmachines");
-      setData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
+   const { data ,refetch} = useQuery({
+    queryKey: ["machines"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[data,refetch])
 
 
   const MachinesGrid = [
@@ -44,6 +46,7 @@ const Machine = () => {
 
   const editing = {
     allowAdding: true,
+    allowEditing: true,
     mode: "Dialog",
   };
 
@@ -56,6 +59,7 @@ const Machine = () => {
     setOpenView(false);
   };
   const handleActionComplete = async (args) => {
+
     if (args.requestType === "save") {
       try {
         console.log(args.data)
@@ -82,12 +86,12 @@ const Machine = () => {
       } catch (error) {
         console.error("Error deleting data:", error);
       }
-    }
+    } 
   };
 
 
   return (
-    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
+    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-y-auto">
       <GridComponent
         dataSource={data}
         width="auto"

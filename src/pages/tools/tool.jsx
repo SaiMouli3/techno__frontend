@@ -12,10 +12,10 @@ import {
   Sort,
   Group
 } from "@syncfusion/ej2-react-grids";
+import { useQuery } from "@tanstack/react-query";
 import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
 
 const Tool = () => {
-  const [data, setData] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [toolName, setToolName] = useState("");
   const [maxLength, setMaxLength] = useState("");
@@ -24,18 +24,20 @@ const Tool = () => {
   const [toolNumbers, setToolNumbers] = useState([]);
   const [toolCodes, setToolCodes] = useState({});
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
-      setData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+   const { data ,refetch} = useQuery({
+    queryKey: ["tools"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[data,refetch])
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
@@ -44,14 +46,14 @@ const Tool = () => {
         for (const newTool of args.data) {
           await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/create", newTool);
         }
-        fetchData();
+        refetch();
       } catch (error) {
         console.error("Error inserting data:", error);
       }
     } else if (args.requestType === "delete") {
       try {
         await axios.delete(`https://techno.pythonanywhere.com/webapp/api/tools/${args.data[0].id}`);
-        fetchData();
+        refetch();
       } catch (error) {
         console.error("Error deleting data:", error);
       }
@@ -123,7 +125,7 @@ const Tool = () => {
       for (const newTool of newTools) {
         await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/create", newTool);
       }
-      fetchData();
+      refetch();
       setOpenAddDialog(false);
     } catch (error) {
       console.error("Error adding tools:", error);

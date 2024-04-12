@@ -13,25 +13,26 @@ import {
   Sort
 } from "@syncfusion/ej2-react-grids";
 import { ToastContainer } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 import "react-toastify/dist/ReactToastify.css";
 
 const Resolve = () => {
-    const [resolve,setResolve] = useState([]);
 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/rev");
-      setResolve(response.data);
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+   const { data: resolve ,refetch} = useQuery({
+    queryKey: ["resolve"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[resolve,refetch])
 
   const breakdownGrid = [
     { field: "tool_code", headerText: "Tool code", width: "120", textAlign: "Center" },

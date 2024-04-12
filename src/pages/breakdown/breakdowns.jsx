@@ -12,30 +12,32 @@ import {
   Group,
   Sort
 } from "@syncfusion/ej2-react-grids";
+import { useQuery } from "@tanstack/react-query";
+
 import AddBreakdown from "./Addbreakdown";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const BreakDown = () => {
-  const [data, setData] = useState([]);
+  
   const [openAddBreakdown, setOpenAddBreakdown] = useState(false);
   const [openView, setOpenView] = useState(false);
   const [selectedBreakdown, setSelectedBreakdown] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
-
-      setData(response.data);
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+   const { data ,refetch} = useQuery({
+    queryKey: ["breakdown"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[data,refetch])
   
 
   const handleActionComplete = async (args) => {
@@ -52,7 +54,7 @@ const BreakDown = () => {
         closeButton: false,
         progress: undefined,
       });
-        fetchData();
+        refetch();
       } catch (error) {
         console.error("Error inserting data:", error);
       }
@@ -61,7 +63,7 @@ const BreakDown = () => {
 
       const toolCode = args.data[0].tool_code;
       await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${toolCode}`);
-      fetchData();
+      refetch();
     } catch (error) {
       console.error("Error deleting data:", error);
       }
@@ -81,7 +83,7 @@ const BreakDown = () => {
     axios.post('https://techno.pythonanywhere.com/webapp/api/breakdown/create', newBreakdown)
       .then(response => {
         console.log('Breakdown added successfully:', response.data);
-        fetchData();
+        refetch();
         handleCloseAddBreakdown();
       })
       .catch(error => {
