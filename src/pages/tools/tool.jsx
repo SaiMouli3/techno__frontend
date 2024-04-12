@@ -28,7 +28,7 @@ const Tool = () => {
     queryKey: ["tools"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools");
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 

@@ -28,7 +28,7 @@ const BreakDown = () => {
     queryKey: ["breakdown"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 

@@ -151,7 +151,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       sx={{
         "& .MuiDialog-paper": {
           width: "70%",
-          height:"100%",
+          height:"full",
           maxHeight: "140vh",
           paddingInline: "40px",
           padding: "20px",
@@ -234,9 +234,12 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
           ))}
         </div>
       )}
-      <button className="px-5 py-2 bg-blue-500 rounded-md hover:bg-blue-700 font-semibold text-white w-[20%] mx-auto" onClick={handleSubmit}>Submit</button>
-      <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={handleCloseView}>Close Config</button>
+     <div className="flex flex-row my-2 gap-x-3">
+       <button className="px-5 py-2 bg-blue-500 rounded-md hover:bg-blue-700 font-semibold text-white w-[20%] mx-auto" onClick={handleSubmit}>Submit</button>
             <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={()=>setConfigured(false)}>Update Config</button>
+                  <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={handleCloseView}>Close Config</button>
+
+     </div>
 
     </Dialog>
   );
