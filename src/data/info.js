@@ -4,10 +4,9 @@ import { IoMdContacts } from "react-icons/io";
 import { RiContactsLine } from "react-icons/ri";
 import {
   AiOutlineCalendar,
-  AiOutlineTransaction,
+  
   AiOutlineStock,
 } from "react-icons/ai";
-import { HiDocumentReport } from "react-icons/hi";
 import { TbTools } from "react-icons/tb";
 import { MdInventory } from "react-icons/md";
 export const links = [
@@ -28,6 +27,11 @@ export const links = [
         name: "Daily Entry",
         icon: <IoMdContacts />,
         link: "dailyentry"
+      },
+      {
+        name: "Daily Entries",
+        icon: <IoMdContacts />,
+        link: "dailyentrytable"
       },
       {
         name: "Employees",

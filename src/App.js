@@ -16,6 +16,7 @@ import Jobs from "./pages/jobs/jobs";
 import Daily from "./pages/Daily/dailyy";
 import Charts from "./pages/chart2/chart"
 import Resolve from './pages/breakdown/Resolve'
+import DailyTable from "./pages/Daily/DailyTable";
 const App = () => {
   const {
 
@@ -58,6 +59,7 @@ const App = () => {
                 <Route path ="/home" element={<Homepage/>}></Route>
                 <Route path="/job" element={<Jobs/>}></Route>
                 <Route path="/dailyentry" element={<Daily/>}></Route>
+                <Route path="/dailyentrytable" element={<DailyTable/>}></Route>
                 <Route path="/chart2" element={<Charts/>}></Route>
                 <Route path="/resolve" element={<Resolve/>}></Route>
               </Routes>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import axios from "axios";
 import {
   GridComponent,
@@ -12,22 +12,26 @@ import {
   Filter,
   Group,
 } from "@syncfusion/ej2-react-grids";
+import { useQuery } from "@tanstack/react-query";
 
 const Employee = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
-      setData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+ 
+  
+ 
+   const { data: dataa ,refetch} = useQuery({
+    queryKey: ["employees"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  useEffect(()=>{
+   refetch()
+  },[dataa,refetch])
 
   const getCsrfToken = () => {
   const cookies = document.cookie.split(';');
@@ -43,7 +47,7 @@ const Employee = () => {
     if (args.requestType === "save") {
       try {
         await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", args.data);
-        fetchData();
+        refetch();
       } catch (error) {
         console.error("Error inserting data:", error);
       }
@@ -56,7 +60,7 @@ const Employee = () => {
         }
     });
 
-        fetchData();
+        
       } catch (error) {
         console.error("Error deleting data:", error);
       }
@@ -112,7 +116,7 @@ const Employee = () => {
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <GridComponent
-        dataSource={data}
+        dataSource={dataa}
         width="auto"
         allowPaging
         allowSorting

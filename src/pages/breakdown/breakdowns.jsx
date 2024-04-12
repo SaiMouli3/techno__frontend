@@ -36,9 +36,7 @@ const BreakDown = () => {
       console.error("Error fetching data:", error);
     }
   };
-  useEffect(()=> {
-  fetchData()},[]);
-
+  
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
@@ -117,22 +115,22 @@ const BreakDown = () => {
     allowEditing: true,
     mode: "Dialog"
   };
-const handleResolveBreakDown = (props) => {
-  const { date,  tool_code } = props;
+const handleResolveBreakDown = async (props) => {
+  const { date, tool_code } = props;
   console.log(tool_code);
 
-
-
-  axios.get(`https://techno.pythonanywhere.com/webapp/api/break/${tool_code}/${date}`)
-      .then(response => {
-        toast.success('Breakdown resolved successfully:');
-        fetchData();
-      })
-      .catch(error => {
-      toast.error(error.message);
-        console.error('Error adding breakdown:', error);
-      });
+  try {
+    await axios.get(`https://techno.pythonanywhere.com/webapp/api/break/${tool_code}/${date}`);
+    toast.success('Breakdown resolved successfully:');
+    // Update state or refetch data if necessary
+  } catch (error) {
+    toast.error(error.message);
+    console.error('Error resolving breakdown:', error);
+  }
 };
+
+
+
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
