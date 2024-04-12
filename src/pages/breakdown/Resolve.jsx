@@ -9,7 +9,8 @@ import {
   Edit,
   Page,
   Filter,
-  Group
+  Group,
+  Sort
 } from "@syncfusion/ej2-react-grids";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +27,7 @@ const Resolve = () => {
     try {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/rev");
       setResolve(response.data);
-      console.log(response);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -64,7 +65,7 @@ const Resolve = () => {
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Group, Filter]} />
+        <Inject services={[Toolbar, Edit,Sort, Page, Group, Filter]} />
       </GridComponent>
     </div>
   );

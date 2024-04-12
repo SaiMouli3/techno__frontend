@@ -51,7 +51,7 @@ const BigChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/shift/date");
-        console.log("Fetched data:", response.data);
+        
         setPerformanceData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

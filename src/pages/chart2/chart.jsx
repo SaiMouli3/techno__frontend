@@ -32,8 +32,7 @@ const [selectedEndDate, setSelectedEndDate] = useState(new Date());
       try {
         const startDate = selectedStartDate.toISOString().slice(0, 10); // Extract yyyy-mm-dd from the ISO string
       const endDate = selectedEndDate.toISOString().slice(0, 10); // Extract yyyy-mm-dd from the ISO string
-      console.log(startDate)
-      console.log(endDate)
+      
       const response = await axios.get(
         `https://techno.pythonanywhere.com/webapp/calculate-shift-efficiency/${startDate}/${endDate}/${chartNumber}`
       );

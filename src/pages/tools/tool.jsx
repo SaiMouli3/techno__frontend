@@ -9,6 +9,7 @@ import {
   Edit,
   Page,
   Filter,
+  Sort,
   Group
 } from "@syncfusion/ej2-react-grids";
 import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
@@ -191,7 +192,6 @@ const Tool = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-//         toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}
         actionComplete={handleActionComplete}
       >
         <ColumnsDirective>
@@ -205,7 +205,7 @@ const Tool = () => {
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Filter, Group]} />
+        <Inject services={[Toolbar, Edit,Sort, Page, Filter, Group]} />
       </GridComponent>
     </div>
   );

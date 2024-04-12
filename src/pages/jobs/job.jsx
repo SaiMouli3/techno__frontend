@@ -9,6 +9,7 @@ import {
   Edit,
   Page,
   Filter,
+  Sort,
   Group,
 } from "@syncfusion/ej2-react-grids";
 import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
@@ -66,12 +67,7 @@ const Job = () => {
   };
 
   const jobGrid = [
-//     {
-//       field: "id",
-//       headerText: "ID",
-//       width: "120",
-//       textAlign: "Center",
-//     },
+
     {
       field: "part_no",
       headerText: "Part No",
@@ -84,30 +80,14 @@ const Job = () => {
       width: "150",
       textAlign: "Center",
     },
-//     {
-//       field: "depth_of_cut",
-//       headerText: "Depth of Cut",
-//       width: "150",
-//       textAlign: "Center",
-//     },
-//     {
-//       field: "no_of_holes",
-//       headerText: "No of Holes",
-//       width: "150",
-//       textAlign: "Center",
-//     },
+
     {
       field: "operation_no",
       headerText: "Operation No",
       width: "150",
       textAlign: "Center",
-    },
-//     {
-//       field: "tool_code",
-//       headerText: "Tool Code",
-//       width: "150",
-//       textAlign: "Center",
-//     }
+    }
+
   ];
 
   const editing = {
@@ -147,7 +127,7 @@ const Job = () => {
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Filter, Group]} />
+        <Inject services={[Toolbar, Edit,Sort, Page, Filter, Group]} />
       </GridComponent>
     </div>
   );

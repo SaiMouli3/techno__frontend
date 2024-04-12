@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 const Dailyy = () => {
   const [employeeName, setEmployeeName] = useState("");
   const [selectedShift, setSelectedShift] = useState("");
-  
   const [selectedMachines, setSelectedMachines] = useState([]);
 
   const { data: machiness } = useQuery({
@@ -29,8 +28,8 @@ const Dailyy = () => {
 
   const [submittedData, setSubmittedData] = useState(null);
   const [showHoursInput, setShowHoursInput] = useState(false);
-  const [hours,setHours] = useState(8)
- const [date,setDate] = useState("");
+  const [hours,setHours] = useState(8);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [machineData, setMachineData] = useState([]);
 
    const [employeeData, setEmployeeData] = useState([]);
@@ -45,38 +44,40 @@ const Dailyy = () => {
   useEffect(()=> {
     fetchData();
   },[])
-  const handleData = () => {
+  const [targetData,setTargetData] = useState([])
+  const handleData =  () => {
+    
+    
     const formData = {
       employeeName,
       selectedShift,
       selectedMachines
     }
     setSubmittedData(formData)
-    const initialData = selectedMachines.map((machine) => ({
+    
+    const initialData = selectedMachines.map((machine,index) => ({
       label: machine.label,
       achieved: 0,
-      target: 0,
+      target: targetData[machine.label],
     }));
     setMachineData(initialData);
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
   
     try {
-      // Create an array to store all promises
+     
       const postRequests = [];
       const shiftNumberMap = {
         shift1: 1,
         shift2: 2,
         shift3: 3,
       };
-      if(!date){
-        toast.error("Please fill in all the deatils")
-      }
+     
       machineData.forEach((machine) => {
         const machineId = machine.label.split(" - ")[1];
-        console.log(date)
+   
         const formData = {
         date : date,
           emp_ssn: employeeName.label,
@@ -89,7 +90,6 @@ const Dailyy = () => {
 
         };
   
-        console.log(formData)
         postRequests.push(
           axios.post("https://techno.pythonanywhere.com/webapp/api/submit-performance", formData)
         );
@@ -97,9 +97,7 @@ const Dailyy = () => {
   
       const responses = await Promise.all(postRequests);
 
-      responses.forEach((response) => {
-        console.log(response.data);
-      });
+      
       toast.success("Daily entry added successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -126,14 +124,36 @@ const Dailyy = () => {
   };
   
 
-  
-  console.log(machiness)
+
  
-  const handleMachineChange = (selectedOptions) => {
-    setSelectedMachines(selectedOptions);
-    // Reset machineData when machines change
-    setMachineData([]);
-  };
+  const handleMachineChange = async (selectedOptions) => {
+  setSelectedMachines(selectedOptions);
+  setMachineData([]);
+
+  const fetchedTargetData = {};
+  try {
+    await Promise.all(
+      selectedOptions.map(async (machine) => {
+        const machineLabelParts = machine.label.split('-');
+        const middleHyphenIndex = Math.floor(machine.label.length / 2);
+        let hyphenIndex = machine.label.lastIndexOf('-', middleHyphenIndex);
+        if (hyphenIndex === -1) {
+          hyphenIndex = machine.label.indexOf('-', middleHyphenIndex);
+        }
+        const machineLabel = machine.label.substring(hyphenIndex + 1).trim();
+     
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/target/${encodeURIComponent(machineLabel)}/`);
+        fetchedTargetData[machine.label] = response.data.target;
+      })
+    );
+    setTargetData(fetchedTargetData);
+   
+  } catch (error) {
+    toast.error("Error fetching target data");
+  }
+};
+
+
 
   const handleInputChange = (index, key, value) => {
     const updatedData = [...machineData];
@@ -141,7 +161,7 @@ const Dailyy = () => {
     setMachineData(updatedData);
   };
  
-
+  
   if (submittedData) {
     return (
       <div className=" min-h-screen py-8 px-4">
@@ -153,9 +173,7 @@ const Dailyy = () => {
         <div className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-4">
           {submittedData && (
             <>
-              {/* <h3 className="text-lg font-semibold mb-2">
-                Machine: {submittedData.selectedMachines[0].label}
-              </h3> */}
+              
               <p className="text-lg mb-2 font-semibold  ">
                 Shift: {submittedData.selectedShift}
               </p>
@@ -173,13 +191,15 @@ const Dailyy = () => {
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
                   onChange={(e) => handleInputChange(index, 'achieved', e.target.value)}
                 />
-                <input
-                  type="number"
-                  placeholder="Target"
-                  value={machineData[index]?.target || ""}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
-                  onChange={(e) => handleInputChange(index, 'target', e.target.value)}
-                />
+               { (
+                  <input
+                    type="number"
+                    placeholder="Target"
+                    value={targetData && targetData[machine.label]}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
+                    onChange={(e) => handleInputChange(index, 'target', e.target.value)}
+                  />
+                )}
 
               </div>
 
@@ -212,6 +232,8 @@ const Dailyy = () => {
         </div>
       </div>
     );
+  } else {
+    <div>...Loading</div>
   }
 
 

@@ -88,7 +88,7 @@ const LeftChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/shift_counts/");
-        console.log("Fetched data:", response.data);
+        
         setShiftData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

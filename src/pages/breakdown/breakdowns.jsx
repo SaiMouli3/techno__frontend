@@ -9,7 +9,8 @@ import {
   Edit,
   Page,
   Filter,
-  Group
+  Group,
+  Sort
 } from "@syncfusion/ej2-react-grids";
 import AddBreakdown from "./Addbreakdown";
 import { ToastContainer, toast } from "react-toastify";
@@ -30,7 +31,7 @@ const BreakDown = () => {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
 
       setData(response.data);
-      console.log(response.data)
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -171,7 +172,7 @@ const handleResolveBreakDown = (props) => {
                         </button>
                     )}></ColumnDirective>
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Group, Filter]} />
+        <Inject services={[Toolbar, Edit,Sort, Page, Group, Filter]} />
       </GridComponent>
  </div>
 

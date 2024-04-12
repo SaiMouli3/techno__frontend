@@ -8,6 +8,7 @@ import {
   Toolbar,
   Edit,
   Page,
+  Sort,
   Filter,
   Group,
 } from "@syncfusion/ej2-react-grids";
@@ -103,8 +104,8 @@ const Employee = () => {
 
   const editing = {
     allowAdding: true,
-    allowDeleting: true,
-    allowEditing: true,
+
+   
     mode: "Dialog",
   };
 
@@ -133,7 +134,7 @@ const Employee = () => {
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Filter, Group]} />
+        <Inject services={[Toolbar, Edit, Page, Filter,Sort, Group]} />
       </GridComponent>
     </div>
   );

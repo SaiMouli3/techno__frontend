@@ -7,10 +7,8 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  MenuItem,
   FormControl,
-  InputLabel,
-  Select,
+  
   Grid,
   Snackbar,
 } from "@mui/material";
@@ -40,8 +38,8 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
           }
         }, []);
         setToolOptions(uniqueTools);
-        setFilteredToolOptions(uniqueTools); // Initialize filtered tool options with all tool options
-        console.log("Unique Tools:", uniqueTools);
+        setFilteredToolOptions(uniqueTools); 
+        
       } catch (error) {
         console.error("Error fetching tools:", error);
       }
