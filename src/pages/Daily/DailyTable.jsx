@@ -111,7 +111,7 @@ const [startDate, setStartDate] = useState(null);
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-x-auto flex whitespace-nowrap">
-       <div className="bg-white flex flex-row">
+       {/* <div className="bg-white flex flex-row">
         <DatePickerComponent
           placeholder="Select start date"
           format="yyyy-MM-dd"
@@ -124,7 +124,7 @@ const [startDate, setStartDate] = useState(null);
           value={endDate}
           onChange={(args) => setEndDate(args.value)}
         />
-      </div>
+      </div> */}
     <div className="flex flex-row">
         <GridComponent
         dataSource={filterData()} 
