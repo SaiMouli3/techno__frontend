@@ -36,6 +36,7 @@ const Job = () => {
   useEffect(()=>{
    refetch()
   },[data,refetch])
+  console.log(data)
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {

@@ -122,6 +122,13 @@ const filterDuplicateMachineOptions = (options) => {
         closeButton: false,
         progress: undefined,
       });
+      setTimeout(()=> {
+         setSelectedShift();
+        setEmployeeName();
+        setSelectedMachines();
+        setSubmittedData();
+       
+      },3000)
     } catch (error) {
     toast.error(error.message, {
         position: "top-center",

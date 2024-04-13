@@ -51,8 +51,8 @@ const Employee = () => {
   if (args.requestType === "save") {
     try {
       if (args.action === "add") {
-        // Add new employee
-        await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", args.data);
+         const newData = { ...args.data, emp_efficiency: 0 };
+        await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", newData);
       } else if (args.action === "edit") {
         console.log(args.data)
         const response = await axios.post(`https://techno.pythonanywhere.com/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
@@ -121,6 +121,24 @@ const Employee = () => {
       textAlign: "Center",
     },
   ];
+  const actionBegin = (args) => {
+    console.log(grid)
+  if (args.requestType === "add") {
+    const cols = grid.columnModel;
+    for (const col of cols) {
+      if (col.field === "emp_efficiency") {
+        col.visible = false;
+      }
+    }
+  } else {
+    const cols = grid?.columnModel;
+    for (const col of cols) {
+      if (col.field === "emp_efficiency") {
+        col.visible = true;
+      }
+    }
+  }
+};
 
 const dataBound = () => {
         if (grid) {
@@ -145,10 +163,10 @@ const dataBound = () => {
         allowFiltering
         dataBound={dataBound}
         allowGrouping
-        allowEditing
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add","Delete","Edit"]}
+        toolbar={["Add","Delete"]}
+        actionBegin={actionBegin}
         actionComplete={handleActionComplete}
           ref={g => grid = g}
       >

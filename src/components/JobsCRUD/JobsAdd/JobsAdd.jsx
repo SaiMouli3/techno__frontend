@@ -105,7 +105,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 
   return (
     <div className="z-[100001] py-5">
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg" fullHeight={true} maxHeight="lg">
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" fullHeight={true} maxHeight="lg">
         <DialogTitle>Add New Job</DialogTitle>
         <DialogContent>
           <TextField

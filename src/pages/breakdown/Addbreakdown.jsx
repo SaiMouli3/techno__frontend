@@ -19,7 +19,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   const [lengthUsed, setLengthUsed] = useState("");
   const [expectedLengthRemaining, setExpectedLengthRemaining] = useState("");
   const [replacedBy, setReplacedBy] = useState("");
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState(" ");
   const [changeTime, setChangeTime] = useState(0);
   const [noOfMinIntoShift, setNoOfMinIntoShift] = useState("");
   const [toolOptions, setToolOptions] = useState([]);
@@ -69,7 +69,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
       machineId &&
 
       replacedBy &&
-      reason &&
+     
       changeTime &&
       noOfMinIntoShift
     ) {
@@ -82,7 +82,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
         length_used: 10,
         expected_length_remaining: 20,
         replaced_by: replacedBy.label,
-        reason,
+        reason: reason,
         change_time: changeTime,
         no_of_min_into_shift: noOfMinIntoShift,
       };

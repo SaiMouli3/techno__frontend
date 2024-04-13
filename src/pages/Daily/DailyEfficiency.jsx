@@ -26,6 +26,18 @@ const [startDate, setStartDate] = useState(null);
     },
   });
  
+  const {data: employeeSSNS} = useQuery({
+    queryKey: ["dailyemployees"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching data");
+      }
+    },
+  })
  
   
    const [filteredData, setFilteredData] = useState([]);
@@ -65,13 +77,21 @@ const [averageEfficiency, setAverageEfficiency] = useState(null);
     
   };
   console.log(averageEfficiency)
+  
 
+  useEffect(()=> {
+    setAverageEfficiency(null)
+  },[startDate,endDate,empSSN])
  
   const handleSubmit = () => {
     filterData();
     calculateAverageEfficiency();
   };
- 
+
+  
+ const showSubmitButton = () => {
+    return averageEfficiency === null;
+  };
 
 
   return (
@@ -124,7 +144,7 @@ const [averageEfficiency, setAverageEfficiency] = useState(null);
     Employee SSN:
   </label>
  <Select
-    options={dailyentry?.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
+    options={employeeSSNS?.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
     value={empSSN} // Use the employeeName state variable as the value prop
     onChange={(selectedOption) => setEmpSSN(selectedOption)} // Update the employeeName state variable with the selected SSN
     isSearchable
@@ -132,21 +152,22 @@ const [averageEfficiency, setAverageEfficiency] = useState(null);
   />
 
 </div>
-{
-    averageEfficiency !== null ? (
-        <div className="text-[20px]"><p><b>Efficiency</b>: {averageEfficiency}</p></div>
-    ) : (
-        <div>
-            <button 
+ {showSubmitButton() && (
+            <div>
+              <button 
                 type="button" 
                 onClick={handleSubmit} 
                 className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
-            >
+              >
                 Submit
-            </button>
-        </div>
-    )
-}
+              </button>
+            </div>
+          )}
+          {averageEfficiency !== null && (
+            <div className="text-[20px]">
+              <p><b>Efficiency</b>: {averageEfficiency === NaN ? "0" : averageEfficiency}</p>
+            </div>
+          )}
 
       </div>
     
