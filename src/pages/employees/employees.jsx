@@ -121,24 +121,33 @@ const Employee = () => {
       textAlign: "Center",
     },
   ];
-  const actionBegin = (args) => {
-    console.log(grid)
+ const actionBegin = (args) => {
+  console.log(grid);
+  const cols = grid?.columnModel;
+
   if (args.requestType === "add") {
-    const cols = grid.columnModel;
-    for (const col of cols) {
-      if (col.field === "emp_efficiency") {
-        col.visible = false;
+    if (cols && Symbol.iterator in Object(cols)) {
+      for (const col of cols) {
+        if (col.field === "emp_efficiency") {
+          col.visible = false;
+        }
       }
+    } else {
+      console.error("Columns are not iterable or undefined.");
     }
   } else {
-    const cols = grid?.columnModel;
-    for (const col of cols) {
-      if (col.field === "emp_efficiency") {
-        col.visible = true;
+    if (cols && Symbol.iterator in Object(cols)) {
+      for (const col of cols) {
+        if (col.field === "emp_efficiency") {
+          col.visible = true;
+        }
       }
+    } else {
+      console.error("Columns are not iterable or undefined.");
     }
   }
 };
+
 
 const dataBound = () => {
         if (grid) {
