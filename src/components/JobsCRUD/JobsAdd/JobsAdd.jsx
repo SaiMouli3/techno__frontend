@@ -60,12 +60,12 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
     if (partNo && componentName && operationNumber && tools.length > 0) {
       try {
         for (let i = 0; i < tools.length; i++) {
-        const toolName = tools[i].tool.tool_code;
+        const toolName = tools[i].tool.tool_name;
           const newJob = {
             part_no: partNo,
             component_name: componentName,
             operation_no: operationNumber,
-            tool_code: toolName,
+            tool_name: toolName,
             no_of_holes: tools[i].holes,
             depth_of_cut: tools[i].length
           };
