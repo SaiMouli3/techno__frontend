@@ -26,7 +26,7 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
           cost: parseFloat(cost),
           length_cut_so_far: 0, // Default value
           no_of_brk_points: 0, // Default value
-          tool_efficiency: 100, // Initial value
+          tool_efficiency: 0, // Initial value
           tool_number: i + 1,
         };
         newTools.push(newTool);
