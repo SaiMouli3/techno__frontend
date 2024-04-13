@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 const Employee = () => {
- 
+ let grid;
   
  
    const { data: dataa ,refetch} = useQuery({
@@ -46,33 +46,41 @@ const Employee = () => {
     };
 
 
-  const handleActionComplete = async (args) => {
-    if (args.requestType === "save") {
-      try {
+ const handleActionComplete = async (args) => {
+  console.log(args.data)
+  if (args.requestType === "save") {
+    try {
+      if (args.action === "add") {
+        // Add new employee
         await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", args.data);
-        refetch();
-      } catch (error) {
-        console.error("Error inserting data:", error);
+      } else if (args.action === "edit") {
+        console.log(args.data)
+        const response = await axios.post(`https://techno.pythonanywhere.com/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
+        console.log(response)
       }
-    } else if (args.requestType === "delete") {
-      try {
-        const csrfToken = getCsrfToken();
-        
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
-        headers: {
-        'X-CSRFToken': csrfToken
-        }
-        
-    });
-console.log(response);
-toast.success("Employee deleted successfully")
-        
-      } catch (error) {
-        toast.error(error.message)
-        console.error("Error deleting data:", error);
-      }
+      // Refresh data after adding or updating
+      refetch();
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
-  };
+  } else if (args.requestType === "delete") {
+    try {
+      const csrfToken = getCsrfToken();
+      const response = await axios.delete(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
+        headers: {
+          'X-CSRFToken': csrfToken
+        }
+      });
+      console.log(response);
+      toast.success("Employee deleted successfully");
+    } catch (error) {
+      toast.error(error.message);
+      console.error("Error deleting data:", error);
+    }
+  }
+ 
+};
+
 
   const employeesGrid = [
     {
@@ -80,6 +88,7 @@ toast.success("Employee deleted successfully")
       headerText: "SSN",
       width: "150",
       textAlign: "Center",
+      isPrimaryKey:true
     },
     {
       field: "emp_name",
@@ -113,10 +122,16 @@ toast.success("Employee deleted successfully")
     },
   ];
 
+const dataBound = () => {
+        if (grid) {
+            const column = grid.columns[0];
+            column.isPrimaryKey = true;
+        }
+    };
   const editing = {
     allowAdding: true,
     allowDeleting:true,
-   
+     allowEditing:true,
     mode: "Dialog",
   };
 
@@ -128,11 +143,14 @@ toast.success("Employee deleted successfully")
         allowPaging
         allowSorting
         allowFiltering
+        dataBound={dataBound}
         allowGrouping
+        allowEditing
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add","Delete"]}
+        toolbar={["Add","Delete","Edit"]}
         actionComplete={handleActionComplete}
+          ref={g => grid = g}
       >
         <ToastContainer className="z-[100001]"/>
         <ColumnsDirective>

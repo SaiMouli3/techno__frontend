@@ -40,8 +40,6 @@ const Resolve = () => {
 
   ];
 
-
-
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <ToastContainer/>

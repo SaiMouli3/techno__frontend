@@ -23,7 +23,7 @@ const Machine = () => {
     queryKey: ["machines"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/nmachines");
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 
@@ -105,6 +105,7 @@ const Machine = () => {
         actionComplete={handleActionComplete}
         rowSelected={handleMachineClick}
       >
+      <ToastContainer/>
         <ColumnsDirective>
           {MachinesGrid.map((item, index) => (
             <ColumnDirective
