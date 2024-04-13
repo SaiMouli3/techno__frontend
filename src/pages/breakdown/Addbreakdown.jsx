@@ -12,7 +12,7 @@ import Select from 'react-select'
 import axios from "axios";
 
 const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [emp_ssn, setEmpSSN] = useState("");
   const [toolCode, setToolCode] = useState("");
   const [machineId, setMachineId] = useState("");
