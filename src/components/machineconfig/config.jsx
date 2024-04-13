@@ -152,7 +152,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
         "& .MuiDialog-paper": {
           width: "70%",
           height:"full",
-          maxHeight: "140vh",
+          
           paddingInline: "40px",
           padding: "20px",
           borderRadius: "10px",

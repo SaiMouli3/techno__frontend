@@ -1,39 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import Toolchart from './toolchart'
+import Toolchart from './toolchart';
+
 const ToolTable = ({ data, onToolSelect }) => {
-  const handleToolClick = (tool) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  
+    const handleToolClick = (tool) => {
   onToolSelect(tool);
 
-  window.scrollTo({
+  
+     window.scrollTo({
     top: 0,
     behavior: "smooth" 
   });
+  
 };
 
 
+  // Filter tools based on the search query
+  const filteredData = data.filter(tool =>
+    tool.tool_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <table className="w-full text-sm text-left rtl:text-right text-gray-400">
-      <thead className="text-xs uppercase bg-gray-700 text-gray-400">
-        <tr>
-          <th className="px-6 py-3">Tool name</th>
-          <th className="px-6 py-3">Code</th>
-          <th className="px-6 py-3">BreakPoints</th>
-          {/* <th className="px-6 py-3">Max Length</th>
-          <th className="px-6 py-3">Cost</th> */}
-        </tr>
-      </thead>
-      <tbody className='overflow-y-auto h-screen'>
-        {data.map(tool => (
-          <tr onClick={() => handleToolClick(tool)} key={tool.tool_code} className="border-b bg-gray-800 text-white cursor-pointer border-gray-700">
-            <td className="px-6 py-4 whitespace-nowrap">{tool.tool_name}</td>
-            <td className="px-6 py-4">{tool.tool_code}</td>
-            <td className="px-6 py-4">{tool.no_of_brk_points}</td>
-            {/* <td className="px-6 py-4">{tool.max_life_expectancy_in_mm}</td>
-            <td className="px-6 py-4">{tool.cost}</td> */}
+    <>
+    <div className='w-full h-auto'>
+      <input
+        type="text"
+        placeholder="Search tools"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="p-2 mb-4 rounded-md border border-gray-300 bg-gray-800 placeholder:text-gray-50 text-gray-200 focus:outline-none focus:border-blue-500"
+      />
+      <table className="w-full h-auto text-sm text-left rtl:text-right text-gray-400">
+        <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+          <tr>
+            <th className="px-6 py-3">Tool name</th>
+            <th className="px-6 py-3">Code</th>
+            <th className="px-6 py-3">BreakPoints</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className='overflow-y-auto h-screen'>
+          {filteredData.map(tool => (
+  <tr
+    onClick={() => handleToolClick(tool)}
+    key={tool.tool_code}
+    id={`tool-${tool.tool_code}`} 
+    className="border-b bg-gray-800 text-white cursor-pointer border-gray-700"
+  >
+    <td className="px-6 py-4 whitespace-nowrap">{tool.tool_name}</td>
+    <td className="px-6 py-4">{tool.tool_code}</td>
+    <td className="px-6 py-4">{tool.no_of_brk_points}</td>
+  </tr>
+
+))}
+
+        </tbody>
+      </table>
+    </div>
+    </>
   );
 };
 
@@ -75,13 +99,13 @@ const ToolCharts = () => {
           </div>
         </div>
         <div className='w-[100%]  h-[100%]'>
-          {/* Assuming Toolchart component is correctly implemented */}
           <Toolchart tool={selectedTool} />
         </div>
       </div>
-      <div className='m-5 w-[50%]'>
-        <ToolTable data={toolsData} onToolSelect={handleToolSelection} />
-      </div>
+     <div className='m-5 w-[50%]  table-container'>
+  <ToolTable data={toolsData} onToolSelect={handleToolSelection} />
+</div>
+
     </div>
   );
 }
