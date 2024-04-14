@@ -60,22 +60,24 @@ const [startDate, setStartDate] = useState(null);
     filterData();
   }, [ empSSN]);
   
-  
+  console.log(filteredData)
 const [averageEfficiency, setAverageEfficiency] = useState(null);
 
   const calculateAverageEfficiency = () => {
-    if (!dailyentry || dailyentry.length === 0) return null;
+  if (!dailyentry || dailyentry.length === 0) return null;
 
-    const totalEfficiency = filteredData?.reduce(
-      (accumulator, entry) =>
-        accumulator + (entry.achieved / entry.target) * 100,
-      0
-    );
+  let totalEfficiencySum = 0;
 
-    const averageEfficiency = totalEfficiency / filteredData.length;
-    setAverageEfficiency(averageEfficiency);
-    
-  };
+  filteredData.forEach(entry => {
+    const x = entry.target * (entry.partial_shift / entry.shift_duration);
+    const efficiency = (entry.achieved / x) * 100;
+    totalEfficiencySum += efficiency;
+  });
+
+  const averageEfficiency = totalEfficiencySum / filteredData.length;
+  setAverageEfficiency(averageEfficiency);
+};
+
   console.log(averageEfficiency)
   
 

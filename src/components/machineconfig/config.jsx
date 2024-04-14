@@ -49,7 +49,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       try {
         const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${machineId}`);
         setConfigured(true)
-        console.log(response.data)
+        
         return response.data; // Return the data from the response
       } catch (error) {
         throw new Error("Error fetching machines"); // Throw an error if request fails
@@ -97,11 +97,14 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
 
   const handleSubmit = async () => {
     try {
-      console.log(selectedJob)
+    
+      const numSelectedTools = selectedTools.length;
+      console.log(numSelectedTools)
       const machineDataArray = selectedTools?.map((tool, index) => ({
         machine_id: selectedMachine.machine_id,
         machine_name: selectedMachine.machine_id,
         target:target,
+        numOfTools: numSelectedTools,
         part_no: selectedJob.value,
         tool_code: toolCodeNames[index]
       }));
