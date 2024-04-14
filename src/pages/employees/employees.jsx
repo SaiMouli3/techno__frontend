@@ -47,7 +47,6 @@ const Employee = () => {
 
 
  const handleActionComplete = async (args) => {
-  console.log(args.data)
   if (args.requestType === "save") {
     try {
       if (args.action === "add") {
@@ -64,7 +63,6 @@ const Employee = () => {
         progress: undefined,
       });
       } else if (args.action === "edit") {
-        
         const response = await axios.post(`https://techno.pythonanywhere.com/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
         toast.success("Employee updated successfully", {
         position: "top-center",
@@ -80,9 +78,32 @@ const Employee = () => {
       // Refresh data after adding or updating
       refetch();
     } catch (error) {
-      toast.error("Unknown error has occured. Please try again", {
+      console.log(error.response)
+       if (error.response && error.response.data) {
+    // Extract error messages for all fields
+    const errorData = error.response.data;
+    console.log(errorData)
+
+    const errorMessages = Object.values(errorData).flatMap(errorArray => errorArray);
+    if (errorMessages.length > 0) {
+      
+      errorMessages.forEach(errorMessage => {
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 3000, 
+          style: {
+            width: "auto",
+            style: "flex justify-center",
+          },
+          closeButton: false,
+          progress: undefined,
+        });
+      });
+    } else {
+      // Generic error message if no specific field error is available
+      toast.error("Error has occurred. Please try again", {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 3000,
         style: {
           width: "auto",
           style: "flex justify-center",
@@ -90,6 +111,21 @@ const Employee = () => {
         closeButton: false,
         progress: undefined,
       });
+    }
+  } else {
+    // Generic error message if no response data is available
+    toast.error("Error has occurred. Please try again", {
+      position: "top-center",
+      autoClose: 3000,
+      style: {
+        width: "auto",
+        style: "flex justify-center",
+      },
+      closeButton: false,
+      progress: undefined,
+    });
+  }
+  console.log(error);
     }
   } else if (args.requestType === "delete") {
     try {
