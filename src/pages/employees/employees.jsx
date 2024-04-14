@@ -78,9 +78,10 @@ const Employee = () => {
       // Refresh data after adding or updating
       refetch();
     } catch (error) {
-      console.log(error.response)
+      console.log(error.response);
+      refetch();
        if (error.response && error.response.data) {
-    // Extract error messages for all fields
+  
     const errorData = error.response.data;
     console.log(errorData)
 
@@ -138,6 +139,7 @@ const Employee = () => {
       console.log(response);
       toast.success("Employee deleted successfully");
     } catch (error) {
+      refetch();
       toast.error(error.message);
       console.error("Error deleting data:", error);
     }
