@@ -18,6 +18,7 @@ import Charts from "./pages/chart2/chart"
 import Resolve from './pages/breakdown/Resolve'
 import DailyTable from "./pages/Daily/DailyTable";
 import DailyEfficiency from "./pages/Daily/DailyEfficiency";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const {
 

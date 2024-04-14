@@ -53,15 +53,43 @@ const Employee = () => {
       if (args.action === "add") {
          const newData = { ...args.data, emp_efficiency: 0 };
         await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", newData);
+        toast.success("Employee added successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
       } else if (args.action === "edit") {
-        console.log(args.data)
+        
         const response = await axios.post(`https://techno.pythonanywhere.com/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
-        console.log(response)
+        toast.success("Employee updated successfully", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
       }
       // Refresh data after adding or updating
       refetch();
     } catch (error) {
-      console.error("Error saving data:", error);
+      toast.error("Unknown error has occured. Please try again", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
     }
   } else if (args.requestType === "delete") {
     try {
@@ -124,8 +152,9 @@ const Employee = () => {
  const actionBegin = (args) => {
   console.log(grid);
   const cols = grid?.columnModel;
+  console.log(args.requestType)
 
-  if (args.requestType === "add") {
+  if (args.requestType === "add" || args.requestType === "beginEdit") {
     if (cols && Symbol.iterator in Object(cols)) {
       for (const col of cols) {
         if (col.field === "emp_efficiency") {
@@ -174,7 +203,7 @@ const dataBound = () => {
         allowGrouping
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
-        toolbar={["Add","Delete"]}
+        toolbar={["Add","Delete","Edit"]}
         actionBegin={actionBegin}
         actionComplete={handleActionComplete}
           ref={g => grid = g}

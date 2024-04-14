@@ -42,7 +42,6 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   };
   const [machineId,setMachineId] = useState(selectedMachine.machine_id);
 
-  console.log(selectedMachine)
   const [configured,setConfigured] = useState(false);
   const { data: machiness } = useQuery({
     queryKey: ["machineconfig"],
@@ -142,7 +141,19 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   };
 
   const uniqueJobs = jobs?.filter((job, index) => jobs?.findIndex(j => j.part_no === job.part_no) === index);
-
+   const handleDelete = async () => { 
+      try {
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machinesss/${selectedMachine.machine_id}`);
+        
+        toast.success("Machine deleted successfully")
+        setTimeout(()=> {
+          handleCloseView()
+        },[3000])
+      } catch (error) {
+        console.error("Error deleting data:", error);
+      }
+    
+  }
   return (
     <Dialog
       open={openView}
@@ -237,6 +248,8 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
      <div className="flex flex-row my-2 gap-x-3">
        <button className="px-5 py-2 bg-blue-500 rounded-md hover:bg-blue-700 font-semibold text-white w-[20%] mx-auto" onClick={handleSubmit}>Submit</button>
             <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={()=>setConfigured(false)}>Update Config</button>
+                   <button className="px-5 py-2 bg-red-500 rounded-md hover:bg-red-700 font-semibold text-white w-[20%] mx-auto" onClick={handleDelete}>Delete machine</button>
+
                   <button className="px-5 py-2 bg-gray-300 rounded-md hover:bg-gray-400 font-semibold text-gray-800 w-[20%] mx-auto" onClick={handleCloseView}>Close Config</button>
 
      </div>

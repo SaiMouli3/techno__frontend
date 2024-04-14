@@ -14,6 +14,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { useQuery } from "@tanstack/react-query";
 import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
+import { ToastContainer, toast } from "react-toastify";
 
 const Tool = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -51,11 +52,13 @@ const Tool = () => {
         console.error("Error inserting data:", error);
       }
     } else if (args.requestType === "delete") {
+      console.log(args.data[0].tool_name)
       try {
-        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/tools/${args.data[0].id}`);
+        await axios.get(`https://techno.pythonanywhere.com/webapp/delete-tools/${args.data[0].tool_name}/`);
+        toast.success("Tool deleted successfully!!")
         refetch();
       } catch (error) {
-        console.error("Error deleting data:", error);
+        toast.error("Couldn't delete tool. Please try again");
       }
     }
   };
@@ -128,7 +131,7 @@ const Tool = () => {
       refetch();
       setOpenAddDialog(false);
     } catch (error) {
-      console.error("Error adding tools:", error);
+      console.log("Error adding tools:", error);
     }
   };
 
@@ -192,10 +195,13 @@ const Tool = () => {
         allowSorting
         allowFiltering
         allowGrouping
+        allowDeleting
+        toolbar={['Delete']}
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
         actionComplete={handleActionComplete}
       >
+        <ToastContainer className="z-[100001]"/>
         <ColumnsDirective>
           {toolGrid.map((item, index) => (
             <ColumnDirective

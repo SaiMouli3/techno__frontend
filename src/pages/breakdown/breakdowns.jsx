@@ -82,7 +82,16 @@ const BreakDown = () => {
    console.log(newBreakdown)
     axios.post('https://techno.pythonanywhere.com/webapp/api/breakdown/create', newBreakdown)
       .then(response => {
-        console.log('Breakdown added successfully:', response.data);
+        toast.success("Breakdown added successfully!!", {
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+      });
         refetch();
         handleCloseAddBreakdown();
       })

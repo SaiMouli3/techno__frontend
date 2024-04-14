@@ -47,10 +47,12 @@ const Machine = () => {
   const editing = {
     allowAdding: true,
     allowEditing: true,
+    allowDeleting:true,
     mode: "Dialog",
   };
 
   const handleMachineClick = (args) => {
+    console.log(args)
     setSelectedMachine(args.data);
     setOpenView(true);
   };
@@ -58,6 +60,9 @@ const Machine = () => {
   const handleCloseView = () => {
     setOpenView(false);
   };
+  useEffect(()=>{
+    refetch()
+  },[openView,refetch])
   const handleActionComplete = async (args) => {
 
     if (args.requestType === "save") {
@@ -79,16 +84,8 @@ const Machine = () => {
       } catch (error) {
         console.error("Error inserting data:", error);
       }
-    } else if (args.requestType === "delete") {
-      try {
-        console.log(args.data[0].shed_id)
-        await axios.delete(`your-backend-endpoint/${args.data[0].id}`);
-      } catch (error) {
-        console.error("Error deleting data:", error);
-      }
-    } 
+    }  
   };
-
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-y-auto h-full">
@@ -99,6 +96,7 @@ const Machine = () => {
         allowSorting
         allowFiltering
         allowAdding
+        allowDeleting
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
         toolbar={['Add']}

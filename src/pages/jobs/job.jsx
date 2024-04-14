@@ -14,6 +14,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { useQuery } from "@tanstack/react-query";
 import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
+import { ToastContainer, toast } from "react-toastify";
 
 const Job = () => {
  
@@ -36,15 +37,17 @@ const Job = () => {
   useEffect(()=>{
    refetch()
   },[data,refetch])
-  console.log(data)
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {
+      console.log(args.data[0].part_no)
       try {
-        await axios.delete(`https://techno.pythonanywhere.com/webapp/api/jobs/${args.data[0].id}`);
+        await axios.get(`https://techno.pythonanywhere.com/webapp/delete-job/${args.data[0].part_no}`);
+        toast.success("Job deleted successfully!!")
         refetch()
       } catch (error) {
-        console.error("Error deleting data:", error);
+        toast.error(error.message)
+        console.log(error)
       }
     }
   };
@@ -113,11 +116,14 @@ const Job = () => {
         allowSorting
         allowFiltering
         allowGrouping
+        allowDeleting
+        toolbar={['Delete']}
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
 
         actionComplete={handleActionComplete}
       >
+        <ToastContainer className="z-[1000001"/>
         <ColumnsDirective>
           {jobGrid.map((item, index) => (
             <ColumnDirective

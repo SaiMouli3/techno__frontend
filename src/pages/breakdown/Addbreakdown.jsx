@@ -31,7 +31,6 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
       setEmployeeData(response.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
   useEffect(()=> {
@@ -49,7 +48,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
 
     const fetchMachineOptions = async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/nmachines");
         setMachineOptions(response.data);
       } catch (error) {
         console.error("Error fetching machine options:", error);
@@ -59,6 +58,35 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
     fetchToolOptions();
     fetchMachineOptions();
   }, []);
+  const [toolss,setToolss] = useState(null)
+  useEffect(()=> {
+    const fetchToolOptionss = async () => {
+      try {
+const response = await axios.get(`https://techno.pythonanywhere.com/webapp/display-tool-codes/${encodeURIComponent(machineId.label)}`);
+        
+        setToolss(response.data["tool_codes"]);
+      } catch (error) {
+        console.log("Error fetching tool options:", error);
+      }
+    };
+    fetchToolOptionss();
+  },[machineId])
+
+const [filteredToolOptions, setFilteredToolOptions] = useState([]);
+useEffect(() => {
+  const currentDate = new Date().toISOString().split('T')[0];
+  setDate(currentDate);
+}, []);
+
+useEffect(() => {
+  if (toolss) {
+    if (toolCode) {
+      setFilteredToolOptions(toolss.filter(tool => tool !== toolCode.label));
+    } else {
+      setFilteredToolOptions(toolss);
+    }
+  }
+}, [toolCode, toolss]);
 
   const handleAdd = () => {
 
@@ -132,11 +160,28 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
     Employee SSN:
   </label>
  <Select
-    options={employeeData.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
+    options={employeeData?.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
     value={emp_ssn} // Use the employeeName state variable as the value prop
     onChange={(selectedOption) => setEmpSSN(selectedOption)} // Update the employeeName state variable with the selected SSN
     isSearchable
     placeholder="Select Employee SSN"
+  />
+
+</div>
+
+<div>
+  <label
+    htmlFor="Machine ID"
+    className="block text-lg font-medium text-gray-700"
+  >
+    Machine ID:
+  </label>
+ <Select
+    options={machineOptions?.map(machine => ({ label: machine.machine_id, value: machine.machine_id }))}
+    value={machineId} 
+    onChange={(selectedOption) => setMachineId(selectedOption)} // Update the employeeName state variable with the selected SSN
+    isSearchable
+    placeholder="Select Machine ID"
   />
 
 </div>
@@ -148,27 +193,11 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
     Tool Code:
   </label>
  <Select
-    options={toolOptions.map(tool => ({ label: tool.tool_code, value: tool.tool_code }))}
+    options={toolss?.map(tool => ({ label: tool, value: tool }))}
     value={toolCode} 
     onChange={(selectedOption) => setToolCode(selectedOption)} // Update the employeeName state variable with the selected SSN
     isSearchable
     placeholder="Select Tool Code"
-  />
-
-</div>
-<div>
-  <label
-    htmlFor="Machine ID"
-    className="block text-lg font-medium text-gray-700"
-  >
-    Machine ID:
-  </label>
- <Select
-    options={machineOptions.map(machine => ({ label: machine.machine_id, value: machine.machine_id }))}
-    value={machineId} 
-    onChange={(selectedOption) => setMachineId(selectedOption)} // Update the employeeName state variable with the selected SSN
-    isSearchable
-    placeholder="Select Machine ID"
   />
 
 </div>
@@ -202,7 +231,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
     Replaced by:
   </label>
  <Select
-    options={toolOptions.map(tool => ({ label: tool.tool_code, value: tool.tool_code }))}
+    options={filteredToolOptions?.map(tool => ({ label: tool, value: tool }))}
     value={replacedBy} 
     onChange={(selectedOption) => setReplacedBy(selectedOption)} // Update the employeeName state variable with the selected SSN
     isSearchable
