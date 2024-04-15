@@ -47,7 +47,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     queryKey: ["machineconfig"],
     queryFn: async () => {
       try {
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${machineId}`);
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${encodeURIComponent(machineId)}`);
         setConfigured(true)
         
         return response.data; // Return the data from the response
