@@ -43,12 +43,14 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const [machineId,setMachineId] = useState(selectedMachine.machine_id);
 
   const [configured,setConfigured] = useState(false);
+  const [isConfigured,setIsConfigured] = useState(false);
   const { data: machiness } = useQuery({
     queryKey: ["machineconfig"],
     queryFn: async () => {
       try {
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${machineId}`);
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${encodeURIComponent(machineId)}`);
         setConfigured(true)
+        setIsConfigured(true)
         
         return response.data; // Return the data from the response
       } catch (error) {
@@ -100,39 +102,59 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
     
       const numSelectedTools = selectedTools.length;
       console.log(numSelectedTools)
+      console.log(selectedJob["label"])
       const machineDataArray = selectedTools?.map((tool, index) => ({
         machine_id: selectedMachine.machine_id,
         machine_name: selectedMachine.machine_id,
         target:target,
         numOfTools: numSelectedTools,
-        part_no: selectedJob.value,
+        part_no: selectedJob["label"],
         tool_code: toolCodeNames[index]
       }));
+       if (isConfigured) {
+      // Updating an existing machine configuration
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
-          console.log(machineData)
-          const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
-          
-          toast.success("Machine configured successfully", {
-        position: "top-center",
-        autoClose: 1000,
-        style: {
-          width: "auto",
-          style: "flex justify-center",
-        },
-        closeButton: false,
-        progress: undefined,
-      });
-      
+          const response = await axios.post(`https://techno.pythonanywhere.com/webapp/update-machine/${encodeURIComponent(selectedMachine.machine_id)}/`, machineData);
+          toast.success("Machine configuration updated successfully", {
+            position: "top-center",
+            autoClose: 1000,
+            style: {
+              width: "auto",
+              style: "flex justify-center",
+            },
+            closeButton: false,
+            progress: undefined,
+          });
           return response.data;
+        } catch (error) {
+          console.error("Error updating machine data:", error);
+          throw error;
         }
-        
-        catch (error) {
+      }));
+    } else {
+      // Creating a new machine configuration
+      const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
+        try {
+          const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
+          toast.success("Machine configured successfully", {
+            position: "top-center",
+            autoClose: 1000,
+            style: {
+              width: "auto",
+              style: "flex justify-center",
+            },
+            closeButton: false,
+            progress: undefined,
+          });
+          return response.data;
+        } catch (error) {
           console.error("Error submitting machine data:", error);
           throw error;
         }
       }));
-          console.log(responseDataArray)  
+    }
+         
       handleCloseView();
       setSelectedJob(null);
       setMachineId(null)
@@ -146,7 +168,8 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const uniqueJobs = jobs?.filter((job, index) => jobs?.findIndex(j => j.part_no === job.part_no) === index);
    const handleDelete = async () => { 
       try {
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machinesss/${selectedMachine.machine_id}`);
+        const machineId= selectedMachine.machine_id
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machinesss/${encodeURI(machineId)}`);
         
         toast.success("Machine deleted successfully")
         setTimeout(()=> {
@@ -219,7 +242,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
       {!configured &&selectedJob && (
         <div>
           <label>Select Tool:</label>
-          <Select options={selectedTools.map(tool => ({ value: tool, label: tool }))} value={selectedTools} onChange={handleToolChange} isMulti={true} />
+          <Select options={selectedTools} value={selectedTools} onChange={handleToolChange} isMulti={true} />
         </div>
       )}
       {configured && (

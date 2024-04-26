@@ -14,6 +14,8 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { useQuery } from "@tanstack/react-query";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DailyTable = () => {
  
@@ -23,7 +25,7 @@ const [startDate, setStartDate] = useState(null);
  
 
   
- const { data: dailyentry } = useQuery({
+ const { data: dailyentry,refetch } = useQuery({
     queryKey: ["dailyentry"],
     queryFn: async () => {
       try {
@@ -105,26 +107,36 @@ const [startDate, setStartDate] = useState(null);
     return filteredData;
   };
 
+  const handleActionComplete= async (args)=> {
+     if (args.requestType === "delete") {
+    try {
+      const url = "https://techno.pythonanywhere.com/webapp/performs/<date>/<empssn>/<shift_number>/delete/"
+      console.log(args)
+      const {date,emp_ssn,shift_number} = args.data[0]
+      
+      const response = await axios.get(`https://techno.pythonanywhere.com/webapp/performs/${encodeURIComponent(date)}/${encodeURIComponent(emp_ssn)}/${shift_number}/delete/`, {
+       
+      });
+      console.log(response);
+      toast.success("Employee deleted successfully");
+    } catch (error) {
+      refetch();
+      toast.error(error.message);
+      console.error("Error deleting data:", error);
+    }
+  }
+  }
+   const editing = {
   
- 
+    allowDeleting:true,
+    
+    mode: "Dialog",
+  };
 
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-x-auto flex whitespace-nowrap">
-       {/* <div className="bg-white flex flex-row">
-        <DatePickerComponent
-          placeholder="Select start date"
-          format="yyyy-MM-dd"
-          value={startDate}
-          onChange={(args) => setStartDate(args.value)}
-        />
-        <DatePickerComponent
-          placeholder="Select end date"
-          format="yyyy-MM-dd"
-          value={endDate}
-          onChange={(args) => setEndDate(args.value)}
-        />
-      </div> */}
+       
     <div className="flex flex-row">
         <GridComponent
         dataSource={filterData()} 
@@ -134,7 +146,10 @@ const [startDate, setStartDate] = useState(null);
         allowFiltering
         allowGrouping
         allowAdding
+        editSettings={editing}
         pageSettings={{ pageCount: 5 }}
+        actionComplete={handleActionComplete}
+        toolbar={['Delete']}
 
         
       >

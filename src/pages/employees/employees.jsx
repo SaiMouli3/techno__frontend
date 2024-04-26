@@ -131,6 +131,7 @@ const Employee = () => {
   } else if (args.requestType === "delete") {
     try {
       const csrfToken = getCsrfToken();
+      
       const response = await axios.delete(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
         headers: {
           'X-CSRFToken': csrfToken

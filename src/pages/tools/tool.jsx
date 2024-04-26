@@ -15,7 +15,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useStateContext } from "../../context/ContextProvider";
 const Tool = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [toolName, setToolName] = useState("");
@@ -134,7 +134,12 @@ const Tool = () => {
       console.log("Error adding tools:", error);
     }
   };
+  const {
 
+    currentMode,
+    activeMenu,
+   
+  } = useStateContext();
   const handleAdd = async () => {
     if (toolName && maxLength && cost && numTools && Object.keys(toolCodes).length === numTools) {
       const newTools = [];
@@ -181,14 +186,15 @@ const Tool = () => {
   };
 
   return (
-    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
+    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg  m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Tool</button>
       <AddTool
         open={openAddDialog}
         handleClose={handleCloseAddDialog}
         handleAddTool={handleAddTool}
       />
-      <GridComponent
+      <div className="overflow-x-auto w-full">
+        <GridComponent
         dataSource={data}
         width="auto"
         allowPaging
@@ -215,6 +221,7 @@ const Tool = () => {
         </ColumnsDirective>
         <Inject services={[Toolbar, Edit,Sort, Page, Filter, Group]} />
       </GridComponent>
+      </div>
     </div>
   );
 };
