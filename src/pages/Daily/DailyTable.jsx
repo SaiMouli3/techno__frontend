@@ -27,15 +27,17 @@ const [startDate, setStartDate] = useState(null);
  
  let grid;
 
-    const toolbarClick = (args) => {
-      console.log(args)
-        if (grid && args.item.id === 'grid_295930012_0_excelexport') {
+   const toolbarClick = (args) => {
+    if (grid) {
+        const id = args.item.id;
+        if (id && id.includes("grid_") && id.includes("_excelexport")) {
             grid.excelExport();
+        } else {
+            grid.pdfExport();
         }
-        else {
-          grid.pdfExport();
-        }
-    };
+    }
+};
+
   
  const { data: dailyentry,refetch } = useQuery({
     queryKey: ["dailyentry"],
