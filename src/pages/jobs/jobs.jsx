@@ -15,6 +15,7 @@ import JobView from "../../components/JobsCRUD/JobsView/JobsView";
 import { JobsData } from "../../data";
 import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 
+
 const Jobs = () => {
   const [data, setData] = useState(JobsData);
   const [page, setPage] = useState(0);

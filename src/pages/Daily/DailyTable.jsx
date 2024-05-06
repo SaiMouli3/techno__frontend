@@ -10,6 +10,8 @@ import {
   Page,
   Sort,
   Filter,
+  PdfExport,
+  ExcelExport,
   Group
 } from "@syncfusion/ej2-react-grids";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
@@ -23,7 +25,17 @@ const DailyTable = () => {
 const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
  
+ let grid;
 
+    const toolbarClick = (args) => {
+      console.log(args)
+        if (grid && args.item.id === 'grid_295930012_0_excelexport') {
+            grid.excelExport();
+        }
+        else {
+          grid.pdfExport();
+        }
+    };
   
  const { data: dailyentry,refetch } = useQuery({
     queryKey: ["dailyentry"],
@@ -135,21 +147,25 @@ const [startDate, setStartDate] = useState(null);
 
 
   return (
-    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-x-auto flex whitespace-nowrap">
+    <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl   ">
        
-    <div className="flex flex-row">
+   
         <GridComponent
         dataSource={filterData()} 
         width="auto"
+        if="Grid"
         allowPaging
         allowSorting
         allowFiltering
         allowGrouping
-        allowAdding
+        allowExcelExport
+        allowPdfExport
         editSettings={editing}
         pageSettings={{ pageCount: 5 }}
         actionComplete={handleActionComplete}
-        toolbar={['Delete']}
+        toolbar={['Delete','ExcelExport','PdfExport']}
+        toolbarClick={toolbarClick} 
+        ref={g => grid = g}
 
         
       >
@@ -165,9 +181,9 @@ const [startDate, setStartDate] = useState(null);
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Filter,Sort, Group]} />
+        <Inject services={[Toolbar, Edit, Page, Filter,Sort,ExcelExport,PdfExport, Group]} />
       </GridComponent>
-    </div>
+    
       
     </div>
   );

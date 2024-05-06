@@ -100,10 +100,6 @@ const BreakDown = () => {
       });
   };
 
-  const handleBreakdownClick = (args) => {
-    setSelectedBreakdown(args.data);
-    setOpenView(true);
-  };
 
 
 
@@ -121,9 +117,8 @@ const BreakDown = () => {
   ];
 
   const editing = {
-    allowAdding: true,
     allowDeleting: true,
-    allowEditing: true,
+
     mode: "Dialog"
   };
 const handleResolveBreakDown = async (props) => {
@@ -163,7 +158,6 @@ const handleResolveBreakDown = async (props) => {
         editSettings={editing}
 
         actionComplete={handleActionComplete}
-        rowSelected={handleBreakdownClick}
       >
         <ColumnsDirective>
           {breakdownGrid.map((item, index) => (

@@ -15,10 +15,40 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import AddJob from "../../components/JobsCRUD/JobsAdd/JobsAdd";
 import { ToastContainer, toast } from "react-toastify";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+const HandleJobPop = ({ open, handleClose, data }) => {
+  return (
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+      <DialogTitle>Tools</DialogTitle>
+      <DialogContent>
+        <div>
+          {data?.tool_codes?.map((toolCode, index) => (
+            <div key={index} className="flex flex-row font-semibold">
+              <span >{index+1}.</span><p>&nbsp;&nbsp;{toolCode}</p>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="secondary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const Job = () => {
  
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openPop,setOpenPop] = useState(false);
 
   useEffect(() => {
     refetch();
@@ -28,6 +58,7 @@ const Job = () => {
     queryFn: async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs");
+       
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 
@@ -40,14 +71,12 @@ const Job = () => {
 
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {
-      console.log(args.data[0].part_no)
       try {
         await axios.get(`https://techno.pythonanywhere.com/webapp/delete-job/${args.data[0].part_no}`);
         toast.success("Job deleted successfully!!")
         refetch()
       } catch (error) {
         toast.error(error.message)
-        console.log(error)
       }
     }
   };
@@ -59,7 +88,6 @@ const Job = () => {
       // After adding, you can fetch updated data from the backend
       refetch();
     } catch (error) {
-      console.error("Error adding data:", error);
     }
   };
 
@@ -97,12 +125,21 @@ const Job = () => {
 
   const editing = {
     allowDeleting: true,
-    allowEditing: true,
+   
     mode: "Dialog",
   };
-  const rowSelected = (args) => {
-    console.log(args)
-  }
+  const [selectedJob,setSelectedJob] = useState([]);
+  const [dataa,setData] = useState([])
+  const rowSelected = async (args) => {
+    console.log(args);
+    setSelectedJob(args.data); // Save selected job data
+        console.log(selectedJob["part_no"]);
+
+    const response = await axios.get(`https://techno.pythonanywhere.com/webapp/tool-codes/${args.data["part_no"]}`)
+    console.log(response)
+    setData(response.data)
+    setOpenPop(true); // Open the dialog
+  };
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
@@ -111,6 +148,11 @@ const Job = () => {
         open={openAddDialog}
         handleClose={handleCloseAddDialog}
         handleAddJob={handleAddJob}
+      />
+      <HandleJobPop
+        open={openPop}
+        handleClose={() => setOpenPop(false)}
+        data={dataa} // Pass selected job data to the dialog
       />
       <GridComponent
         dataSource={data}
@@ -139,7 +181,7 @@ const Job = () => {
             />
           ))}
         </ColumnsDirective>
-        <Inject services={[Toolbar, Edit,Sort, Page, Filter, Group]} />
+        <Inject services={[Toolbar,Sort, Page, Filter, Group]} />
       </GridComponent>
     </div>
   );

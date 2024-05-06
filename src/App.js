@@ -19,6 +19,8 @@ import Resolve from './pages/breakdown/Resolve'
 import DailyTable from "./pages/Daily/DailyTable";
 import DailyEfficiency from "./pages/Daily/DailyEfficiency";
 import "react-toastify/dist/ReactToastify.css";
+import Login from "./pages/login/login";
+import SignUp from "./pages/login/signup";
 const App = () => {
   const {
 
@@ -42,7 +44,7 @@ const App = () => {
           <div
             className={
               activeMenu
-                ? "bg-main-dark-bg min-h-screen md:ml-72 w-full  "
+                ? "bg-main-dark-bg min-h-screen overflow-x-auto md:ml-72 w-full "
                 : "bg-main-dark-bg  w-full min-h-screen flex-2 "
             }
           >
@@ -65,6 +67,8 @@ const App = () => {
                 <Route path="/dailyentryefficiency" element={<DailyEfficiency/>}></Route>
                 <Route path="/chart2" element={<Charts/>}></Route>
                 <Route path="/resolve" element={<Resolve/>}></Route>
+                <Route path="/login" element={<Login/>}></Route>
+                <Route path="/sign-up" element={<SignUp/>}></Route>
               </Routes>
             </div>
           </div>

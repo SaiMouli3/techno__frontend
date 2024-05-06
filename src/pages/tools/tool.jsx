@@ -109,9 +109,8 @@ const Tool = () => {
   ];
 
   const editing = {
-    allowAdding: true,
     allowDeleting: true,
-    allowEditing: true,
+
     mode: "Dialog",
   };
 
@@ -192,6 +191,7 @@ const Tool = () => {
         open={openAddDialog}
         handleClose={handleCloseAddDialog}
         handleAddTool={handleAddTool}
+        refetch={refetch}
       />
       <div className="overflow-x-auto w-full">
         <GridComponent

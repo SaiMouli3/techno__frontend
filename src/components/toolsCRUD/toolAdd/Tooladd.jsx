@@ -8,12 +8,13 @@ import {
   TextField,
 } from "@mui/material";
 
-const AddTool = ({ open, handleClose, handleAddTool }) => {
+const AddTool = ({ open, handleClose, handleAddTool,refetch }) => {
   const [toolName, setToolName] = useState("");
   const [maxLength, setMaxLength] = useState("");
   const [cost, setCost] = useState("");
   const [numTools, setNumTools] = useState(1);
   const [toolNumbers, setToolNumbers] = useState([1]);
+
   const [toolCodes, setToolCodes] = useState({}); 
   const handleAdd = () => {
     if (toolName && maxLength && cost && numTools && Object.keys(toolCodes).length === numTools) {
@@ -36,9 +37,11 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
       setMaxLength("");
       setCost("");
       setNumTools(1);
-      setToolNumbers(1);
+      setToolNumbers([1]);
       setToolCodes({});
+      refetch();
       handleClose();
+      
     } else {
       alert("Please fill in all fields");
     }
@@ -98,7 +101,7 @@ const AddTool = ({ open, handleClose, handleAddTool }) => {
           margin="normal"
         />
         {/* Dynamically render input fields for tool codes */}
-        {toolNumbers.map((toolNumber) => (
+        {toolNumbers?.map((toolNumber) => (
           <TextField
             key={toolNumber}
             label={`Tool Code ${toolNumber}`}
