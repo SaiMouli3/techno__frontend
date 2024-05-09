@@ -116,7 +116,7 @@ localStorage.setItem('account', JSON.stringify(userData));
             type="submit"
             className="w-full bg-indigo-600 text-white py-3  rounded-md hover:bg-indigo-700"
           >
-            Submit
+            Sign In
           </button>
          
         </form>
@@ -124,7 +124,7 @@ localStorage.setItem('account', JSON.stringify(userData));
       <div>
          <button
             onClick={()=>navigate("/sign-up")}
-            className="w-full bg-indigo-600 px-10 font-semibold text-white py-3 my-3 rounded-md hover:bg-indigo-700"
+            className="w-full bg-indigo-600 px-10 font-semibold text-white py-3 my-5 rounded-md hover:bg-indigo-700"
           >
              Register user
           </button>
