@@ -45,7 +45,7 @@ const filterDuplicateMachineOptions = (options) => {
   const [hours,setHours] = useState(8);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [machineData, setMachineData] = useState([]);
-
+  const [reason,setReason] = useState();
    const [employeeData, setEmployeeData] = useState([]);
   const fetchData = async () => {
     try {
@@ -181,6 +181,15 @@ const filterDuplicateMachineOptions = (options) => {
     updatedData[index][key] = value;
     setMachineData(updatedData);
   };
+  const reasonOptions = [
+  { label: "Machine Breakdown", value: "machine_breakdown" },
+  { label: "No Load", value: "no_load" },
+  { label: "Maintenance", value: "maintenance" },
+  { label: "Setting", value: "setting" },
+  { label: "No Schedule", value: "no_schedule" },
+  { label: "Other Work", value: "other_work" }
+]
+
  
   
   if (submittedData) {
@@ -244,6 +253,22 @@ const filterDuplicateMachineOptions = (options) => {
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
               />
             )}
+            <div>
+
+            <label
+              htmlFor="Reason"
+              className="block text-lg font-medium text-gray-700"
+            >
+              Reason:
+            </label>
+            <Select
+    options={reasonOptions}
+    value={reason} // Use the employeeName state variable as the value prop
+    onChange={(selectedOption) => setReason(selectedOption)} // Update the employeeName state variable with the selected SSN
+    isSearchable
+    placeholder="Select Reason"
+  />
+          </div>
             {/* Include your logic for hours input based on your requirements */}
             <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">
               Submit

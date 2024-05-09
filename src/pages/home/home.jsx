@@ -12,7 +12,9 @@ import Shift1Chart from "../../Charts/shift1chart/shift1chart.jsx";
 import Shift2Chart from "../../Charts/shift2chart/shift2chart.jsx";
 import Shift3Chart from "../../Charts/shift3chart/shift3chart.jsx";
 import MeanChart from "../../Charts/MeanChart/Meanchart.jsx";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {logout} from '../../store/actions/user.js'
+import { useDispatch, useSelector } from "react-redux";
 const Home = () => {
   const days = [
     "Sunday",
@@ -29,7 +31,17 @@ const Home = () => {
   const [onDayChangeShift1, setOnDayChangeShift1] = useState([]);
   const [onDayChangeShift2, setOnDayChangeShift2] = useState([]);
   const [onDayChangeShift3, setOnDayChangeShift3] = useState([]);
+  const role = useSelector((state) => state?.user?.userInfo?.role);
+  console.log(role)
+  const loggedInUser = localStorage.getItem("account");
+  const navigate = useNavigate();
   const fontSize=2;
+  useEffect(()=> {
+    if(!loggedInUser){
+    navigate("/login")
+  }
+  },[])
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       const dataForSelectedDay1 = await fetchShiftsForDay1(selectedDay);
@@ -42,8 +54,16 @@ const Home = () => {
 
     fetchData();
   }, [selectedDay]);
+  
   return (
+    <div>
+      <div className="flex w-[90%] mr-5 mt-10 justify-end">
+        {role === "Admin" && loggedInUser && <button onClick={()=> navigate("/sign-up")} className="bg-indigo-700 text-white px-10 py-2 mx-2 font-semibold rounded-md">REGISTER USER</button>}
+        {loggedInUser ? <button onClick={()=>dispatch(logout())} className="bg-indigo-700 text-white px-10 py-2 mx-2 font-semibold rounded-md">LOG OUT</button> : <button onClick={()=>navigate("/login")} className="bg-indigo-700 text-white px-10 py-2 mx-2 font-semibold rounded-md">SIGN IN</button>}
+      </div>
     <div className="home">
+      
+
       <div className="box box1">
         <Topbox />
       </div>
@@ -93,6 +113,7 @@ const Home = () => {
       {/* <div className="box box9">
         <BarChart />
       </div> */}
+    </div>
     </div>
   );
 };

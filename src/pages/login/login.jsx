@@ -4,7 +4,9 @@ import Select from "react-select";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../store/reducers/userReducers";
 const Login = () => {
   const [employeeData, setEmployeeData] = useState([]);
   const [employeeName, setEmployeeName] = useState("");
@@ -19,11 +21,11 @@ const Login = () => {
       console.error("Error fetching data:", error);
     }
   };
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData();
   }, []);
-
+  const dispatch = useDispatch()
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -32,21 +34,41 @@ const Login = () => {
         password: password,
         role: role.label,
       };
-      console.log(data)
       const response = await axios.post("https://techno.pythonanywhere.com/webapp/login/", data);
-      console.log(response);
+      console.log(response)
+       toast.success(response.data.message,{
+        position: "top-center",
+        autoClose: 1000,
+        style: {
+          width: "auto",
+          style: "flex justify-center",
+        },
+        closeButton: false,
+        progress: undefined,
+        hideProgressBar:true
+      })
+      console.log(response)
+      const userData = {
+  username: data.username,
+  role: data.role
+};
+dispatch(userActions.setUserInfo(userData));
+localStorage.setItem('account', JSON.stringify(userData));
+
+      navigate("/home")
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center flex-col items-center h-screen">
+      
       <div className="max-w-md w-full px-8 py-6 bg-white shadow-md rounded-lg">
         <form className="space-y-6" onSubmit={submitHandler} method="post">
           <div>
             <label htmlFor="employeeName" className="block text-lg font-medium text-gray-700">
-              Employee SSN:
+              User Name:
             </label>
             <input
               type="text"
@@ -58,7 +80,7 @@ const Login = () => {
               className="mt-1 block w-full border border-gray-400 py-2 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             />
           </div>
-
+          <ToastContainer className="z-[100001]"/>
           <div>
             <label htmlFor="role" className="block text-lg font-medium text-gray-700">
               Role:
@@ -66,7 +88,7 @@ const Login = () => {
             <Select
               options={[
                 { value: "supervisor", label: "Supervisor" },
-                { value: "user", label: "User" },
+                { value: "incharge", label: "Incharge" },
                 { value: "admin", label: "Admin" }
               ]}
               value={role}
@@ -92,11 +114,20 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
+            className="w-full bg-indigo-600 text-white py-3  rounded-md hover:bg-indigo-700"
           >
             Submit
           </button>
+         
         </form>
+      </div>
+      <div>
+         <button
+            onClick={()=>navigate("/sign-up")}
+            className="w-full bg-indigo-600 px-10 font-semibold text-white py-3 my-3 rounded-md hover:bg-indigo-700"
+          >
+             Register user
+          </button>
       </div>
     </div>
   );

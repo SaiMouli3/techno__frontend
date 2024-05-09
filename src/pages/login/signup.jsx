@@ -4,15 +4,19 @@ import { BsEye, BsEyeSlash } from "react-icons/bs"; // Import eye icons from rea
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useDispatch } from "react-redux";
+import { userActions } from "../../store/reducers/userReducers";
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [employeeData, setEmployeeData] = useState([]);
   const [employeeName, setEmployeeName] = useState("");
   const [role, setRole] = useState("");
+  const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
+  const navigate=useNavigate();
   const fetchData = async () => {
     try {
       const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
@@ -28,6 +32,10 @@ const SignUp = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const submitHandler = async (e) => {
@@ -67,6 +75,15 @@ const SignUp = () => {
         progress: undefined,
         hideProgressBar:true
       })
+      // After successful signup
+const userData = {
+  username: data.username,
+  role: data.role
+};
+dispatch(userActions.setUserInfo(userData));
+localStorage.setItem('account', JSON.stringify(userData));
+
+        navigate("/home")
       
     } catch (error) {
       console.error("Error submitting data:", error);
@@ -99,7 +116,7 @@ const SignUp = () => {
             <Select
               options={[
                 { value: "supervisor", label: "Supervisor" },
-                { value: "user", label: "User" },
+                { value: "incharge", label: "Incharge" },
                 { value: "admin", label: "Admin" }
               ]}
               value={role}
@@ -138,20 +155,20 @@ const SignUp = () => {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 id="confirmPassword"
                 required
-                value={password}
+                value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="mt-1 block w-full border border-gray-400 py-2 rounded-md shadow-sm focus:ring focus:ring-indigo-500 pr-10" // Added paddingRight for the eye icon
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
+                onClick={toggleConfirmPasswordVisibility}
                 className="absolute inset-y-0 right-0 flex items-center px-3 bg-transparent focus:outline-none"
               >
-                {showPassword ? <BsEyeSlash /> : <BsEye />}
+                {showConfirmPassword ? <BsEyeSlash /> : <BsEye />}
               </button>
             </div>
           </div>

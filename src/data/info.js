@@ -16,7 +16,8 @@ export const links = [
       {
         name: "Homepage",
         icon: <FiShoppingBag />,
-        link: "home"
+        link: "home",
+        roles: ["Admin", "Supervisor", "Incharge"]
       },
     ],
   },
@@ -26,44 +27,39 @@ export const links = [
       {
         name: "Daily Entry",
         icon: <IoMdContacts />,
-        link: "dailyentry"
+        link: "dailyentry",
+        roles: ["Admin", "Supervisor"]
       },
       {
         name: "Daily Entries",
         icon: <IoMdContacts />,
-        link: "dailyentrytable"
+        link: "dailyentrytable",
+        roles: ["Admin", "Supervisor"]
       },
       {
         name: "Daily Entry Efficiency",
         icon: <IoMdContacts />,
-        link: "dailyentryefficiency"
+        link: "dailyentryefficiency",
+        roles: ["Admin", "Supervisor"]
       },
       {
         name: "Employees",
         icon: <RiContactsLine />,
-        link:"employees"
+        link:"employees",
+        roles: ["Admin", "Incharge"]
       },
       {
         name: "Machine",
         icon: <MdInventory />,
-        link: "machines"
+        link: "machines",
+        roles: ["Admin", "Incharge", "Supervisor"]
       },
       {
         name: "Jobs",
         icon: <MdInventory />,
-        link: "jobs"
+        link: "jobs",
+        roles: ["Admin", "Incharge"]
       },
-
-//      {
-//        name: "Transactions",
-//        icon: <AiOutlineTransaction />,
-//        link: "transactions"
-//      },
-//      {
-//        name: "Reports",
-//        icon: <HiDocumentReport />,
-//        link: "reports"
-//      },
     ],
   },
   {
@@ -72,17 +68,20 @@ export const links = [
       {
         name: "Tools",
         icon: <TbTools />,
-        link: "tools"
+        link: "tools",
+        roles: ["Admin", "Incharge"]
       },
       {
         name: "Breakdown",
         icon: <AiOutlineStock />,
-        link: "breakdown"
+        link: "breakdown",
+        roles: ["Admin", "Incharge"]
       },
       {
         name: "Resolve",
         icon: <AiOutlineStock />,
-        link: "resolve"
+        link: "resolve",
+        roles: ["Admin", "Incharge"]
       },
     ],
   },
@@ -92,12 +91,14 @@ export const links = [
       {
         name: "Chart",
         icon: <AiOutlineCalendar />,
-        link: "chart2"
+        link: "chart2",
+        roles: ["Admin", "Supervisor"]
       },
       {
         name: "Toolchart",
         icon: <BsKanban />,
-        link: "toolchart"
+        link: "toolchart",
+        roles: ["Admin", "Incharge"]
       },
     ],
   },

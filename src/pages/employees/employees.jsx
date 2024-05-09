@@ -15,7 +15,35 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { ToastContainer,toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+const HandleIncentive = ({ open, handleClose, data }) => {
+  return (
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+      <DialogTitle>Tools</DialogTitle>
+      <DialogContent>
+        <div>
+          {data?.tool_codes?.map((toolCode, index) => (
+            <div key={index} className="flex flex-row font-semibold">
+              <span >{index+1}.</span><p>&nbsp;&nbsp;{toolCode}</p>
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="secondary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const Employee = () => {
  let grid;
@@ -232,6 +260,9 @@ const dataBound = () => {
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
+      {/* <div>
+        <button className="bg-indigo-700 px-2 py-4 font-semibold my-4 rounded-md text-white">ADD INCENTIVES</button>
+      </div> */}
       <GridComponent
         dataSource={dataa}
         width="auto"

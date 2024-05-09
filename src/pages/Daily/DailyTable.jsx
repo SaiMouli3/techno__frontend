@@ -26,7 +26,6 @@ const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
  
  let grid;
-
    const toolbarClick = (args) => {
     if (grid) {
         const id = args.item.id;

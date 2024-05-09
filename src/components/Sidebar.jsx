@@ -4,9 +4,13 @@ import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { links } from "../data/info";
 import { useStateContext } from "../context/ContextProvider";
+import { useSelector } from "react-redux";
+
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
+    const user = useSelector((state)=> state.user);
+  const userRole = user?.userInfo?.role;
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -45,24 +49,34 @@ const Sidebar = () => {
           <div className="mt-10 ">
             {links.map((item) => (
               <div key={item.title}>
-                <p className="text-white m-3 mt-4 uppercase">
+                {
+                  userRole !== "Supervisor" && <p className="text-white m-3 mt-4 uppercase">
                   {item.title}
                 </p>
+                }
+                {
+                  userRole === "Supervisor" && item.title !== "Overview" && <p className="text-white m-3 mt-4 uppercase">
+                  {item.title}
+                </p>
+                }
                 {item.links.map((link) => (
-                  <NavLink
-                    to={`/${link.link}`}
-                    key={link.name}
-                    onClick={handleCloseSideBar}
-                    style={({ isActive }) => ({
-                      backgroundColor: isActive ? currentColor : "",
-                    })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    {link.icon}
-                    <span className="capitalize ">{link.name}</span>
-                  </NavLink>
+                  // Check if the link's roles include the user's role
+                  link.roles.includes(userRole) && (
+                    <NavLink
+                      to={`/${link.link}`}
+                      key={link.name}
+                      onClick={handleCloseSideBar}
+                      style={({ isActive }) => ({
+                        backgroundColor: isActive ? currentColor : "",
+                      })}
+                      className={({ isActive }) =>
+                        isActive ? activeLink : normalLink
+                      }
+                    >
+                      {link.icon}
+                      <span className="capitalize ">{link.name}</span>
+                    </NavLink>
+                  )
                 ))}
               </div>
             ))}
