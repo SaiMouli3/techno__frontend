@@ -7,6 +7,9 @@ import {
   
   AiOutlineStock,
 } from "react-icons/ai";
+import { PiTableBold } from "react-icons/pi";
+import { SiPaloaltonetworks } from "react-icons/si";
+import { HiDocumentReport } from "react-icons/hi";
 import { TbTools } from "react-icons/tb";
 import { MdInventory } from "react-icons/md";
 export const links = [
@@ -32,14 +35,20 @@ export const links = [
       },
       {
         name: "Daily Entries",
-        icon: <IoMdContacts />,
+        icon: <PiTableBold />,
         link: "dailyentrytable",
         roles: ["Admin", "Supervisor"]
       },
       {
         name: "Daily Entry Efficiency",
-        icon: <IoMdContacts />,
+        icon: <SiPaloaltonetworks />,
         link: "dailyentryefficiency",
+        roles: ["Admin", "Supervisor"]
+      },
+      {
+        name: "Daily Report",
+        icon: <HiDocumentReport />,
+        link: "daily-report",
         roles: ["Admin", "Supervisor"]
       },
       {

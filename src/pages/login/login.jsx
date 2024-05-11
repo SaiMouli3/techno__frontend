@@ -34,7 +34,7 @@ const Login = () => {
         password: password,
         role: role.label,
       };
-      const response = await axios.post("https://techno.pythonanywhere.com/webapp/login/", data);
+      const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/check-credentials/", data);
       console.log(response)
        toast.success(response.data.message,{
         position: "top-center",

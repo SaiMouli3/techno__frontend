@@ -101,6 +101,10 @@ const filterDuplicateMachineOptions = (options) => {
           achieved: machine.achieved,
           target: machine.target,
           partial_shift: hours,
+          remarks: reason.label,
+          efficiency: 0,
+          incentive_received: 0
+          
 
         };
   
@@ -259,7 +263,7 @@ const filterDuplicateMachineOptions = (options) => {
               htmlFor="Reason"
               className="block text-lg font-medium text-gray-700"
             >
-              Reason:
+              Remarks:
             </label>
             <Select
     options={reasonOptions}

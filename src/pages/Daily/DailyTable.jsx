@@ -106,6 +106,12 @@ const [startDate, setStartDate] = useState(null);
       width: "150",
       textAlign: "Center",
     },
+    {
+      field: "efficiency",
+      headerText: "Efficiency",
+      width: "150",
+      textAlign: "Center",
+    },
      
   ];
 

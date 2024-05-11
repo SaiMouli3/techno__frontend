@@ -79,6 +79,7 @@ const Employee = () => {
     try {
       if (args.action === "add") {
          const newData = { ...args.data, emp_efficiency: 0 };
+        console.log(newData)
         await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", newData);
         toast.success("Employee added successfully", {
         position: "top-center",
@@ -215,6 +216,13 @@ const Employee = () => {
       width: "150",
       textAlign: "Center",
     },
+    {
+      field: "emp_category",
+      headerText: "Category",
+      width: "150",
+      textAlign: "Center",
+    },
+
   ];
  const actionBegin = (args) => {
   console.log(grid);
