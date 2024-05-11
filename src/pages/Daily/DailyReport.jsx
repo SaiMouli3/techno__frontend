@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import { Widgets } from '@mui/icons-material';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 
 const ParameterRow = ({ parameter }) => (
   <TableRow>
@@ -25,6 +25,7 @@ const ParameterRow = ({ parameter }) => (
 
 const CollapsibleTablePage = () => {
   const [data, setData] = useState([]);
+  const tableRef = useRef(null);
 
   async function fetchData() {
     try {
@@ -103,7 +104,7 @@ useEffect(()=> {
     <div className='mx-5 mt-10 font-semibold'>
       <h1 className='my-3 flex mx-auto justify-center text-3xl text-[#F7F7F7] font-semibold'>Daily Report</h1>
       <TableContainer component={Paper}>
-        <Table aria-label="collapsible table" id="table-to-xls">
+        <Table ref={tableRef} aria-label="collapsible table" id="table-to-xls">
           <TableHead>
             <TableRow>
               <TableCell />
@@ -126,8 +127,8 @@ useEffect(()=> {
           </TableBody>
         </Table>
       </TableContainer>
-      <div className='m-5 flex justify-center text-white text-lg w-[20%] mx-auto bg-indigo-700 font-semibold py-3 rounded-md'>
-         <ReactHTMLTableToExcel
+      {/* <div className='m-5 flex justify-center text-white text-lg w-[20%] mx-auto bg-indigo-700 font-semibold py-3 rounded-md'>
+          <ReactHTMLTableToExcel
         id="test-table-xls-button"
         className="download-table-xls-button"
         table="table-to-xls"
@@ -135,8 +136,17 @@ useEffect(()=> {
         sheet="tablexls"
         buttonText="Download as XLS"
         style={{Width: "20%"}}
-      />
-      </div>
+      /> 
+      </div> */}
+      <DownloadTableExcel
+                    filename="Report"
+                    sheet="users"
+                    currentTableRef={tableRef.current}
+                >
+
+                   <button className='flex justify-center mx-auto text-white bg-indigo-600 px-4  py-4 my-6 rounded-md'> Export excel </button>
+
+                </DownloadTableExcel>
            <div className='mb-10'>
             <h1 className='my-3 flex mx-auto justify-center text-3xl text-[#F7F7F7] mt-10 font-semibold'>Parameter Data</h1>
 
