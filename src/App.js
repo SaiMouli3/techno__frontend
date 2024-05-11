@@ -25,6 +25,7 @@ import SignUp from "./pages/login/signup";
 import { useNavigate } from "react-router-dom";
 import AddUser from "./pages/login/AddUser";
 import CollapsibleTablePage from "./pages/Daily/DailyReport";
+import Parameter from "./pages/Daily/Parameter";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -85,6 +86,7 @@ const App = () => {
     <Route path="/machines" element={<Machine />} />
     <Route path="/chart2" element={<Charts />} />
     <Route path="/resolve" element={<Resolve />} />
+    <Route path="/parameters" element={<Parameter/>}/>
   </>
 )}
 

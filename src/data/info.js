@@ -52,6 +52,12 @@ export const links = [
         roles: ["Admin", "Supervisor"]
       },
       {
+        name: "Parameters",
+        icon: <SiPaloaltonetworks/>,
+        link: "parameters",
+        roles: ["Admin"]
+      },
+      {
         name: "Employees",
         icon: <RiContactsLine />,
         link:"employees",

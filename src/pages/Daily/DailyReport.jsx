@@ -147,8 +147,7 @@ useEffect(()=> {
                    <button className='flex justify-center mx-auto text-white bg-indigo-600 px-4  py-4 my-6 rounded-md'> Export excel </button>
 
                 </DownloadTableExcel>
-           <div className='mb-10'>
-            <h1 className='my-3 flex mx-auto justify-center text-3xl text-[#F7F7F7] mt-10 font-semibold'>Parameter Data</h1>
+           {/* <div className='mb-10'>
 
       <TableContainer component={Paper} style={{ maxWidth: 400, margin: 'auto' }}>
         <Table aria-label="parameter table">
@@ -159,7 +158,7 @@ useEffect(()=> {
           </TableBody>
         </Table>
       </TableContainer>
-           </div>
+           </div> */}
      
     </div>
   );
