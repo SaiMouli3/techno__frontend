@@ -1,0 +1,8 @@
+{
+    "build": {
+        "env": {
+            "FORCE_LEGACY_PEER_DEPS": "true"
+        },
+        "npmScript": "custom-build"
+    }
+}

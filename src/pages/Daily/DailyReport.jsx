@@ -15,52 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { Widgets } from '@mui/icons-material';
-const parameterData = [
-  {
-    "parameter": "2M1P Factor",
-    "value": 1.2
-  },
-  {
-    "parameter": "category 1",
-    "value": 0
-  },
-  {
-    "parameter": "category 2",
-    "value": 1000
-  },
-  {
-    "parameter": "category 3",
-    "value": 2000
-  },
-  {
-    "parameter": "category 4",
-    "value": 3000
-  },
-  {
-    "parameter": "Machine Breakdown",
-    "value": 0.5
-  },
-  {
-    "parameter": "Maintenance",
-    "value": 0.5
-  },
-  {
-    "parameter": "No Load",
-    "value": 0.5
-  },
-  {
-    "parameter": "No Schedule",
-    "value": 0.5
-  },
-  {
-    "parameter": "Other Work",
-    "value": 0.5
-  },
-  {
-    "parameter": "Setting",
-    "value": 0.5
-  }
-]
+
 const ParameterRow = ({ parameter }) => (
   <TableRow>
     <TableCell colSpan={2} style={{ fontWeight: 'bold' }}>{parameter.parameter}</TableCell>
@@ -83,6 +38,15 @@ const CollapsibleTablePage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const [parameterData,setParameterData] = useState([]);
+const fetchDataa= async ()=> {
+  const response = await axios.get("https://techno.pythonanywhere.com/webapp/externals_data");
+  console.log(parameterData);
+  setParameterData(response.data);
+}
+useEffect(()=> {
+  fetchDataa();
+},[])
 
   function Row({ row, index }) {
     const [open, setOpen] = useState(false);
@@ -103,13 +67,13 @@ const CollapsibleTablePage = () => {
     <TableCell component="th" scope="row">
       {row.machine_id}
     </TableCell>
-    <TableCell align="right">{row.component_name}</TableCell>
-    <TableCell align="right">{row.operation_no}</TableCell>
-    <TableCell align="right">{row.cycle_time}</TableCell>
-    <TableCell align="right">{row.shift_target}</TableCell>
-    <TableCell align="right">{row.per_day_target}</TableCell>
-    <TableCell align="right">{row.per_day_achieved}</TableCell>
-    <TableCell align="right">{row.per_day_achieved_percentage}</TableCell>
+    <TableCell align="center">{row.component_name}</TableCell>
+    <TableCell align="center">{row.operation_no}</TableCell>
+    <TableCell align="center">{row.cycle_time}</TableCell>
+    <TableCell align="center">{row.shift_target}</TableCell>
+    <TableCell align="center">{row.per_day_target}</TableCell>
+    <TableCell align="center">{row.per_day_achieved}</TableCell>
+    <TableCell align="center">{row.per_day_achieved_percentage}</TableCell>
   </TableRow>
   <TableRow sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
     <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={10}>
@@ -136,7 +100,7 @@ const CollapsibleTablePage = () => {
   }
 
   return (
-    <div className='mx-5 mt-10'>
+    <div className='mx-5 mt-10 font-semibold'>
       <h1 className='my-3 flex mx-auto justify-center text-3xl text-[#F7F7F7] font-semibold'>Daily Report</h1>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table" id="table-to-xls">
@@ -173,19 +137,20 @@ const CollapsibleTablePage = () => {
         style={{Width: "20%"}}
       />
       </div>
-      {/* <Typography variant="h6" gutterBottom component="div">
-        Parameter Data
-      </Typography>
+           <div className='mb-10'>
+            <h1 className='my-3 flex mx-auto justify-center text-3xl text-[#F7F7F7] mt-10 font-semibold'>Parameter Data</h1>
+
       <TableContainer component={Paper} style={{ maxWidth: 400, margin: 'auto' }}>
         <Table aria-label="parameter table">
           <TableBody>
-            {parameterData.map((parameter, index) => (
+            {parameterData?.map((parameter, index) => (
               <ParameterRow key={index} parameter={parameter} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      */}
+           </div>
+     
     </div>
   );
 };

@@ -42,7 +42,7 @@ const DailyEfficiency = () => {
     queryFn: async () => {
       try {
         console.log(`https://techno.pythonanywhere.com/webapp/calculate-incentive/${empSSN}/${startDate}/${endDate}/`);
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/calculate-incentive/${empSSN}/${startDate}/${endDate}/`);
+        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/calculate-incentive/${empSSN.label}/${startDate}/${endDate}/`);
         console.log(response)
         return response.data;
       } catch (error) {
