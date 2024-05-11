@@ -84,6 +84,10 @@ const [averageEfficiency, setAverageEfficiency] = useState(null);
   useEffect(()=> {
     setAverageEfficiency(null)
   },[startDate,endDate,empSSN])
+
+  useEffect(async ()=> {
+    const response =await axios.get("")
+  })
  
   const handleSubmit = () => {
     filterData();

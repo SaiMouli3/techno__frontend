@@ -67,10 +67,64 @@ const data = [
   }
 ]
 
+const parameterData = [
+  {
+    "parameter": "2M1P Factor",
+    "value": 1.2
+  },
+  {
+    "parameter": "category 1",
+    "value": 0
+  },
+  {
+    "parameter": "category 2",
+    "value": 1000
+  },
+  {
+    "parameter": "category 3",
+    "value": 2000
+  },
+  {
+    "parameter": "category 4",
+    "value": 3000
+  },
+  {
+    "parameter": "Machine Breakdown",
+    "value": 0.5
+  },
+  {
+    "parameter": "Maintenance",
+    "value": 0.5
+  },
+  {
+    "parameter": "No Load",
+    "value": 0.5
+  },
+  {
+    "parameter": "No Schedule",
+    "value": 0.5
+  },
+  {
+    "parameter": "Other Work",
+    "value": 0.5
+  },
+  {
+    "parameter": "Setting",
+    "value": 0.5
+  }
+]
+
+const ParameterRow = ({ parameter }) => (
+  <TableRow>
+    <TableCell colSpan={2} style={{ fontWeight: 'bold' }}>{parameter.parameter}</TableCell>
+    <TableCell align="right">{parameter.value}</TableCell>
+  </TableRow>
+);
+
 const CollapsibleTablePage = () => {
   return (
     <div className='m-10'>
-      <h1>Collapsible Table Page</h1>
+      <h1 className='text-slate-200 text-xl font-bold uppercase my-5'>Collapsible Table Page</h1>
       <CollapsibleTable />
     </div>
   );
@@ -79,12 +133,13 @@ const CollapsibleTablePage = () => {
 export default CollapsibleTablePage;
 
 function Row(props) {
-  const { row } = props;
+  const { row,index } = props;
   const [open, setOpen] = React.useState(false);
+    const rowStyle = index % 2 === 0 ? { backgroundColor: '#f2f2f2' } : { backgroundColor: '#ffffff' };
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -104,7 +159,7 @@ function Row(props) {
         <TableCell align="right">{row.per_day_target}</TableCell>
         <TableCell align="right">{row.per_day_achieved}</TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow  sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
@@ -141,7 +196,19 @@ export function CollapsibleTable() {
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
-              <Row key={index} row={row} />
+              <Row key={index} index={index} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Typography variant="h6" gutterBottom component="div">
+        Parameter Data
+      </Typography>
+      <TableContainer component={Paper} style={{ maxWidth: 400, margin: 'auto' }}>
+        <Table aria-label="parameter table">
+          <TableBody>
+            {parameterData.map((parameter, index) => (
+              <ParameterRow key={index} parameter={parameter} />
             ))}
           </TableBody>
         </Table>

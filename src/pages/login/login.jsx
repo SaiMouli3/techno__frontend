@@ -121,14 +121,14 @@ localStorage.setItem('account', JSON.stringify(userData));
          
         </form>
       </div>
-      <div>
+      {/* <div>
          <button
             onClick={()=>navigate("/sign-up")}
             className="w-full bg-indigo-600 px-10 font-semibold text-white py-3 my-5 rounded-md hover:bg-indigo-700"
           >
              Register user
           </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -114,8 +114,8 @@ const App = () => {
 
                 <Route path="/home" element={<Homepage />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/sign-up" element={<SignUp />} />
-                <Route path="/add-user" element={<AddUser/>}/>
+{user?.userInfo?.role === "Admin" &&                <Route path="/sign-up" element={<SignUp />} />
+}                <Route path="/add-user" element={<AddUser/>}/>
                 <Route
                   path="/"
                   element={
