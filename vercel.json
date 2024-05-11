@@ -3,10 +3,5 @@
         "env": {
             "FORCE_LEGACY_PEER_DEPS": "true"
         }
-    },
-    "functions": {
-        "preBuild": {
-            "command": "npm install --legacy-peer-deps"
-        }
     }
 }
