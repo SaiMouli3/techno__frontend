@@ -28,7 +28,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
   useEffect(() => {
     const fetchTools = async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/tools/`);
         const uniqueTools = response.data.reduce((acc, current) => {
           const existingTool = acc.find((tool) => tool.tool_name === current.tool_name);
           if (!existingTool) {
@@ -70,7 +70,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             depth_of_cut: tools[i].length
           };
           console.log(newJob)
-          const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
+          const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/jobs/create`, newJob);
           console.log(response.data);
         }
         setJobAdded(true); // Set job added status to true

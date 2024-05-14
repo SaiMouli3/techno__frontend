@@ -31,8 +31,9 @@ const Parameter = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const fetchData = async () => {
-    const response = await axios.get("https://techno.pythonanywhere.com/webapp/externals_data");
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
     setParameterData(response.data);
+    console.log(parameterData)
   }
 
   const handleEdit = (parameter) => {
@@ -45,7 +46,7 @@ const Parameter = () => {
     console.log(selectedParameter)
     // Send request to update URL with editedParamsToSend
     try {
-      await axios.post("https://techno.pythonanywhere.com/webapp/update_externals/", [selectedParameter]);
+      await axios.post(`${process.env.REACT_APP_URL}/webapp/update_externals/`, [selectedParameter]);
       // Update parameterData after successful update
       await fetchData();
        toast.success("Parameter updated successfully", {

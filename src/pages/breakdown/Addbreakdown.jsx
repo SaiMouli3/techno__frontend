@@ -28,7 +28,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
    const [employeeData, setEmployeeData] = useState([]);
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
       setEmployeeData(response.data);
     } catch (error) {
     }
@@ -39,7 +39,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   useEffect(() => {
     const fetchToolOptions = async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools/");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/tools/`);
         setToolOptions(response.data);
       } catch (error) {
         console.error("Error fetching tool options:", error);
@@ -48,7 +48,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
 
     const fetchMachineOptions = async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/nmachines");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/nmachines`);
         setMachineOptions(response.data);
       } catch (error) {
         console.error("Error fetching machine options:", error);
@@ -62,7 +62,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
   useEffect(()=> {
     const fetchToolOptionss = async () => {
       try {
-const response = await axios.get(`https://techno.pythonanywhere.com/webapp/display-tool-codes/${encodeURIComponent(machineId.label)}`);
+const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/display-tool-codes/${encodeURIComponent(machineId.label)}`);
         
         setToolss(response.data["tool_codes"]);
       } catch (error) {

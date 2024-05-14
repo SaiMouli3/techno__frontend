@@ -20,7 +20,7 @@ const Daily = () => {
     queryFn: async () => {
       try {
         const response = await axios.get(
-          "https://techno.pythonanywhere.com/webapp/api/machines"
+          `${process.env.REACT_APP_URL}/webapp/api/machines`
         );
         return response.data; // Return the data from the response
       } catch (error) {
@@ -44,7 +44,7 @@ const Daily = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -121,7 +121,7 @@ const Daily = () => {
         // Create a separate POST request for each record and push it to postRequests array
         postRequests.push(
           axios.post(
-            "https://techno.pythonanywhere.com/webapp/api/submit-performance",
+            `${process.env.REACT_APP_URL}/webapp/api/submit-performance`,
             formData
           )
         );

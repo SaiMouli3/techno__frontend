@@ -23,7 +23,7 @@ const Resolve = () => {
     queryKey: ["resolve"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/rev");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/rev`);
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 

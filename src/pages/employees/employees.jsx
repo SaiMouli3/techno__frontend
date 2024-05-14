@@ -53,7 +53,8 @@ const Employee = () => {
     queryKey: ["employees"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees");
+        
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees`);
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 
@@ -80,7 +81,7 @@ const Employee = () => {
       if (args.action === "add") {
          const newData = { ...args.data, emp_efficiency: 0 };
         console.log(newData)
-        await axios.post("https://techno.pythonanywhere.com/webapp/api/employees/create/", newData);
+        await axios.post(`${process.env.REACT_APP_URL}/webapp/api/employees/create/`, newData);
         toast.success("Employee added successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -92,7 +93,7 @@ const Employee = () => {
         progress: undefined,
       });
       } else if (args.action === "edit") {
-        const response = await axios.post(`https://techno.pythonanywhere.com/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
+        const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/employees/update/${args.data.emp_ssn}/`, args.data);
         toast.success("Employee updated successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -161,7 +162,7 @@ const Employee = () => {
     try {
       const csrfToken = getCsrfToken();
       
-      const response = await axios.delete(`https://techno.pythonanywhere.com/webapp/api/employees/${args.data[0].emp_ssn}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_URL}/webapp/api/employees/${args.data[0].emp_ssn}`, {
         headers: {
           'X-CSRFToken': csrfToken
         }

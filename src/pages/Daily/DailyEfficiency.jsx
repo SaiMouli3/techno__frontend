@@ -17,7 +17,7 @@ const DailyEfficiency = () => {
     queryKey: ["dailyentry"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/per/");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/per/`);
         return response.data;
       } catch (error) {
         throw new Error("Error fetching data");
@@ -29,7 +29,7 @@ const DailyEfficiency = () => {
     queryKey: ["dailyemployees"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
         return response.data;
       } catch (error) {
         throw new Error("Error fetching data");
@@ -41,8 +41,8 @@ const DailyEfficiency = () => {
     queryKey: ["incentive", empSSN, startDate, endDate],
     queryFn: async () => {
       try {
-        console.log(`https://techno.pythonanywhere.com/webapp/calculate-incentive/${empSSN}/${startDate}/${endDate}/`);
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/calculate-incentive/${empSSN.label}/${startDate}/${endDate}/`);
+        console.log(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${empSSN}/${startDate}/${endDate}/`);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${empSSN.label}/${startDate}/${endDate}/`);
         console.log(response)
         return response.data;
       } catch (error) {

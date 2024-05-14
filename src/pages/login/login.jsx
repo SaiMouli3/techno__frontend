@@ -15,7 +15,7 @@ const Login = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -34,7 +34,7 @@ const Login = () => {
         password: password,
         role: role.label,
       };
-      const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/check-credentials/", data);
+      const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/check-credentials/`, data);
       console.log(response)
        toast.success(response.data.message,{
         position: "top-center",

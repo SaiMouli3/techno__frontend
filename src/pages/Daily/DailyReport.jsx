@@ -29,7 +29,7 @@ const CollapsibleTablePage = () => {
 
   async function fetchData() {
     try {
-      const response = await axios.get('https://techno.pythonanywhere.com/webapp/generate-report/');
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/generate-report/`);
       setData(response.data.report);
     } catch (error) {
       console.error('Error fetching data:', error.message);
@@ -41,7 +41,7 @@ const CollapsibleTablePage = () => {
   }, []);
   const [parameterData,setParameterData] = useState([]);
 const fetchDataa= async ()=> {
-  const response = await axios.get("https://techno.pythonanywhere.com/webapp/externals_data");
+  const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
   console.log(parameterData);
   setParameterData(response.data);
 }

@@ -19,7 +19,7 @@ const SignUp = () => {
   const navigate=useNavigate();
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ const SignUp = () => {
       };
      
       console.log(data);
-      const response = await axios.post("https://techno.pythonanywhere.com/webapp/sign-up/", data);
+      const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/sign-up/`, data);
       console.log(response);
       toast.success(response.data.message,{
         position: "top-center",

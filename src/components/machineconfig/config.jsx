@@ -22,7 +22,7 @@ const Config = ({ selectedMachine, handleCloseView, openView }) => {
   const fetchData = async () => {
   try {
    
-    const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs/");
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/jobs/`);
     setJobs(response.data);
   } catch (error) {
     console.error("Error fetching jobs:", error);
@@ -37,7 +37,7 @@ useEffect(() => {
 
   const fetchDataa = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tool_reply/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/tool_reply/`);
       setTools(response.data);
     } catch (error) {
       console.error("Error fetching tools:", error);
@@ -51,7 +51,7 @@ useEffect(() => {
     queryKey: ["machineconfig"],
     queryFn: async () => {
       try {
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machines/${encodeURIComponent(machineId)}`);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/machines/${encodeURIComponent(machineId)}`);
         setConfigured(true)
         setIsConfigured(true)
         
@@ -61,25 +61,31 @@ useEffect(() => {
       }
     },
   });
+const handleJobChange = (selectedOption) => {
+  setSelectedJob(selectedOption);
+  
+  // Extracting operation number from the label
+  const labelParts = selectedOption.label.split('-');
+  const operationNo = labelParts[labelParts.length - 1]; // Assuming the operation number is the last part
+  
+  fetchToolCodes(selectedOption.value, operationNo);
+  setToolCodeNames([]);
+};
 
-  const handleJobChange = (selectedOption) => {
-    setSelectedJob(selectedOption);
-    fetchToolCodes(selectedOption.value);
-    setToolCodeNames([]);
-  };
 
-  const fetchToolCodes = async (partNo) => {
-    try {
-      const response = await axios.get(`https://techno.pythonanywhere.com/webapp/get-tool-codes/${partNo}`);
-      const decodedToolCodes = response.data.map((tool) => ({
-        value: tool,
-        label: tool
-      }));
-      setSelectedTools(decodedToolCodes);
-    } catch (error) {
-      console.error("Error fetching tool codes:", error);
-    }
-  };
+ const fetchToolCodes = async (partNo, operationNo) => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/get-tool-codes1/${partNo}/${operationNo}`);
+    const decodedToolCodes = response.data.map((tool) => ({
+      value: tool,
+      label: tool
+    }));
+    setSelectedTools(decodedToolCodes);
+  } catch (error) {
+    console.error("Error fetching tool codes:", error);
+  }
+};
+
 
   const getToolCodeNames = (selectedTool) => {
     if (!selectedTool) return [];
@@ -118,7 +124,7 @@ useEffect(() => {
       // Updating an existing machine configuration
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
-          const response = await axios.post(`https://techno.pythonanywhere.com/webapp/update-machine/${encodeURIComponent(selectedMachine.machine_id)}/`, machineData);
+          const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/update-machine/${encodeURIComponent(selectedMachine.machine_id)}/`, machineData);
           toast.success("Machine configuration updated successfully", {
             position: "top-center",
             autoClose: 1000,
@@ -139,7 +145,7 @@ useEffect(() => {
       // Creating a new machine configuration
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
-          const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/machines/create", machineData);
+          const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/machines/create`, machineData);
           toast.success("Machine configured successfully", {
             position: "top-center",
             autoClose: 1000,
@@ -173,7 +179,7 @@ useEffect(() => {
    const handleDelete = async () => { 
       try {
         const machineId= selectedMachine.machine_id
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/machinesss/${encodeURI(machineId)}`);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/machinesss/${encodeURI(machineId)}`);
         
         toast.success("Machine deleted successfully")
         setTimeout(()=> {

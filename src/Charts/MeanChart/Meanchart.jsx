@@ -7,9 +7,9 @@ function MeanChart() {
 
   useEffect(() => {
     const shiftUrls = [
-      "https://techno.pythonanywhere.com/webapp/shift_eff/1",
-      "https://techno.pythonanywhere.com/webapp/shift_eff/2",
-      "https://techno.pythonanywhere.com/webapp/shift_eff/3",
+      `${process.env.REACT_APP_URL}/webapp/shift_eff/1`,
+      `${process.env.REACT_APP_URL}/webapp/shift_eff/2`,
+      `${process.env.REACT_APP_URL}/webapp/shift_eff/3`,
     ];
 
     const fetchData = async () => {

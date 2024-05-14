@@ -28,7 +28,7 @@ const BreakDown = () => {
     queryKey: ["breakdown"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/breakdown");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/breakdown`);
         return response.data; 
       } catch (error) {
         throw new Error("Error fetching machines"); 
@@ -43,7 +43,7 @@ const BreakDown = () => {
   const handleActionComplete = async (args) => {
     if (args.requestType === "save") {
       try {
-        await axios.post("https://techno.pythonanywhere.com/webapp/api/breakdown/create", args.data);
+        await axios.post(`${process.env.REACT_APP_URL}/webapp/api/breakdown/create`, args.data);
         toast.success("BreakDown added successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -62,7 +62,7 @@ const BreakDown = () => {
     try {
 
       const toolCode = args.data[0].tool_code;
-      await axios.delete(`https://techno.pythonanywhere.com/webapp/api/breakdown/${toolCode}`);
+      await axios.delete(`${process.env.REACT_APP_URL}/webapp/api/breakdown/${toolCode}`);
       refetch();
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -80,7 +80,7 @@ const BreakDown = () => {
 
   const handleAddBreakdown = (newBreakdown) => {
    console.log(newBreakdown)
-    axios.post('https://techno.pythonanywhere.com/webapp/api/breakdown/create', newBreakdown)
+    axios.post(`${process.env.REACT_APP_URL}/webapp/api/breakdown/create`, newBreakdown)
       .then(response => {
         toast.success("Breakdown added successfully!!", {
         position: "top-center",
@@ -126,7 +126,7 @@ const handleResolveBreakDown = async (props) => {
   console.log(tool_code);
 
   try {
-    await axios.get(`https://techno.pythonanywhere.com/webapp/api/break/${tool_code}/${date}`);
+    await axios.get(`${process.env.REACT_APP_URL}/webapp/api/break/${tool_code}/${date}`);
     toast.success('Breakdown resolved successfully:');
     // Update state or refetch data if necessary
   } catch (error) {

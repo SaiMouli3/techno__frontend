@@ -57,7 +57,7 @@ const Job = () => {
     queryKey: ["jobs"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/jobs");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/jobs`);
        
         return response.data; 
       } catch (error) {
@@ -72,7 +72,7 @@ const Job = () => {
   const handleActionComplete = async (args) => {
     if (args.requestType === "delete") {
       try {
-        await axios.get(`https://techno.pythonanywhere.com/webapp/delete-job/${args.data[0].part_no}`);
+        await axios.get(`${process.env.REACT_APP_URL}/webapp/delete-job/${args.data[0].part_no}`);
         toast.success("Job deleted successfully!!")
         refetch()
       } catch (error) {
@@ -135,7 +135,7 @@ const Job = () => {
     setSelectedJob(args.data); // Save selected job data
         console.log(selectedJob["part_no"]);
 
-    const response = await axios.get(`https://techno.pythonanywhere.com/webapp/tool-codes/${args.data["part_no"]}`)
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/tool-codes/${args.data["part_no"]}`)
     console.log(response)
     setData(response.data)
     setOpenPop(true); // Open the dialog

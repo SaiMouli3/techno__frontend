@@ -14,7 +14,7 @@ const Dailyy = () => {
     queryKey: ["daily"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/machines");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/machines`);
         return response.data; // Return the data from the response
       } catch (error) {
         throw new Error("Error fetching machines"); // Throw an error if request fails
@@ -49,7 +49,7 @@ const filterDuplicateMachineOptions = (options) => {
    const [employeeData, setEmployeeData] = useState([]);
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/employees/");
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -109,7 +109,7 @@ const filterDuplicateMachineOptions = (options) => {
         };
   
         postRequests.push(
-          axios.post("https://techno.pythonanywhere.com/webapp/api/submit-performance", formData)
+          axios.post(`${process.env.REACT_APP_URL}/webapp/api/submit-performance`, formData)
         );
       });
   
@@ -167,7 +167,7 @@ const filterDuplicateMachineOptions = (options) => {
         }
         const machineLabel = machine.label.substring(hyphenIndex + 1).trim();
      
-        const response = await axios.get(`https://techno.pythonanywhere.com/webapp/target/${encodeURIComponent(machineLabel)}/`);
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/target/${encodeURIComponent(machineLabel)}/`);
         fetchedTargetData[machine.label] = response.data.target;
       })
     );
@@ -185,15 +185,31 @@ const filterDuplicateMachineOptions = (options) => {
     updatedData[index][key] = value;
     setMachineData(updatedData);
   };
-  const reasonOptions = [
+  const [reasonOptions,setReasonOptions] = useState([]);
+  
+
+  const fetchDataa = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
+    setReasonOptions(response.data)
+    if(reasonOptions){
+      setReasonOptions([
   { label: "Machine Breakdown", value: "machine_breakdown" },
   { label: "No Load", value: "no_load" },
   { label: "Maintenance", value: "maintenance" },
   { label: "Setting", value: "setting" },
   { label: "No Schedule", value: "no_schedule" },
-  { label: "Other Work", value: "other_work" }
-]
+  { label: "2M1P", value: "2M1P" },
+  {label:"No Remarks",value:"No Remarks"}
+]);
+    }
+    else {
+      setReasonOptions([])
+    } 
+  }
 
+  useEffect(()=> {
+    fetchDataa();
+  },[])
  
   
   if (submittedData) {

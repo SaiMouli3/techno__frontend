@@ -42,7 +42,7 @@ const [startDate, setStartDate] = useState(null);
     queryKey: ["dailyentry"],
     queryFn: async () => {
       try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/per/");
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/per/`);
 
         return response.data; 
       } catch (error) {
@@ -100,6 +100,12 @@ const [startDate, setStartDate] = useState(null);
       width: "150",
       textAlign: "Center",
     },
+    {
+      field: "incentive_received",
+      headerText: "Incentive Received",
+      width: "150",
+      textAlign: "Center",
+    },
      {
       field: "partial_shift",
       headerText: "Partial Shift",
@@ -129,15 +135,12 @@ const [startDate, setStartDate] = useState(null);
   const handleActionComplete= async (args)=> {
      if (args.requestType === "delete") {
     try {
-      const url = "https://techno.pythonanywhere.com/webapp/performs/<date>/<empssn>/<shift_number>/delete/"
-      console.log(args)
       const {date,emp_ssn,shift_number} = args.data[0]
       
-      const response = await axios.get(`https://techno.pythonanywhere.com/webapp/performs/${encodeURIComponent(date)}/${encodeURIComponent(emp_ssn)}/${shift_number}/delete/`, {
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/performs/${encodeURIComponent(date)}/${encodeURIComponent(emp_ssn)}/${shift_number}/delete/`, {
        
       });
-      console.log(response);
-      toast.success("Employee deleted successfully");
+      toast.success("Daily entry deleted successfully");
     } catch (error) {
       refetch();
       toast.error(error.message);
