@@ -56,7 +56,7 @@ useEffect(()=> {
     return (
      <React.Fragment>
   <TableRow sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
-    <TableCell>
+    {/* <TableCell>
       <IconButton
         aria-label="expand row"
         size="small"
@@ -64,7 +64,7 @@ useEffect(()=> {
       >
         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </IconButton>
-    </TableCell>
+    </TableCell> */}
     <TableCell component="th" scope="row">
       {row.machine_id}
     </TableCell>
@@ -116,7 +116,7 @@ useEffect(()=> {
         <Table ref={tableRef} aria-label="collapsible table" id="table-to-xls">
           <TableHead>
             <TableRow>
-              <TableCell />
+              {/* <TableCell /> */}
               <TableCell>Machine ID</TableCell>
               <TableCell align="right">Component Name</TableCell>
               <TableCell align="right">Operation Number</TableCell>
