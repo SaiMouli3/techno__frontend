@@ -29,7 +29,7 @@ const HandleJobPop = ({ open, handleClose, data }) => {
       <DialogTitle>Tools</DialogTitle>
       <DialogContent>
         <div>
-          {data?.tool_codes?.map((toolCode, index) => (
+          {data?.map((toolCode, index) => (
             <div key={index} className="flex flex-row font-semibold">
               <span >{index+1}.</span><p>&nbsp;&nbsp;{toolCode}</p>
             </div>
