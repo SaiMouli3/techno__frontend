@@ -135,10 +135,8 @@ const Job = () => {
     setSelectedJob(args.data); // Save selected job data
         console.log(selectedJob["part_no"]);
 
-
-
-    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/get-tool-codes1/${args.data["part_no"]}/${args.data["operation_no"]}`)
-     console.log(response)
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/tool-codes/${args.data["part_no"]}`)
+    console.log(response)
     setData(response.data)
     setOpenPop(true); // Open the dialog
   };
