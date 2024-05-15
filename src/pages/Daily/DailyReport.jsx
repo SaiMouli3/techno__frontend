@@ -72,11 +72,20 @@ useEffect(()=> {
     <TableCell align="center">{row.operation_no}</TableCell>
     <TableCell align="center">{row.cycle_time}</TableCell>
     <TableCell align="center">{row.shift_target}</TableCell>
+     <TableCell align="center">{row.quantity_achieved_shift_1}</TableCell>
+    <TableCell align="center">{row.shift_1_percentage}</TableCell>
+    <TableCell align="center">{row.quantity_achieved_shift_2}</TableCell>
+    <TableCell align="center">{row.shift_2_percentage}</TableCell>
+    <TableCell align="center">{row.quantity_achieved_shift_3}</TableCell>
+            <TableCell align="center">{row.shift_3_percentage}</TableCell>
     <TableCell align="center">{row.per_day_target}</TableCell>
     <TableCell align="center">{row.per_day_achieved}</TableCell>
     <TableCell align="center">{row.per_day_achieved_percentage}</TableCell>
+   
+
+
   </TableRow>
-  <TableRow sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
+  {/* <TableRow sx={{ '& > *': { borderBottom: 'unset' }, ...rowStyle }}>
     <TableCell style={{ paddingBottom: 0, paddingTop: 0}} colSpan={10}>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box sx={{ margin: 1 }}>
@@ -93,7 +102,7 @@ useEffect(()=> {
         </Box>
       </Collapse>
     </TableCell>
-  </TableRow>
+  </TableRow> */}
 </React.Fragment>
 
 
@@ -111,12 +120,25 @@ useEffect(()=> {
               <TableCell>Machine ID</TableCell>
               <TableCell align="right">Component Name</TableCell>
               <TableCell align="right">Operation Number</TableCell>
-              <TableCell align="right">Shift Target</TableCell>
+                                          <TableCell align="right">Cycle Time</TableCell>
 
-              <TableCell align="right">Qty Achieved</TableCell>
+              <TableCell align="right">Shift Target</TableCell>
+                                                                       <TableCell align="right">Qty Achieved</TableCell>
+
+                            <TableCell align="right">Shift 1%</TableCell>
+
+                            <TableCell align="right">Qty Achieved</TableCell>
+
+                            <TableCell align="right">Shift 2%</TableCell>
+
+                            <TableCell align="right">Qty Achieved</TableCell>
+
+                            <TableCell align="right">Shift 3%</TableCell>
               <TableCell align="right">Per Day Target</TableCell>
               <TableCell align="right">Per Day Achieved</TableCell>
                             <TableCell align="right">Per Day Achieved Percentage</TableCell>
+
+
 
             </TableRow>
           </TableHead>
