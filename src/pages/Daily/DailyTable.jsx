@@ -14,9 +14,8 @@ import {
   ExcelExport,
   Group
 } from "@syncfusion/ej2-react-grids";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { useQuery } from "@tanstack/react-query";
-import { ToastContainer,toast } from "react-toastify";
+import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DailyTable = () => {
@@ -31,7 +30,7 @@ const [startDate, setStartDate] = useState(null);
         const id = args.item.id;
         if (id && id.includes("grid_") && id.includes("_excelexport")) {
             grid.excelExport();
-        } else {
+        } else if(id && id.includes("grid_") && id.includes("_pdfexport")){
             grid.pdfExport();
         }
     }

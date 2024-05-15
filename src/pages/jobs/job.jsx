@@ -6,7 +6,7 @@ import {
   ColumnsDirective,
   ColumnDirective,
   Toolbar,
-  Edit,
+
   Page,
   Filter,
   Sort,
@@ -21,7 +21,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+ 
 } from "@mui/material";
 const HandleJobPop = ({ open, handleClose, data }) => {
   return (
@@ -29,7 +29,7 @@ const HandleJobPop = ({ open, handleClose, data }) => {
       <DialogTitle>Tools</DialogTitle>
       <DialogContent>
         <div>
-          {data?.tool_codes?.map((toolCode, index) => (
+          {data?.map((toolCode, index) => (
             <div key={index} className="flex flex-row font-semibold">
               <span >{index+1}.</span><p>&nbsp;&nbsp;{toolCode}</p>
             </div>
@@ -135,15 +135,17 @@ const Job = () => {
     setSelectedJob(args.data); // Save selected job data
         console.log(selectedJob["part_no"]);
 
-    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/tool-codes/${args.data["part_no"]}`)
-    console.log(response)
+
+
+    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/get-tool-codes1/${args.data["part_no"]}/${args.data["operation_no"]}`)
+     console.log(response)
     setData(response.data)
     setOpenPop(true); // Open the dialog
   };
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2  pt-2  md:m-10 mt-24  md:p-10 bg-white rounded-3xl">
-      <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Job</button>
+      <button className="px-5 py-3 bg-blue-500 text-white mr-2  rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Job</button>
       <AddJob
         open={openAddDialog}
         handleClose={handleCloseAddDialog}

@@ -45,7 +45,7 @@ const filterDuplicateMachineOptions = (options) => {
   const [hours,setHours] = useState(8);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [machineData, setMachineData] = useState([]);
-  const [reason,setReason] = useState();
+  const [reason, setReason] = useState({ label: "No Remarks", value: "No Remarks" }); // Setting default reason here
    const [employeeData, setEmployeeData] = useState([]);
   const fetchData = async () => {
     try {

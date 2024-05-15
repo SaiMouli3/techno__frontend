@@ -4,7 +4,7 @@ import { TextField } from "@mui/material";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { useQuery } from "@tanstack/react-query";
 import Select from 'react-select'
-
+import EmployeeIncentivePage from "./EmployeeIncentivePage";
 const DailyEfficiency = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -101,7 +101,7 @@ const DailyEfficiency = () => {
 
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="w-full h-full flex flex-col gap-y-3 justify-center items-center">
       <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col justify-center items-center  h-full pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-x-auto w-[600px]">
         <div className="bg-white flex flex-col gap-y-4">
           <div>
@@ -169,6 +169,9 @@ const DailyEfficiency = () => {
             </div>
           )}
         </div>
+      </div>
+      <div>
+        <EmployeeIncentivePage/>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddParameterForm from './AddParameter';
 
 const ParameterRow = ({ parameter, onEdit }) => (
   <TableRow>
@@ -29,6 +30,8 @@ const Parameter = () => {
   const [editedParameters, setEditedParameters] = useState({});
   const [selectedParameter, setSelectedParameter] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState("");
 
   const fetchData = async () => {
     const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
@@ -66,12 +69,61 @@ const Parameter = () => {
     }
   }
 
+  const handleAddParameter = (type) => {
+    setSelectedType(type);
+    setAddModalOpen(true);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
+  const handleClose=()=> {
+    setAddModalOpen(false);
+  }
 
   return (
     <div>
+<div className='w-full flex justify-center items-center mx-auto flex-col'>    <p className='text-lg text-white font-semibold uppercase mb-2'>Add Parameter</p>
+
+ <div className='flex justify-center items-center font-semibold gap-x-4 flex-row'>
+   <Button 
+    variant="contained"
+    sx={{ 
+      px: 2, 
+       width: "100px", 
+      bgcolor: 'indigo.500', 
+      color: 'white', 
+      borderRadius: 'md',
+      '&:hover': {
+        bgcolor: 'indigo.600',
+      },
+      fontWeight:'500'
+    }} 
+    onClick={() => handleAddParameter("category")}
+  >
+     Category 
+  </Button>
+  <Button 
+    variant="contained"
+    sx={{ 
+      px: 2, 
+       width: "100px", 
+      bgcolor: 'indigo.500', 
+      color: 'white', 
+      borderRadius: 'md',
+       // Add margin top
+      '&:hover': {
+        bgcolor: 'indigo.600',
+      },
+      fontWeight: '500'
+    }} 
+    onClick={() => handleAddParameter("reason")}
+  >
+     Reason
+  </Button>
+ </div>
+</div>
+
       <TableContainer component={Paper} sx={{ maxWidth: '30%',display:'flex',alignItems:'center',justifyContent:'center',marginInline:'auto',marginBlock:'10px' }}>
         <Table>
           <TableHead>
@@ -90,20 +142,22 @@ const Parameter = () => {
       </TableContainer>
       <ToastContainer/>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
-  <Box sx={{ 
-    position: 'absolute', 
-    top: '50%', 
-    left: '50%', 
-    transform: 'translate(-50%, -50%)', 
-    width: 400, 
-    bgcolor: 'background.paper', 
-    boxShadow: 24, 
-    p: 4,
-    borderRadius: 8, // Example: adding border radius
-    outline: 'none' // Example: removing default outline
-  }}>
-    <TextField label="Parameter" sx={{marginBlock:'5px'}} value={selectedParameter?.parameter} disabled fullWidth />
-<TextField 
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 8,
+            outline: 'none',
+          }}
+        >
+          <TextField label="Parameter" sx={{marginBlock:'5px'}} value={selectedParameter?.parameter} disabled fullWidth />
+          <TextField 
             label="Value" 
             value={selectedParameter?.value}
             sx={{marginBlock:'5px'}} 
@@ -112,13 +166,31 @@ const Parameter = () => {
               setEditedParameters({ ...editedParameters, [selectedParameter.id]: true });
             }} 
             fullWidth 
-          />    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-      <Button variant="contained" onClick={handleUpdate} sx={{ marginRight: '1rem' }}>Update</Button>
-      <Button variant="contained" onClick={() => setOpenModal(false)}>Close</Button>
-    </Box>
-  </Box>
-</Modal>
-
+          />    
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
+            <Button variant="contained" onClick={handleUpdate} sx={{ marginRight: '1rem' }}>Update</Button>
+            <Button variant="contained" onClick={() => setOpenModal(false)}>Close</Button>
+          </Box>
+        </Box>
+      </Modal>
+      <Modal open={addModalOpen} onClose={() => setAddModalOpen(false)}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 8,
+            outline: 'none',
+          }}
+        >
+          <AddParameterForm onAddParameter={handleAddParameter} selectedType={selectedType} handleClose = {handleClose} />
+        </Box>
+      </Modal>
     </div>
   );
 }
