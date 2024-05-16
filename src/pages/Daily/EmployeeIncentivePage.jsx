@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 
 
-const LineItemTable = ({ lineItems }) => {
+const LineItemTable = ({lineItems} ) => {
+  console.log(lineItems)
   return (
     <div className="mt-4">
+      <div>
+      <h3 className="mb-4 font-semibold text-[20px]">Base Incentive: {lineItems && lineItems[0]?.incentive_value}</h3>
+      </div>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50 dark:bg-secondary-dark-bg">
           <tr>
@@ -22,12 +26,12 @@ const LineItemTable = ({ lineItems }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y text-center divide-gray-200 dark:bg-secondary-light-bg dark:divide-gray-700">
-          {lineItems.map((item, index) => (
+          {lineItems && lineItems?.map((item, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.date}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.shiftNumber}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.shift_number}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.efficiency}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.incentive}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.incentive_received}</td>
             </tr>
           ))}
         </tbody>
@@ -37,17 +41,14 @@ const LineItemTable = ({ lineItems }) => {
 };
 
 
-const EmployeeIncentivePage = () => {
+const EmployeeIncentivePage = ({data}) => {
   const [includeBaseIncentive, setIncludeBaseIncentive] = useState(false);
-
+   console.log(data)
   // Sample line item data, replace this with your actual data
-  const lineItems = [
-    { date: "123456", shiftNumber: 1, efficiency: 99, incentive: 145 },
-    { date: "1234", shiftNumber: 1, efficiency: 100, incentive: 150 }
-  ];
 
-  // Calculate total incentive
-  let totalIncentive = lineItems.reduce((acc, curr) => acc + curr.incentive, 0);
+
+
+  let totalIncentive = data ? data?.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive) {
     // Add employee base incentive if checkbox is checked
     totalIncentive += 3000;
@@ -69,7 +70,7 @@ const EmployeeIncentivePage = () => {
       </div>
       
       <div className="mt-8">
-        <LineItemTable lineItems={lineItems} />
+        <LineItemTable lineItems={data} />
       </div>
       <div className="mt-8 text-right">
         <p className="text-lg text-gray-700 dark:text-gray-300">Total Incentive: {totalIncentive}</p>

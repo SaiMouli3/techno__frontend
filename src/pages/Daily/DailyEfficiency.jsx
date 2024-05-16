@@ -41,9 +41,8 @@ const DailyEfficiency = () => {
     queryKey: ["incentive", empSSN, startDate, endDate],
     queryFn: async () => {
       try {
-        console.log(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${empSSN}/${startDate}/${endDate}/`);
         const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${empSSN.label}/${startDate}/${endDate}/`);
-        console.log(response)
+        console.log(response.data)
         return response.data;
       } catch (error) {
         throw new Error("Error fetching data");
@@ -94,6 +93,8 @@ const DailyEfficiency = () => {
     calculateAverageEfficiency();
   };
 
+  
+
  const showSubmitButton = () => {
   return (averageEfficiency === null || incentiveLoading) && (!!empSSN || !!startDate || !!endDate);
 };
@@ -102,7 +103,7 @@ const DailyEfficiency = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-y-3 justify-center items-center">
-      <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col justify-center items-center  h-full pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl overflow-x-auto w-[600px]">
+      <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 flex flex-col justify-center items-center  h-full pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl w-[550px]">
         <div className="bg-white flex flex-col gap-y-4">
           <div>
             <label
@@ -117,7 +118,7 @@ const DailyEfficiency = () => {
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               required
-              className="mt-1 block w-[500px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
+              className="mt-1 block w-[480px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             />
           </div>
           <div>
@@ -133,7 +134,7 @@ const DailyEfficiency = () => {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               required
-              className="mt-1 block w-[500px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
+              className="mt-1 block w-[480px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             />
           </div>
           <div>
@@ -165,13 +166,12 @@ const DailyEfficiency = () => {
           {averageEfficiency !== null && (
             <div className="text-[20px]">
               <p><b>Efficiency</b>: {averageEfficiency === NaN ? "0" : averageEfficiency}</p>
-              <p><b>Incentive</b>: {incentive}</p>
             </div>
           )}
         </div>
       </div>
       <div>
-        <EmployeeIncentivePage/>
+        <EmployeeIncentivePage data={incentiveData}/>
       </div>
     </div>
   );

@@ -23,10 +23,11 @@ const CollapsibleTablePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const tableRef = useRef(null);
 
-  async function fetchData(date) {
+  async function fetchData() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/generate-report/?date=${date}`);
-      setData(response.data.report);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/generate-report/${selectedDate}/`);
+      setData(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error('Error fetching data:', error.message);
     }
@@ -35,6 +36,9 @@ const CollapsibleTablePage = () => {
   useEffect(() => {
     fetchData(selectedDate);
   }, [selectedDate]);
+  useEffect(()=> {
+    fetchData();
+  },[])
 
   
   function Row({ row, index }) {
@@ -58,7 +62,6 @@ const CollapsibleTablePage = () => {
     </TableCell>
     <TableCell align="center">{row.component_name}</TableCell>
     <TableCell align="center">{row.operation_no}</TableCell>
-    <TableCell align="center">{row.cycle_time}</TableCell>
     <TableCell align="center">{row.shift_target}</TableCell>
     <TableCell align="center">{row.quantity_achieved_shift_1}</TableCell>
     <TableCell align="center">{row.shift_1_percentage}</TableCell>
@@ -102,7 +105,6 @@ const CollapsibleTablePage = () => {
               <TableCell>Machine ID</TableCell>
               <TableCell align="right">Component Name</TableCell>
               <TableCell align="right">Operation Number</TableCell>
-              <TableCell align="right">Cycle Time</TableCell>
               <TableCell align="right">Shift Target</TableCell>
               <TableCell align="right">Qty Achieved</TableCell>
               <TableCell align="right">Shift 1%</TableCell>
@@ -116,7 +118,7 @@ const CollapsibleTablePage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {data?.map((row, index) => (
               <Row key={index} index={index} row={row} />
             ))}
           </TableBody>
