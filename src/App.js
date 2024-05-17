@@ -117,8 +117,7 @@ const App = () => {
 
                 <Route path="/home" element={<Homepage />} />
                 <Route path="/login" element={<Login />} />
-{user?.userInfo?.role === "Admin" &&                
-}                <Route path="/add-user" element={<AddUser/>}/>
+{user?.userInfo?.role === "Admin" &&                            <Route path="/add-user" element={<AddUser/>}/>}
                 <Route
                   path="/"
                   element={
