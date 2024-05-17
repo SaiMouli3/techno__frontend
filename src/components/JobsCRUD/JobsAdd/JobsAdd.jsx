@@ -66,7 +66,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             component_name: componentName,
             operation_no: operationNumber,
             tool_name: toolName,
-            tool_count: tools.length-1,
+            tool_count: tools.length,
             no_of_holes: tools[i].holes,
             depth_of_cut: tools[i].length
           };
