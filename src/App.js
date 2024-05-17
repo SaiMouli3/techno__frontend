@@ -113,10 +113,11 @@ const App = () => {
     <Route path="/machines" element={<Machine />} />
   </>
 )}
+  <Route path="/sign-up" element={<SignUp />} />
 
                 <Route path="/home" element={<Homepage />} />
                 <Route path="/login" element={<Login />} />
-{user?.userInfo?.role === "Admin" &&                <Route path="/sign-up" element={<SignUp />} />
+{user?.userInfo?.role === "Admin" &&                
 }                <Route path="/add-user" element={<AddUser/>}/>
                 <Route
                   path="/"
