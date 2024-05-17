@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { links } from "../../data/info";
 
 
 const LineItemTable = ({lineItems} ) => {
@@ -51,7 +52,7 @@ const EmployeeIncentivePage = ({data}) => {
   let totalIncentive = data ? data?.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive) {
     // Add employee base incentive if checkbox is checked
-    totalIncentive += 3000;
+    totalIncentive += lineItems[0].incentive_value;
   }
 
   return (
