@@ -105,6 +105,12 @@ const [startDate, setStartDate] = useState(null);
       width: "150",
       textAlign: "Center",
     },
+    {
+      field: "remarks",
+      headerText: "Remarks",
+      width: "150",
+      textAlign: "Center",
+    },
      {
       field: "partial_shift",
       headerText: "Partial Shift",

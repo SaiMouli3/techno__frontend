@@ -113,7 +113,6 @@ const Employee = () => {
        if (error.response && error.response.data) {
   
     const errorData = error.response.data;
-    console.log(errorData)
 
     const errorMessages = Object.values(errorData).flatMap(errorArray => errorArray);
     if (errorMessages.length > 0) {
@@ -167,7 +166,6 @@ const Employee = () => {
           'X-CSRFToken': csrfToken
         }
       });
-      console.log(response);
       toast.success("Employee deleted successfully");
     } catch (error) {
       refetch();
@@ -226,9 +224,7 @@ const Employee = () => {
 
   ];
  const actionBegin = (args) => {
-  console.log(grid);
   const cols = grid?.columnModel;
-  console.log(args.requestType)
 
   if (args.requestType === "add" || args.requestType === "beginEdit") {
     if (cols && Symbol.iterator in Object(cols)) {

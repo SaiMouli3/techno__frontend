@@ -32,7 +32,6 @@ const Home = () => {
   const [onDayChangeShift2, setOnDayChangeShift2] = useState([]);
   const [onDayChangeShift3, setOnDayChangeShift3] = useState([]);
   const role = useSelector((state) => state?.user?.userInfo?.role);
-  console.log(role)
   const loggedInUser = localStorage.getItem("account");
   const navigate = useNavigate();
   const fontSize=2;

@@ -33,7 +33,6 @@ const Homepage = () => {
       const jobsResponse = await axios.get(`${process.env.REACT_APP_URL}/webapp/num_jobs`);
       setTotalJobs(jobsResponse.data.num_jobs);
     } catch (error) {
-      console.error('Error fetching data:', error);
     }
   };
 
