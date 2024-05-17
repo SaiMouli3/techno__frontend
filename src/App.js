@@ -22,7 +22,6 @@ import DailyEfficiency from "./pages/Daily/DailyEfficiency";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/login/login";
 import SignUp from "./pages/login/signup";
-import { useNavigate } from "react-router-dom";
 import AddUser from "./pages/login/AddUser";
 import CollapsibleTablePage from "./pages/Daily/DailyReport";
 import Parameter from "./pages/Daily/Parameter";
@@ -31,7 +30,6 @@ const App = () => {
   const dispatch = useDispatch();
   const { currentMode, activeMenu } = useStateContext();
   const user = useSelector((state) => state.user);
-  console.log(user);
   const loggedInUser = localStorage.getItem("account");
   // const navigate = useNavigate();
 

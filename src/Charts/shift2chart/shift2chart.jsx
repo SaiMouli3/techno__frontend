@@ -23,7 +23,6 @@ function Shift2Chart({ selectedDay, OnDayChangeShift2 }) {
         setData(average_shift_efficiency);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     }
 

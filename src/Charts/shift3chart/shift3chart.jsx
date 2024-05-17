@@ -123,7 +123,6 @@ function Shift3Chart({ selectedDay, OnDayChangeShift3 }) {
         setData(average_shift_efficiency);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     }
 

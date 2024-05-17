@@ -115,7 +115,7 @@ const filterDuplicateMachineOptions = (options) => {
   
       const responses = await Promise.all(postRequests);
 
-      
+      console.log(responses)
       toast.success("Daily entry added successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -134,6 +134,7 @@ const filterDuplicateMachineOptions = (options) => {
        
       },3000)
     } catch (error) {
+      
     toast.error(error.message, {
         position: "top-center",
         autoClose: 1000,

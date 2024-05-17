@@ -25,7 +25,7 @@ function MeanChart() {
 
         setAveragePercentage(overallAverage);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        
       }
     };
 
