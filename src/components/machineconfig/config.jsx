@@ -120,27 +120,47 @@ const handleJobChange = (selectedOption) => {
         part_no: selectedJob["value"],
         tool_code: toolCodeNames[index]
       }));
+      console.log(machineDataArray)
        if (isConfigured) {
       // Updating an existing machine configuration
-      const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
         try {
-          const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/update-machine/${encodeURIComponent(selectedMachine.machine_id)}/`, machineData);
-          toast.success("Machine configuration updated successfully", {
-            position: "top-center",
-            autoClose: 1000,
-            style: {
-              width: "auto",
-              style: "flex justify-center",
-            },
-            closeButton: false,
-            progress: undefined,
-          });
-          return response.data;
-        } catch (error) {
-          console.error("Error updating machine data:", error);
-          throw error;
-        }
-      }));
+    // Create an object to hold machine data
+    const machineData = {
+      machine_id: selectedMachine.machine_id,
+      machine_name: selectedMachine.machine_id,
+      target: target,
+      numOfTools: selectedTools.length,
+      part_no: selectedJob["value"],
+      tool_codes: toolCodeNames, // Include all tool codes directly from the array
+    };
+  console.log(machineData)
+    // Submit the request
+    const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/update-machine/${selectedMachine.machine_id}/`, machineData);
+   console.log(response)
+    // Show success message
+    toast.success("Machine updated successfully", {
+      position: "top-center",
+      autoClose: 1000,
+      style: {
+        width: "auto",
+        style: "flex justify-center",
+      },
+      closeButton: false,
+      progress: undefined,
+      hideProgressBar:true
+    });
+    setTimeout(()=>{
+
+    },3000)
+    // Reset states after submission
+    handleCloseView();
+    setSelectedJob(null);
+    setMachineId(null);
+    setSelectedTools([]);
+    setToolCodeNames([]);
+  } catch (error) {
+    console.error("Error submitting machine data:", error);
+  }
     } else {
       // Creating a new machine configuration
       const responseDataArray = await Promise.all(machineDataArray.map(async machineData => {
@@ -173,9 +193,45 @@ const handleJobChange = (selectedOption) => {
       console.error("Error submitting machine data:", error);
     }
   };
+  const handleSubmitt = async () => {
+  try {
+    // Create an object to hold machine data
+    const machineData = {
+      machine_id: selectedMachine.machine_id,
+      machine_name: selectedMachine.machine_id,
+      target: target,
+      numOfTools: selectedTools.length,
+      part_no: selectedJob.value,
+      tool_code: toolCodeNames, // Include all tool codes directly from the array
+    };
+
+    // Submit the request
+    const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/machines/create`, machineData);
+
+    // Show success message
+    toast.success("Machine configured successfully", {
+      position: "top-center",
+      autoClose: 1000,
+      style: {
+        width: "auto",
+        style: "flex justify-center",
+      },
+      closeButton: false,
+      progress: undefined,
+    });
+
+    // Reset states after submission
+    handleCloseView();
+    setSelectedJob(null);
+    setMachineId(null);
+    setSelectedTools([]);
+    setToolCodeNames([]);
+  } catch (error) {
+    console.error("Error submitting machine data:", error);
+  }
+};
 
   const uniqueJobs = jobs?.filter((job, index) => jobs?.findIndex(j => j.part_no === job.part_no) === index);
-  console.log(jobs)
    const handleDelete = async () => { 
       try {
         const machineId= selectedMachine.machine_id

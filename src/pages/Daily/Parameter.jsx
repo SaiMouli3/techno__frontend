@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {useQuery} from '@tanstack/react-query'
 import AddParameterForm from './AddParameter';
 
 const ParameterRow = ({ parameter, onEdit }) => (
@@ -26,18 +27,28 @@ const ParameterRow = ({ parameter, onEdit }) => (
 );
 
 const Parameter = () => {
-  const [parameterData, setParameterData] = useState([]);
   const [editedParameters, setEditedParameters] = useState({});
   const [selectedParameter, setSelectedParameter] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("");
 
-  const fetchData = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
-    setParameterData(response.data);
-    console.log(parameterData)
-  }
+  // const fetchData = async () => {
+  //   const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
+  //   setParameterData(response.data);
+  //   console.log(parameterData)
+  // }
+   const { data: parameterData,refetch } = useQuery({
+    queryKey: ["parameters"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
+        return response.data; // Return the data from the response
+      } catch (error) {
+        throw new Error("Error fetching machines"); // Throw an error if request fails
+      }
+    },
+  });
 
   const handleEdit = (parameter) => {
     setSelectedParameter(parameter);
@@ -51,7 +62,7 @@ const Parameter = () => {
     try {
       await axios.post(`${process.env.REACT_APP_URL}/webapp/update_externals/`, [selectedParameter]);
       // Update parameterData after successful update
-      await fetchData();
+      await refetch();
        toast.success("Parameter updated successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -75,7 +86,7 @@ const Parameter = () => {
   }
 
   useEffect(() => {
-    fetchData();
+    refetch();
   }, []);
   const handleClose=()=> {
     setAddModalOpen(false);
@@ -134,7 +145,7 @@ const Parameter = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {parameterData.map((parameter, index) => (
+            {parameterData && parameterData?.map((parameter, index) => (
               <ParameterRow key={index} parameter={parameter} onEdit={handleEdit} />
             ))}
           </TableBody>
@@ -188,7 +199,7 @@ const Parameter = () => {
             outline: 'none',
           }}
         >
-          <AddParameterForm onAddParameter={handleAddParameter} selectedType={selectedType} handleClose = {handleClose} />
+          <AddParameterForm onAddParameter={handleAddParameter} selectedType={selectedType} handleClose = {handleClose} refetch={refetch} />
         </Box>
       </Modal>
     </div>
