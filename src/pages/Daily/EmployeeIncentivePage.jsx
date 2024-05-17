@@ -52,7 +52,7 @@ const EmployeeIncentivePage = ({data}) => {
   let totalIncentive = data ? data?.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive) {
     // Add employee base incentive if checkbox is checked
-    totalIncentive += lineItems[0].incentive_value;
+    totalIncentive += data[0].incentive_value;
   }
 
   return (
