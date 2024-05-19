@@ -96,7 +96,7 @@ const BreakDown = () => {
         handleCloseAddBreakdown();
       })
       .catch(error => {
-        console.error('Error adding breakdown:', error.message);
+        console.error('Error adding breakdown:', error);
       });
   };
 
@@ -113,7 +113,9 @@ const BreakDown = () => {
     { field: "change_time", headerText: "Change Time", width: "150", textAlign: "Center" },
     { field: "no_of_min_into_shift", headerText: "Minutes Into Shift", width: "150", textAlign: "Center" },
     { field: "machine_id", headerText: "Machine ID", width: "150", textAlign: "Center" },
-    { field: "tool_code", headerText: "Tool Code", width: "150", textAlign: "Center" }
+    { field: "tool_code", headerText: "Tool Code", width: "150", textAlign: "Center" },
+    { field: "achieved", headerText: "Achieved", width: "150", textAlign: "Center" },
+    { field: "shift_number", headerText: "Shift number", width: "150", textAlign: "Center" }
   ];
 
   const editing = {
