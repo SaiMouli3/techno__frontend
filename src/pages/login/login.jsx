@@ -29,12 +29,12 @@ const Login = () => {
    const submitHandler = async (e) => {
     e.preventDefault();
     try {
+      
       const data = {
         username: employeeName,
         password: password,
         role: role.label,
       };
-      
       const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/check-credentials/`, data);
       console.log(response);
       if (response.data.success) {

@@ -40,7 +40,7 @@ const App = () => {
     const checkUserInDatabase = async (userData) => {
       try {
         const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/check-user/`, {
-          userId: userData.username,
+          username: userData.username,
         });
 
         if (response.data.exists) {
