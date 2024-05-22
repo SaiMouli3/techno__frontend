@@ -51,6 +51,7 @@ const App = () => {
           localStorage.removeItem("account");
           // Optionally redirect to login page
           // navigate("/login");
+          window.location.reload();
         }
       } catch (error) {
         console.error("Error checking user in database:", error);

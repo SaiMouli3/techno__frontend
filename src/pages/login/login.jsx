@@ -26,7 +26,7 @@ const Login = () => {
     fetchData();
   }, []);
   const dispatch = useDispatch()
-  const submitHandler = async (e) => {
+   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const data = {
@@ -34,32 +34,61 @@ const Login = () => {
         password: password,
         role: role.label,
       };
+      
       const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/check-credentials/`, data);
-      console.log(response)
-       toast.success(response.data.message,{
+      console.log(response);
+      if (response.data.success) {
+        toast.success(response.data.message, {
+          position: "top-center",
+          autoClose: 1000,
+          style: {
+            width: "auto",
+            display: "flex",
+            justifyContent: "center",
+          },
+          closeButton: false,
+          progress: undefined,
+          hideProgressBar: true,
+        });
+
+        const userData = {
+          username: data.username,
+          role: data.role
+        };
+        dispatch(userActions.setUserInfo(userData));
+        localStorage.setItem('account', JSON.stringify(userData));
+        navigate("/home");
+      } else {
+        toast.error(response.data.message, {
+          position: "top-center",
+          autoClose: 1000,
+          style: {
+            width: "auto",
+            display: "flex",
+            justifyContent: "center",
+          },
+          closeButton: false,
+          progress: undefined,
+          hideProgressBar: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      toast.error("An error occurred. Please try again.", {
         position: "top-center",
         autoClose: 1000,
         style: {
           width: "auto",
-          style: "flex justify-center",
+          display: "flex",
+          justifyContent: "center",
         },
         closeButton: false,
         progress: undefined,
-        hideProgressBar:true
-      })
-      console.log(response)
-      const userData = {
-  username: data.username,
-  role: data.role
-};
-dispatch(userActions.setUserInfo(userData));
-localStorage.setItem('account', JSON.stringify(userData));
-
-      navigate("/home")
-    } catch (error) {
-      console.error("Error submitting data:", error);
+        hideProgressBar: true,
+      });
     }
   };
+
 
   return (
     <div className="flex justify-center flex-col items-center h-screen">
