@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useStateContext } from "./context/ContextProvider";
+import axios from 'axios'
 import Navbarr from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/home/home";
@@ -25,6 +26,7 @@ import SignUp from "./pages/login/signup";
 import AddUser from "./pages/login/AddUser";
 import CollapsibleTablePage from "./pages/Daily/DailyReport";
 import Parameter from "./pages/Daily/Parameter";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,17 +34,38 @@ const App = () => {
   const user = useSelector((state) => state.user);
   const loggedInUser = localStorage.getItem("account");
   // const navigate = useNavigate();
-
+  
+  
   useEffect(() => {
-    // Check if user is logged in from localStorage and dispatch necessary actions
+    const checkUserInDatabase = async (userData) => {
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/check-user/`, {
+          userId: userData.username,
+        });
+
+        if (response.data.exists) {
+          // User exists in the database
+          dispatch({ type: "SET_USER_INFO", payload: userData });
+        } else {
+          // User does not exist in the database
+          localStorage.removeItem("account");
+          // Optionally redirect to login page
+          // navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error checking user in database:", error);
+      }
+    };
+
     if (loggedInUser) {
       const userData = JSON.parse(loggedInUser);
-      console.log("Yess")
-      dispatch({ type: "SET_USER_INFO", payload: userData });
+      checkUserInDatabase(userData);
     } else {
-      // navigate("/login");
+      
+      
     }
   }, [dispatch, loggedInUser]);
+
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
