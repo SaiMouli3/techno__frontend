@@ -41,15 +41,17 @@ const Tool = () => {
   },[data,refetch])
 
   const handleActionComplete = async (args) => {
+    console.log(args)
     if (args.requestType === "save") {
-      try {
-        // Iterate over the new tools and send a POST request for each tool
-        for (const newTool of args.data) {
-          await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/create", newTool);
-        }
+      if(args.action == "edit"){
+        try {
+          console.log(args.data)
+          await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/update", args.data);
+        
         refetch();
       } catch (error) {
         console.error("Error inserting data:", error);
+      }
       }
     } else if (args.requestType === "delete") {
       console.log(args.data[0].tool_name)
@@ -60,7 +62,7 @@ const Tool = () => {
       } catch (error) {
         toast.error("Couldn't delete tool. Please try again");
       }
-    }
+    } 
   };
 
   const toolGrid = [
@@ -110,7 +112,7 @@ const Tool = () => {
 
   const editing = {
     allowDeleting: true,
-
+    allowEditing:true,
     mode: "Dialog",
   };
 

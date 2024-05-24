@@ -67,8 +67,8 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             operation_no: operationNumber,
             tool_name: toolName,
             tool_count: tools.length,
-            no_of_holes: tools[i].holes,
-            depth_of_cut: tools[i].length
+            no_of_holes: 1,
+            depth_of_cut: 1
           };
           console.log(newJob)
           const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/jobs/create`, newJob);
@@ -106,7 +106,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 
   return (
     <div className="z-[100001] py-5">
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" fullHeight={true} maxHeight="lg">
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" fullHeight={true} maxHeight="lg">
         <DialogTitle>Add New Job</DialogTitle>
         <DialogContent>
           <TextField
@@ -139,7 +139,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 
           {tools.map((tool, index) => (
             <Grid container spacing={2} key={index} >
-              <Grid item xs={4}>
+              <Grid item xs={11}>
                 <FormControl fullWidth margin="normal">
 {/*                   <InputLabel>Tool</InputLabel> */}
 {/*                   <Select */}
@@ -168,7 +168,7 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
 sx={{ '& .MuiInputBase-root.Mui-focused': { backgroundColor: 'transparent' } }}    />
                 </FormControl>
               </Grid>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <TextField
                   label={`Depth of Cut in mm`}
                   value={tool.length}
@@ -191,7 +191,7 @@ sx={{ '& .MuiInputBase-root.Mui-focused': { backgroundColor: 'transparent' } }} 
                   size="large"
                   margin="normal"
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={1}>
                 <Button onClick={() => removeTool(index)} color="primary">
                   X
