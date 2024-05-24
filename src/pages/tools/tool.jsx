@@ -78,7 +78,7 @@ const Tool = () => {
     },
     {
       field: "max_life_expectancy_in_mm",
-      headerText: "Max Life Expectancy",
+      headerText: "Tool Life",
       width: "200",
       textAlign: "Center",
     },
