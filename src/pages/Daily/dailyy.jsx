@@ -17,7 +17,7 @@ const Dailyy = () => {
         const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/machines`);
         return response.data; // Return the data from the response
       } catch (error) {
-        throw new Error("Error fetching machines"); // Throw an error if request fails
+        throw new Error("Error fetching machiness"); // Throw an error if request fails
       }
     },
   });
