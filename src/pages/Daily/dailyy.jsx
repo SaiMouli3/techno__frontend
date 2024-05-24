@@ -188,29 +188,49 @@ const filterDuplicateMachineOptions = (options) => {
   };
   const [reasonOptions,setReasonOptions] = useState([]);
   
-
-  const fetchDataa = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
-    setReasonOptions(response.data)
-    if(reasonOptions){
-      setReasonOptions([
-  { label: "Machine Breakdown", value: "machine_breakdown" },
-  { label: "No Load", value: "no_load" },
-  { label: "Maintenance", value: "maintenance" },
-  { label: "Setting", value: "setting" },
-  { label: "No Schedule", value: "no_schedule" },
-  { label: "2M1P", value: "2M1P" },
-  {label:"No Remarks",value:"No Remarks"}
-]);
+   const { data: parameterData,refetch } = useQuery({
+    queryKey: ["parameters"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
+        return response.data; // Return the data from the response
+      } catch (error) {
+        throw new Error("Error fetching machines"); // Throw an error if request fails
+      }
+    },
+  });
+//   const fetchDataa = async () => {
+//     const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
+//     setReasonOptions(response.data)
+//     if(reasonOptions){
+//       setReasonOptions([
+//   { label: "Machine Breakdown", value: "machine_breakdown" },
+//   { label: "No Load", value: "no_load" },
+//   { label: "Maintenance", value: "maintenance" },
+//   { label: "Setting", value: "setting" },
+//   { label: "No Schedule", value: "no_schedule" },
+//   { label: "2M1P", value: "2M1P" },
+//   {label:"No Remarks",value:"No Remarks"}
+// ]);
+//     }
+//     else {
+//       setReasonOptions([])
+//     } 
+//   }
+    useEffect(() => {
+    if (parameterData) {
+      const filteredData = parameterData.filter(item => !item.parameter.toLowerCase().includes("category"));
+      const options = filteredData.map(item => ({
+        value: item.parameter,
+        label: item.parameter,
+      }));
+      setReasonOptions(options);
     }
-    else {
-      setReasonOptions([])
-    } 
-  }
+  }, [parameterData]);
 
-  useEffect(()=> {
-    fetchDataa();
-  },[])
+  // useEffect(()=> {
+  //   fetchDataa();
+  // },[])
  
   
   if (submittedData) {

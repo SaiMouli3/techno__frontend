@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { TextField } from "@mui/material";
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
+import Select from 'react-select';
 import { useQuery } from "@tanstack/react-query";
-import Select from 'react-select'
 import EmployeeIncentivePage from "./EmployeeIncentivePage";
+
 const DailyEfficiency = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [empSSN, setEmpSSN] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [averageEfficiency, setAverageEfficiency] = useState(null);
-  const [incentive, setIncentive] = useState(null);
+  const [incentives, setIncentives] = useState([]);
 
   const { data: dailyentry } = useQuery({
     queryKey: ["dailyentry"],
@@ -37,19 +36,20 @@ const DailyEfficiency = () => {
     },
   });
 
-  const { data: incentiveData, isLoading: incentiveLoading } = useQuery({
-    queryKey: ["incentive", empSSN, startDate, endDate],
-    queryFn: async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${empSSN.label}/${startDate}/${endDate}/`);
-        console.log(response.data)
-        return response.data;
-      } catch (error) {
-        throw new Error("Error fetching data");
+  useEffect(() => {
+    const fetchIncentivesForAllEmployees = async () => {
+      if (startDate && endDate) {
+        const incentivePromises = employeeSSNS.map(emp =>
+          axios.get(`${process.env.REACT_APP_URL}/webapp/calculate-incentive/${emp.emp_ssn}/${startDate}/${endDate}/`)
+        );
+        const incentiveResponses = await Promise.all(incentivePromises);
+        const incentivesData = incentiveResponses.map(res => res.data);
+        setIncentives(incentivesData);
       }
-    },
-    enabled: !!empSSN && !!startDate && !!endDate, // Enable query when all required parameters are present
-  });
+    };
+
+    fetchIncentivesForAllEmployees();
+  }, [employeeSSNS, startDate, endDate]);
 
   const filterData = () => {
     if (!startDate || !endDate) return;
@@ -82,24 +82,14 @@ const DailyEfficiency = () => {
     calculateAverageEfficiency();
   }, [filteredData]);
 
-  useEffect(() => {
-    if (incentiveData) {
-      setIncentive(incentiveData?.incentive_received);
-    }
-  }, [incentiveData]);
-
   const handleSubmit = () => {
     filterData();
     calculateAverageEfficiency();
   };
 
-  
-
- const showSubmitButton = () => {
-  return (averageEfficiency === null || incentiveLoading) && (!!empSSN || !!startDate || !!endDate);
-};
-
-
+  const showSubmitButton = () => {
+    return (averageEfficiency === null || !incentives.length) && (!!empSSN || !!startDate || !!endDate);
+  };
 
   return (
     <div className="w-full h-full flex flex-col gap-y-3 justify-center items-center">
@@ -137,7 +127,7 @@ const DailyEfficiency = () => {
               className="mt-1 block w-[480px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             />
           </div>
-          <div>
+          {/* <div>
             <label
               htmlFor="emp_ssn"
               className="block text-lg font-medium text-gray-700"
@@ -151,7 +141,7 @@ const DailyEfficiency = () => {
               isSearchable
               placeholder="Select Employee SSN"
             />
-          </div>
+          </div> */}
           {showSubmitButton() && (
             <div>
               <button
@@ -170,9 +160,12 @@ const DailyEfficiency = () => {
           )}
         </div>
       </div>
-      <div>
-        <EmployeeIncentivePage data={incentiveData}/>
-      </div>
+     <div className="flex flex-wrap justify-center gap-4">
+  {incentives.map((data, index) => (
+    <EmployeeIncentivePage key={index} data={data} />
+  ))}
+</div>
+
     </div>
   );
 };
