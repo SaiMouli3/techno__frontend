@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { links } from "../../data/info";
+import React from "react";
 
+const LineItemTable = ({ lineItems, includeBaseIncentive }) => {
+  const baseIncentive = lineItems && lineItems[0]?.incentive_value;
 
-const LineItemTable = ({lineItems} ) => {
-  console.log(lineItems)
+  let totalIncentive = lineItems ? lineItems.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
+  if (includeBaseIncentive && baseIncentive) {
+    totalIncentive += baseIncentive;
+  }
+
   return (
     <div className="mt-4">
       <div>
-      <h3 className="mb-4 font-semibold text-[20px]">Base Incentive: {lineItems && lineItems[0]?.incentive_value}</h3>
+        <h3 className="mb-4 font-semibold text-[20px]">Base Incentive: {baseIncentive}</h3>
       </div>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50 dark:bg-secondary-dark-bg">
@@ -27,7 +31,7 @@ const LineItemTable = ({lineItems} ) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y text-center divide-gray-200 dark:bg-secondary-light-bg dark:divide-gray-700">
-          {lineItems && lineItems?.map((item, index) => (
+          {lineItems && lineItems.map((item, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.date}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.shift_number}</td>
@@ -37,24 +41,14 @@ const LineItemTable = ({lineItems} ) => {
           ))}
         </tbody>
       </table>
+      <div className="mt-4 text-right">
+        <p className="text-lg text-gray-700 dark:text-gray-300">Total Incentive: {totalIncentive}</p>
+      </div>
     </div>
   );
 };
 
-
-const EmployeeIncentivePage = ({data}) => {
-  const [includeBaseIncentive, setIncludeBaseIncentive] = useState(false);
-   console.log(data)
-  // Sample line item data, replace this with your actual data
-
-
-
-  let totalIncentive = data ? data?.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
-  if (includeBaseIncentive) {
-    // Add employee base incentive if checkbox is checked
-    totalIncentive += data[0].incentive_value;
-  }
-
+const EmployeeIncentivePage = ({ data, includeBaseIncentive, setIncludeBaseIncentive,employee }) => {
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center">
@@ -69,12 +63,13 @@ const EmployeeIncentivePage = ({data}) => {
           <label htmlFor="baseIncentive" className="text-sm text-gray-700 dark:text-gray-300">Include base incentive</label>
         </div>
       </div>
-      
-      <div className="mt-8">
-        <LineItemTable lineItems={data} />
+      <div>
+                  <label htmlFor="employee" className="text-lg text-gray-900 font-semibold dark:text-gray-300">Employee SSN: {employee?.emp_ssn}</label>
+
       </div>
-      <div className="mt-8 text-right">
-        <p className="text-lg text-gray-700 dark:text-gray-300">Total Incentive: {totalIncentive}</p>
+      
+      <div className="mt-2">
+        <LineItemTable lineItems={data} includeBaseIncentive={includeBaseIncentive} />
       </div>
     </div>
   );
