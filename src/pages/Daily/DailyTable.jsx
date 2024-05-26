@@ -64,6 +64,12 @@ const [startDate, setStartDate] = useState(null);
       textAlign: "Center",
     },
      {
+      field: "emp_name",
+      headerText: "Employee Name",
+      width: "150",
+      textAlign: "Center",
+    },
+     {
       field: "date",
       headerText: "Date",
       width: "150",
