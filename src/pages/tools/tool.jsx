@@ -41,13 +41,13 @@ const Tool = () => {
   },[data,refetch])
 
   const handleActionComplete = async (args) => {
-    console.log(args)
+    console.log(args.data)
     if (args.requestType === "save") {
-      if(args.action == "edit"){
+      if(args.action === "edit"){
         try {
-          console.log(args.data)
-          await axios.post("https://techno.pythonanywhere.com/webapp/api/tools/update", args.data);
-        
+          console.log(args.data["tool_code"])
+          await axios.post(`${process.env.REACT_APP_URL}/webapp/update_tool/${encodeURIComponent(args.data["tool_code"])}/`, args.data);
+          toast.success("Tool updated successfully")
         refetch();
       } catch (error) {
         console.error("Error inserting data:", error);
@@ -204,7 +204,7 @@ const Tool = () => {
         allowFiltering
         allowGrouping
         allowDeleting
-        toolbar={['Delete']}
+        toolbar={['Delete','Edit']}
         pageSettings={{ pageCount: 5 }}
         editSettings={editing}
         actionComplete={handleActionComplete}
