@@ -5,8 +5,11 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Autocomplete,
   TextField,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const AddTool = ({ open, handleClose, handleAddTool,refetch }) => {
   const [toolName, setToolName] = useState("");
@@ -58,19 +61,41 @@ const AddTool = ({ open, handleClose, handleAddTool,refetch }) => {
   const handleToolCodeChange = (toolNumber, value) => {
     setToolCodes({ ...toolCodes, [toolNumber]: value });
   };
+  const { data} = useQuery({
+    queryKey: ["tools"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools");
+        return response.data; 
+      } catch (error) {
+        throw new Error("Error fetching machines"); 
+      }
+    },
+  });
+  const existingToolNames = data 
+    ? Array.from(new Set(data.map(tool => tool.tool_name))) 
+    : [];
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
       <DialogTitle>Add New Tool</DialogTitle>
       <DialogContent>
-        <TextField
-          label="Tool Name"
+        <Autocomplete
+          freeSolo
+          options={existingToolNames}
           value={toolName}
-          onChange={(e) => setToolName(e.target.value)}
-          variant="outlined"
-          fullWidth
-          size="large"
-          margin="normal"
+          onChange={(event, newValue) => setToolName(newValue)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Tool Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              size="large"
+              onChange={(e) => setToolName(e.target.value)}
+            />
+          )}
         />
         <TextField
           label="Max Length in mm"
