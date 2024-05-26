@@ -313,20 +313,21 @@ const Dailyy = () => {
             />
           </div>
           <div>
-            <label
-              htmlFor="employeeName"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Employee SSN:
-            </label>
-            <Select
-              options={employeeData.map(emp => ({ label: emp.emp_ssn, value: emp.emp_ssn }))}
-              value={employeeName}
-              onChange={(selectedOption) => setEmployeeName(selectedOption)}
-              isSearchable
-              placeholder="Select Employee SSN"
-            />
-          </div>
+  <label
+    htmlFor="employeeName"
+    className="block text-lg font-medium text-gray-700"
+  >
+    Employee SSN:
+  </label>
+  <Select
+    options={employeeData.map(emp => ({ label: `${emp.emp_ssn} - ${emp.emp_name}`, value: emp.emp_ssn }))}
+    value={employeeName}
+    onChange={(selectedOption) => setEmployeeName(selectedOption)}
+    isSearchable
+    placeholder="Select Employee SSN"
+  />
+</div>
+
           <div>
             <label className="block text-lg font-medium text-gray-700">Shift:</label>
             <div className="flex items-center space-x-4">
