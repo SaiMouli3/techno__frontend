@@ -227,8 +227,8 @@ const Dailyy = () => {
               {selectedMachines.map((machine, index) => (
                 <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md">
                   <h3 className="text-lg font-semibold mb-2">Machine: {machine.label}</h3>
+                  <h5>Part number: {partNumber && partNumber[machine.label]?.part_no}</h5>
                   <h5>Operation number: {partNumber && partNumber[machine.label]?.operation_no}</h5>
-                  <h5 className="mb-4">Component name: {partNumber && partNumber[machine.label]?.component_name}</h5>
 
                   <input
                     type="number"
