@@ -96,7 +96,7 @@ const Dailyy = () => {
 
         const formData = {
           date: date,
-          emp_ssn: employeeName.label,
+          emp_ssn: employeeName.value,
           shift_number: shiftNumberMap[selectedShift],
           shift_duration: 8,
           machine_id: machineId,
