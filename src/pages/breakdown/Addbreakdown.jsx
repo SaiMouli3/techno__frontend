@@ -126,7 +126,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
         length_used: 0,
         expected_length_remaining: 0,
         replaced_by: replacedBy.label,
-        reason,
+        reason:"No remarks",
         change_time: changeTime,
         achieved,
         no_of_min_into_shift: noOfMinIntoShift,
@@ -210,7 +210,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
               placeholder="Replaced By"
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="reason" className="block text-lg font-medium text-gray-700">Reason:</label>
             <input
               type="text"
@@ -219,7 +219,7 @@ const AddBreakdown = ({ open, handleClose, handleAddBreakdown }) => {
               onChange={(e) => setReason(e.target.value)}
               className="mt-1 block w-full border-2 py-2 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             />
-          </div>
+          </div>*/}
           <div>
             <label htmlFor="achieved" className="block text-lg font-medium text-gray-700">Achieved:</label>
             <input
