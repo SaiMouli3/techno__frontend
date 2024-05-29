@@ -269,34 +269,22 @@ const dataBound = () => {
         <button className="bg-indigo-700 px-2 py-4 font-semibold my-4 rounded-md text-white">ADD INCENTIVES</button>
       </div> */}
       <GridComponent
-        dataSource={dataa}
-        width="auto"
-        allowPaging
-        allowSorting
-        allowFiltering
-        dataBound={dataBound}
-        allowGrouping
-        pageSettings={{ pageCount: 5 }}
-        editSettings={editing}
-        toolbar={["Add","Delete","Edit"]}
-        actionBegin={actionBegin}
-        actionComplete={handleActionComplete}
-          ref={g => grid = g}
-      >
-        <ToastContainer className="z-[100001]"/>
-        <ColumnsDirective>
-          {employeesGrid.map((item, index) => (
-            <ColumnDirective
-              key={index}
-              field={item.field}
-              width={item.width}
-              textAlign={item.textAlign}
-              headerText={item.headerText}
-            />
-          ))}
-        </ColumnsDirective>
-        <Inject services={[Toolbar, Edit, Page, Filter,Sort, Group]} />
-      </GridComponent>
+  dataSource={dataa}
+  width="auto"
+  allowPaging
+  allowSorting
+  allowFiltering
+  dataBound={dataBound}
+  allowGrouping
+  pageSettings={{ pageCount: 5 }}
+  editSettings={editing}
+  toolbar={["Add", "Delete", "Edit"]}
+  actionBegin={actionBegin}
+  actionComplete={handleActionComplete}
+  ref={(g) => (grid = g)}
+  sortSettings={{ columns: [{ field: 'emp_ssn', direction: 'Descending' }] }}  // Added this line
+>
+</GridComponent>
     </div>
   );
 };
