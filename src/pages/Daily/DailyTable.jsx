@@ -186,6 +186,7 @@ const [startDate, setStartDate] = useState(null);
         actionComplete={handleActionComplete}
         toolbar={['Delete','ExcelExport','PdfExport']}
         toolbarClick={toolbarClick} 
+        sortSettings={{ columns: [{ field: 'id', direction: 'Descending' }] }} 
         ref={g => grid = g}
 
         

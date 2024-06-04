@@ -65,6 +65,15 @@ const Dailyy = () => {
   };
 
   const handleData = () => {
+      if (!employeeName) {
+    alert("Please select an Employee SSN.");
+    return;
+  }
+
+  if (!selectedShift) {
+    alert("Please select a Shift.");
+    return;
+  }
     const formData = {
       employeeName,
       selectedShift,
