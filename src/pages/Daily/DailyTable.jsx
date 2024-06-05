@@ -24,11 +24,12 @@ const DailyTable = () => {
   let grid;
 
   const toolbarClick = (args) => {
+    console.log(args.item.properties.id)
     if (grid) {
-      const id = args.item.id;
-      if (id && id.includes("grid_") && id.includes("_excelexport")) {
+      const id = args.item.properties.id;
+      if (id && id.includes("Grid_") && id.includes("_excelexport")) {
         grid.excelExport();
-      } else if (id && id.includes("grid_") && id.includes("_pdfexport")) {
+      } else if (id && id.includes("Grid_") && id.includes("_pdfexport")) {
         grid.pdfExport();
       }
     }
