@@ -30,7 +30,12 @@ const Tool = () => {
     queryFn: async () => {
       try {
         const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/tools");
-        return response.data; 
+        const data = response.data.map(item => ({
+          ...item,
+          tool_efficiency: item.tool_efficiency ? item.tool_efficiency.toFixed(2) : '0.00'
+        }));
+        return data;
+        
       } catch (error) {
         throw new Error("Error fetching machines"); 
       }
