@@ -1,14 +1,16 @@
-import React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { DownloadTableExcel } from "react-export-table-to-excel";
-const LineItemTable = ({ lineItems, includeBaseIncentive }) => {
+
+const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
   const baseIncentive = lineItems && lineItems[0]?.incentive_value;
 
   let totalIncentive = lineItems ? lineItems.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive && baseIncentive) {
     totalIncentive += baseIncentive;
   }
-const tableRef = useRef(null);
+
+  const tableRef = useRef(null);
+  const hiddenTableRef = useRef(null);
 
   return (
     <div className="mt-4">
@@ -46,15 +48,45 @@ const tableRef = useRef(null);
       <div className="mt-4 text-right">
         <p className="text-lg text-gray-700 dark:text-gray-300">Total Incentive: {totalIncentive.toFixed(2)}</p>
       </div>
-      <DownloadTableExcel filename="Report" sheet="users" currentTableRef={tableRef.current}>
+
+      {/* Hidden table for export with employee details */}
+      <table ref={hiddenTableRef} className="hidden">
+        <thead>
+          <tr>
+            <th>Employee SSN</th>
+            <th>Employee Name</th>
+            <th>Date</th>
+            <th>Shift Number</th>
+            <th>Efficiency</th>
+            <th>Incentive</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lineItems && lineItems.map((item, index) => (
+            <tr key={index}>
+              {index === 0 && (
+                <>
+                  <td rowSpan={lineItems.length}>{employee.emp_ssn}</td>
+                  <td rowSpan={lineItems.length}>{employee.emp_name}</td>
+                </>
+              )}
+              <td>{item.date}</td>
+              <td>{item.shift_number}</td>
+              <td>{item.efficiency.toFixed(2)}</td>
+              <td>{item.incentive_received.toFixed(2)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <DownloadTableExcel filename="Report" sheet="users" currentTableRef={hiddenTableRef.current}>
         <button className='flex justify-center mx-auto text-white bg-indigo-600 px-4 py-4 mt-2 rounded-md'> Export excel </button>
       </DownloadTableExcel>
     </div>
   );
 };
 
-const EmployeeIncentivePage = ({ data, includeBaseIncentive, setIncludeBaseIncentive,employee }) => {
- 
+const EmployeeIncentivePage = ({ data, includeBaseIncentive, setIncludeBaseIncentive, employee }) => {
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <div className="flex justify-between items-center">
@@ -70,14 +102,11 @@ const EmployeeIncentivePage = ({ data, includeBaseIncentive, setIncludeBaseIncen
         </div>
       </div>
       <div>
-                  <label htmlFor="employee" className="text-lg text-gray-900 font-semibold dark:text-gray-300">Employee SSN: {employee?.emp_ssn}</label><br/>
-                                    <label htmlFor="employee" className="text-lg text-gray-900 font-semibold dark:text-gray-300">Employee Name: {employee?.emp_name}</label>
-
-
+        <label htmlFor="employee" className="text-lg text-gray-900 font-semibold dark:text-gray-300">Employee SSN: {employee?.emp_ssn}</label><br/>
+        <label htmlFor="employee" className="text-lg text-gray-900 font-semibold dark:text-gray-300">Employee Name: {employee?.emp_name}</label>
       </div>
-      
       <div className="mt-2">
-        <LineItemTable lineItems={data} includeBaseIncentive={includeBaseIncentive} />
+        <LineItemTable lineItems={data} includeBaseIncentive={includeBaseIncentive} employee={employee} />
       </div>
     </div>
   );
