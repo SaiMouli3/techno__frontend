@@ -15,7 +15,7 @@ import {
   Group
 } from "@syncfusion/ej2-react-grids";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DailyTable = () => {
@@ -146,11 +146,15 @@ const DailyTable = () => {
   };
 
   const handleActionComplete = async (args) => {
+
     if (args.requestType === "delete") {
       try {
-        const { date, emp_ssn, shift_number } = args.data[0];
-        const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/performs/${encodeURIComponent(date)}/${encodeURIComponent(emp_ssn)}/${shift_number}/delete/`);
+        const {id, date, emp_ssn, shift_number } = args.data[0];
+        const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/performs/${encodeURIComponent(date)}/${encodeURIComponent(emp_ssn)}/${shift_number}/delete/`,{
+         id: id
+        });
         toast.success("Daily entry deleted successfully");
+        refetch()
       } catch (error) {
         refetch();
         toast.error(error.message);
@@ -166,6 +170,7 @@ const DailyTable = () => {
 
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
+    <ToastContainer/>
       <GridComponent
         dataSource={filterData()}
         width="auto"
