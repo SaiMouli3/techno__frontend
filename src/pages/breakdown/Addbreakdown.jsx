@@ -210,7 +210,7 @@ const [length,setLength] = useState()
               placeholder="Replaced By"
             />
           </div>
-           <div>
+           {/* <div>
             <label htmlFor="lengthUsed" className="block text-lg font-medium text-gray-700">Length used:</label>
            <input
               type="text"
@@ -220,7 +220,7 @@ const [length,setLength] = useState()
               required
               className="mt-1 block w-[500px] border-[2px] py-[4px] border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-500"
             /> 
-          </div>
+          </div> */}
           {/* <div>
             <label htmlFor="reason" className="block text-lg font-medium text-gray-700">Reason:</label>
             <input
