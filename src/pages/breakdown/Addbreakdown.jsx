@@ -123,7 +123,7 @@ const [length,setLength] = useState()
         emp_ssn: empSSN.label,
         tool_code: toolCode.label,
         machine_id: machineId.label,
-        length_used: length,
+        length_used: 0,
         expected_length_remaining: 0,
         replaced_by: replacedBy.label,
         reason:"No remarks",
