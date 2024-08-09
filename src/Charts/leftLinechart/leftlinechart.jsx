@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
 import axios from "axios";
-import { useLocation } from "react-router-dom"; // Import useLocation from React Router
+import { useLocation } from "react-router-dom";
 import "./leftlinechart.css";
 
 const chart1_2_options = {
@@ -82,20 +82,21 @@ const LeftChart = () => {
   const chartRef = useRef();
   const chartInstance = useRef(null);
   const [shiftData, setShiftData] = useState([]);
-  const location = useLocation(); // Get the current URL path using useLocation
+  const location = useLocation();
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/shift_counts/");
+      setShiftData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("https://techno.pythonanywhere.com/webapp/api/shift_counts/");
-        
-        setShiftData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
+    const intervalId = setInterval(fetchData, 60000); // Fetch data every minute
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, []);
 
   useEffect(() => {
@@ -106,12 +107,10 @@ const LeftChart = () => {
 
       const ctx = chartRef.current.getContext("2d");
 
-      // Extract data for each shift
       const shift1Data = shiftData.map((item) => item["1"]);
       const shift2Data = shiftData.map((item) => item["2"]);
       const shift3Data = shiftData.map((item) => item["3"]);
 
-      // Check if the current URL is '/home' and adjust the font size accordingly
       const fontSize = location.pathname === '/home' ? 2 : 1;
 
       chartInstance.current = new Chart(ctx, {
@@ -149,16 +148,15 @@ const LeftChart = () => {
                 ...chart1_2_options.scales.x.title,
                 font: {
                   ...chart1_2_options.scales.x.title.font,
-                  size: 8 * fontSize, // Adjust font size based on the URL condition
+                  size: 8 * fontSize,
                 },
               },
               ticks: {
                 ...chart1_2_options.scales.x.ticks,
                 font: {
                   ...chart1_2_options.scales.x.ticks.font,
-                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                  size: 6 * fontSize,
                 },
-                display:false
               },
             },
             y: {
@@ -167,14 +165,14 @@ const LeftChart = () => {
                 ...chart1_2_options.scales.y.title,
                 font: {
                   ...chart1_2_options.scales.y.title.font,
-                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                  size: 6 * fontSize,
                 },
               },
               ticks: {
                 ...chart1_2_options.scales.y.ticks,
                 font: {
                   ...chart1_2_options.scales.y.ticks.font,
-                  size: 6 * fontSize, // Adjust font size based on the URL condition
+                  size: 6 * fontSize,
                 },
               },
             },

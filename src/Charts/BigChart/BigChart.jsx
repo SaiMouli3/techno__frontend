@@ -3,49 +3,48 @@ import { Chart } from "chart.js/auto";
 import axios from "axios";
 import "./BigChart.css";
 
-const chart1_2_options = {
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Date',
-        color: 'rgba(255, 255, 255, 0.7)',
-        font: {
-          weight: 'bold'
-        }
-      },
-      ticks: {
-      display:false,
-        color: "rgba(255, 255, 255, 0.7)",
-        font: {
-          weight: 'bold'
-        }
-      }
-    },
-    y: {
-      title: {
-        display: true,
-        text: 'Target v/s Achieved',
-        color: 'rgba(255, 255, 255, 0.7)',
-        font: {
-          weight: 'bold'
-        }
-      },
-      ticks: {
-        color: "rgba(255, 255, 255, 0.7)",
-        font: {
-          weight: 'bold'
-        }
-      }
-    }
-  }
-};
-
-
 const BigChart = () => {
   const chartRef = useRef();
   const chartInstance = useRef(null);
   const [performanceData, setPerformanceData] = useState(null);
+
+  const chart1_2_options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            weight: 'bold'
+          }
+        },
+        ticks: {
+          display: false,
+          color: "rgba(255, 255, 255, 0.7)",
+          font: {
+            weight: 'bold'
+          }
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Target v/s Achieved',
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            weight: 'bold'
+          }
+        },
+        ticks: {
+          color: "rgba(255, 255, 255, 0.7)",
+          font: {
+            weight: 'bold'
+          }
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,8 +75,27 @@ const BigChart = () => {
         Object.values(shiftData).forEach(data => {
           achievedData.push(data.total_achieved);
           targetData.push(data.total_target);
+
         });
       });
+      console.log(achievedData)
+
+      const allData = achievedData.concat(targetData);
+      const minData = Math.min(...allData);
+      const maxData = Math.max(...allData);
+      console.log(minData)
+      console.log(maxData)
+      const dynamicChartOptions = {
+        ...chart1_2_options,
+        scales: {
+          ...chart1_2_options.scales,
+          y: {
+            ...chart1_2_options.scales.y,
+            min: Math.floor(minData / 10) * 10,
+            max: Math.ceil(maxData / 10) * 10,
+          },
+        },
+      };
 
       chartInstance.current = new Chart(ctx, {
         type: "line",
@@ -98,7 +116,7 @@ const BigChart = () => {
             },
           ],
         },
-        options: chart1_2_options,
+        options: dynamicChartOptions,
       });
     }
   }, [performanceData]);
