@@ -61,7 +61,7 @@ const Tool = () => {
     } else if (args.requestType === "delete") {
       console.log(args.data[0].tool_name)
       try {
-        await axios.get(`https://techno.pythonanywhere.com/webapp/delete-tools/${args.data[0].tool_name}/`);
+        await axios.get(`https://techno.pythonanywhere.com/webapp/delete-tools/${args.data[0].tool_name}/${args.data[0].tool_code}`);
         toast.success("Tool deleted successfully!!")
         refetch();
       } catch (error) {
