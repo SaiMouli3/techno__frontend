@@ -39,6 +39,9 @@ const AddParameterForm = ({ onAddParameter, selectedType,handleClose,refetch }) 
         value: '',
         type: selectedType || 'category', // Reset type to selectedType or default to 'category'
       });
+      setTimeout(()=> {
+        handleClose()
+      },2000)
     } catch (error) {
       console.error("Error adding parameter:", error);
       toast.error("Failed to add parameter", {

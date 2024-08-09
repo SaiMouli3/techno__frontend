@@ -16,12 +16,15 @@ import "react-toastify/dist/ReactToastify.css";
 import {useQuery} from '@tanstack/react-query'
 import AddParameterForm from './AddParameter';
 
-const ParameterRow = ({ parameter, onEdit }) => (
+const ParameterRow = ({ parameter, onEdit,onDelete }) => (
   <TableRow>
     <TableCell>{parameter.parameter}</TableCell>
     <TableCell>{parameter.value}</TableCell>
     <TableCell align="right">
       <Button onClick={() => onEdit(parameter)}>Edit</Button>
+    </TableCell>
+    <TableCell align="right">
+      <Button onClick={() => onDelete(parameter)}>Delete</Button>
     </TableCell>
   </TableRow>
 );
@@ -54,14 +57,21 @@ const Parameter = () => {
     setSelectedParameter(parameter);
     setOpenModal(true);
   }
+  const handleDelete=async (parameter)=> {
+   try {
+     await axios.get(`${process.env.REACT_APP_URL}/webapp/externals/${parameter?.parameter}/delete/`)
+     toast.success("Parameter deleted successfully!!")
+     refetch()
+   } catch (error) {
+      
+   }
+  }
 
   const handleUpdate = async () => {
-    // Filter out only the edited parameters
-    console.log(selectedParameter)
-    // Send request to update URL with editedParamsToSend
+    
     try {
       await axios.post(`${process.env.REACT_APP_URL}/webapp/update_externals/`, [selectedParameter]);
-      // Update parameterData after successful update
+      
       await refetch();
        toast.success("Parameter updated successfully", {
         position: "top-center",
@@ -94,6 +104,7 @@ const Parameter = () => {
 
   return (
     <div>
+      <ToastContainer/>
 <div className='w-full flex justify-center items-center mx-auto flex-col'>    <p className='text-lg text-white font-semibold uppercase mb-2'>Add Parameter</p>
 
  <div className='flex justify-center items-center font-semibold gap-x-4 flex-row'>
@@ -146,12 +157,12 @@ const Parameter = () => {
           </TableHead>
           <TableBody>
             {parameterData && parameterData?.map((parameter, index) => (
-              <ParameterRow key={index} parameter={parameter} onEdit={handleEdit} />
+              <ParameterRow key={index} parameter={parameter} onEdit={handleEdit} onDelete={handleDelete} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <ToastContainer/>
+     
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box
           sx={{
