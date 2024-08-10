@@ -3,7 +3,7 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
   const baseIncentive = lineItems && lineItems[0]?.incentive_value;
-
+  console.log(employee);
   let totalIncentive = lineItems ? lineItems.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive && baseIncentive) {
     totalIncentive += baseIncentive;
@@ -53,8 +53,10 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
       <table ref={hiddenTableRef} className="hidden">
         <thead>
           <tr>
-            <th>Employee SSN</th>
-            <th>Employee Name</th>
+            <th colSpan="2">Employee SSN: {employee.emp_ssn}</th>
+            <th colSpan="3">Employee Name: {employee.emp_name}</th>
+          </tr>
+          <tr>
             <th>Date</th>
             <th>Shift Number</th>
             <th>Efficiency</th>
@@ -64,12 +66,6 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
         <tbody>
           {lineItems && lineItems.map((item, index) => (
             <tr key={index}>
-              {index === 0 && (
-                <>
-                  <td rowSpan={lineItems.length}>{employee.emp_ssn}</td>
-                  <td rowSpan={lineItems.length}>{employee.emp_name}</td>
-                </>
-              )}
               <td>{item.date}</td>
               <td>{item.shift_number}</td>
               <td>{item.efficiency.toFixed(2)}</td>
@@ -80,11 +76,12 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
       </table>
 
       <DownloadTableExcel filename="Report" sheet="users" currentTableRef={hiddenTableRef.current}>
-        <button className='flex justify-center mx-auto text-white bg-indigo-600 px-4 py-4 mt-2 rounded-md'> Export excel </button>
+        <button className='flex justify-center mx-auto text-white bg-indigo-600 px-4 py-4 mt-2 rounded-md'>Export excel</button>
       </DownloadTableExcel>
     </div>
   );
 };
+
 
 const EmployeeIncentivePage = ({ data, includeBaseIncentive, setIncludeBaseIncentive, employee }) => {
   return (
