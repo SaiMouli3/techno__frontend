@@ -1,4 +1,3 @@
-import "./login.css";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
@@ -36,7 +35,7 @@ const Login = () => {
         role: role.label,
       };
       const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/check-credentials/`, data);
-      console.log(response);
+  
       if (response.data.success) {
         toast.success(response.data.message, {
           position: "top-center",

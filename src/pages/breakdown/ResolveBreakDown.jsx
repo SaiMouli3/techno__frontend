@@ -4,12 +4,10 @@ import axios from "axios";
 const ResolveBreakDown = ({ openView, selectedBreakdown, handleCloseView,handleResolveBreakdown }) => {
   const deleteRecord = async () => {
     try {
-      console.log("Data being sent:", selectedBreakdown.toolCode);
-      // Send a DELETE request to the backend API endpoint with the tool code
+     
       await axios.delete(`${process.env.REACT_APP_URL}/webapp/api/breakdown/${selectedBreakdown.toolCode}`);
 
-      // Handle successful deletion, such as showing a success message or updating the UI
-      console.log("Breakdown deleted successfully");
+      
       handleCloseView();
     } catch (error) {
       // Handle errors, such as displaying an error message to the user

@@ -80,7 +80,7 @@ const Employee = () => {
     try {
       if (args.action === "add") {
          const newData = { ...args.data, emp_efficiency: 0 };
-        console.log(newData)
+      
         await axios.post(`${process.env.REACT_APP_URL}/webapp/api/employees/create/`, newData);
         toast.success("Employee added successfully", {
         position: "top-center",
@@ -108,7 +108,7 @@ const Employee = () => {
       // Refresh data after adding or updating
       refetch();
     } catch (error) {
-      console.log(error.response);
+     
       refetch();
        if (error.response && error.response.data) {
   
@@ -155,7 +155,7 @@ const Employee = () => {
       progress: undefined,
     });
   }
-  console.log(error);
+
     }
   } else if (args.requestType === "delete") {
     try {

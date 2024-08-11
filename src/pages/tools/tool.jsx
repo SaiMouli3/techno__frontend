@@ -15,15 +15,9 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import AddTool from "../../components/toolsCRUD/toolAdd/Tooladd";
 import { ToastContainer, toast } from "react-toastify";
-import { useStateContext } from "../../context/ContextProvider";
 const Tool = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [toolName, setToolName] = useState("");
-  const [maxLength, setMaxLength] = useState("");
-  const [cost, setCost] = useState("");
-  const [numTools, setNumTools] = useState(1);
-  const [toolNumbers, setToolNumbers] = useState([]);
-  const [toolCodes, setToolCodes] = useState({});
+
 
    const { data ,refetch} = useQuery({
     queryKey: ["tools"],
@@ -46,20 +40,20 @@ const Tool = () => {
   },[data,refetch])
 
   const handleActionComplete = async (args) => {
-    console.log(args.data)
+  
     if (args.requestType === "save") {
       if(args.action === "edit"){
         try {
-          console.log(args.data["tool_code"])
+        
           await axios.post(`${process.env.REACT_APP_URL}/webapp/update_tool/${encodeURIComponent(args.data["tool_code"])}/`, args.data);
           toast.success("Tool updated successfully")
         refetch();
       } catch (error) {
-        console.error("Error inserting data:", error);
+        toast.error("Error inserting data");
       }
       }
     } else if (args.requestType === "delete") {
-      console.log(args.data[0].tool_name)
+     
       try {
         await axios.get(`https://techno.pythonanywhere.com/webapp/delete-tools/${args.data[0].tool_name}/${args.data[0].tool_code}`);
         toast.success("Tool deleted successfully!!")
@@ -137,60 +131,13 @@ const Tool = () => {
       refetch();
       setOpenAddDialog(false);
     } catch (error) {
-      console.log("Error adding tools:", error);
+      toast.error("Error adding tools:");
     }
   };
-  const {
+  
 
-    currentMode,
-    activeMenu,
-   
-  } = useStateContext();
-  const handleAdd = async () => {
-    if (toolName && maxLength && cost && numTools && Object.keys(toolCodes).length === numTools) {
-      const newTools = [];
-      for (let i = 0; i < numTools; i++) {
-        const newTool = {
-          tool_code: toolCodes[i + 1], // Get tool code from state
-          tool_name: toolName,
-          max_life_expectancy_in_mm: parseFloat(maxLength),
-          cost: parseFloat(cost),
-          length_cut_so_far: 0, // Default value
-          no_of_brk_points: 0, // Default value
-          tool_efficiency: 100, // Initial value
-          tool_number: i + 1,
-        };
-        newTools.push(newTool);
-      }
-      try {
-        await handleAddTool(newTools);
-        setToolName("");
-        setMaxLength("");
-        setCost("");
-        setNumTools(1);
-        setToolNumbers([]);
-        setToolCodes({});
-      } catch (error) {
-        console.error("Error adding tools:", error);
-        alert("Error adding tools. Please try again.");
-      }
-    } else {
-      alert("Please fill in all fields");
-    }
-  };
 
-  const handleToolCodeChange = (toolNumber, value) => {
-    setToolCodes({ ...toolCodes, [toolNumber]: value });
-  };
-
-  const handleNumToolsChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setNumTools(value);
-      setToolNumbers(Array.from({ length: value }, (_, i) => i + 1));
-    }
-  };
-
+  
   return (
     <div className="dark:text-gray-200 dark:bg-secondary-dark-bg  m-2 pt-2 md:m-10 mt-24 md:p-10 bg-white rounded-3xl">
       <button className="px-5 py-3 bg-blue-500 text-white mr-2 my-2 rounded-md hover:bg-blue-700 font-semibold" onClick={handleOpenAddDialog}>Add Tool</button>

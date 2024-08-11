@@ -79,7 +79,7 @@ const BreakDown = () => {
   };
 
   const handleAddBreakdown = (newBreakdown) => {
-   console.log(newBreakdown)
+ 
     axios.post(`${process.env.REACT_APP_URL}/webapp/api/breakdown/create`, newBreakdown)
       .then(response => {
         toast.success("Breakdown added successfully!!", {
@@ -125,7 +125,6 @@ const BreakDown = () => {
   };
 const handleResolveBreakDown = async (props) => {
   const { date, tool_code } = props;
-  console.log(tool_code);
 
   try {
     await axios.get(`${process.env.REACT_APP_URL}/webapp/api/break/${tool_code}/${date}`);

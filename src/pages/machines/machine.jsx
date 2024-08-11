@@ -52,7 +52,7 @@ const Machine = () => {
   };
 
   const handleMachineClick = (args) => {
-    console.log(args)
+  
     setSelectedMachine(args.data);
     setOpenView(true);
   };
@@ -67,7 +67,7 @@ const Machine = () => {
 
     if (args.requestType === "save") {
       try {
-        console.log(args.data)
+      
         const response = await axios.post("https://techno.pythonanywhere.com/webapp/api/nmview/", args.data);
        
          toast.success("Machine added successfully", {

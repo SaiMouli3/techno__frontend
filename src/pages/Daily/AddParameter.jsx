@@ -19,9 +19,9 @@ const AddParameterForm = ({ onAddParameter, selectedType,handleClose,refetch }) 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(newParameter)
+     
       const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/create_external/`, newParameter);
-      console.log(response)
+    
       onAddParameter(response.data);
       refetch()
       toast.success("Parameter added successfully", {

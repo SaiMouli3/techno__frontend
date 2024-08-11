@@ -44,8 +44,8 @@ const Daily = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
-      console.log(response.data);
+       await axios.get(`${process.env.REACT_APP_URL}/webapp/api/employees/`);
+    
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -75,8 +75,7 @@ const Daily = () => {
   };
   setSubmittedData(formData);
 
-  // Initialize machineData with default values
-  console.log(selectedMachiness)
+
   const initialData = selectedMachiness.map((machine) => ({
     label: machine.label,
     achieved: 0,
@@ -101,11 +100,10 @@ const Daily = () => {
         shift2: 2,
         shift3: 3,
       };
-      // Loop through machineData to create separate records for each machine
-      console.log(machineData)
+      
       machineData.forEach((machine) => {
         const machineId = machine.label.split(" - ")[1];
-        console.log(date);
+     
         const formData = {
           date: date,
           emp_ssn: employeeName,
@@ -117,8 +115,6 @@ const Daily = () => {
           partial_shift: hours,
         };
 
-        console.log(formData);
-        // Create a separate POST request for each record and push it to postRequests array
         postRequests.push(
           axios.post(
             `${process.env.REACT_APP_URL}/webapp/api/submit-performance`,
@@ -130,10 +126,7 @@ const Daily = () => {
       // Execute all POST requests concurrently using Promise.all
       const responses = await Promise.all(postRequests);
 
-      // Log each response from the server
-      responses.forEach((response) => {
-        console.log(response.data);
-      });
+      
       toast.success("Daily entry added successfully", {
         position: "top-center",
         autoClose: 1000,
@@ -155,18 +148,11 @@ const Daily = () => {
     }
   };
 
-  // const handleMachineChange = (selectedOptions) => {
-  //   setSelectedMachines(selectedOptions);
-  //   console.log(selectedMachines)
-  //   // Reset machineData when machines change
-  //   setMachineData([]);
-  // };
   const handleMachineChangee = (event, newValue) => {
-    console.log(newValue)
+
   const selectedValues = selectedMachiness.filter((v) => v.selected);
   setSelectedMachiness(newValue);
-  console.log(selectedValues);
-  //Reset machineData when machines change
+
   setMachineData([]);
 };
 

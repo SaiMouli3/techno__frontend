@@ -24,7 +24,7 @@ const JobPop = ({data,setData}) => {
   const handleDialogSubmit = () => {
     setShowDialog(false);
     // Add job details to the data array
-    console.log(jobDetails)
+
         setData([...data, jobDetails]);
     // Reset job details state
     setJobDetails({
@@ -40,7 +40,7 @@ const JobPop = ({data,setData}) => {
       ...jobDetails,
       toolsCount: value
     });
-    console.log(jobDetails)
+    
   };
 
   const renderToolFields = () => {

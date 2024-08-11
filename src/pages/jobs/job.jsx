@@ -83,9 +83,7 @@ const Job = () => {
 
   const handleAddJob = async (newJob) => {
     try {
-    console.log(newJob)
-//      await axios.post("https://techno.pythonanywhere.com/webapp/api/jobs/create", newJob);
-      // After adding, you can fetch updated data from the backend
+    
       refetch();
     } catch (error) {
     }
@@ -131,12 +129,12 @@ const Job = () => {
   const [selectedJob,setSelectedJob] = useState([]);
   const [dataa,setData] = useState([])
   const rowSelected = async (args) => {
-    console.log(args);
+    
     setSelectedJob(args.data); // Save selected job data
-        console.log(selectedJob["part_no"]);
+      
 
     const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/get-tool-codes1/${args.data["part_no"]}/${args.data["operation_no"]}`)
-    console.log(response)
+  
     setData(response.data)
     setOpenPop(true); // Open the dialog
   };

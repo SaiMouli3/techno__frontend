@@ -61,9 +61,9 @@ const SignUp = () => {
         role: role.label,
       };
      
-      console.log(data);
+     
       const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/sign-up/`, data);
-      console.log(response);
+     
       toast.success(response.data.message,{
         position: "top-center",
         autoClose: 1000,

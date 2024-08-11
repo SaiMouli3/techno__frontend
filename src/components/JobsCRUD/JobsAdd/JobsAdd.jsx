@@ -70,9 +70,9 @@ const AddJob = ({ open, handleClose, handleAddJob }) => {
             no_of_holes: 1,
             depth_of_cut: 1
           };
-          console.log(newJob)
-          const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/api/jobs/create`, newJob);
-          console.log(response.data);
+      
+          await axios.post(`${process.env.REACT_APP_URL}/webapp/api/jobs/create`, newJob);
+       
         }
         setJobAdded(true); // Set job added status to true
         handleClose();

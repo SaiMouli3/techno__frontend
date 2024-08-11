@@ -101,7 +101,7 @@ const handleJobChange = (selectedOption) => {
 
    const handleToolCodeNameChange = (selectedOption, index) => {
     const newToolCodeNames = [...toolCodeNames];
-    console.log(newToolCodeNames)
+   
     newToolCodeNames[index] = selectedOption.value;
     setToolCodeNames(newToolCodeNames);
   };
@@ -110,8 +110,7 @@ const handleJobChange = (selectedOption) => {
     try {
     
       const numSelectedTools = selectedTools.length;
-      console.log(numSelectedTools)
-      console.log(selectedJob["label"])
+    
       const machineDataArray = selectedTools?.map((tool, index) => ({
         machine_id: selectedMachine.machine_id,
         machine_name: selectedMachine.machine_id,
@@ -120,7 +119,7 @@ const handleJobChange = (selectedOption) => {
         part_no: selectedJob["value"],
         tool_code: toolCodeNames[index]
       }));
-      console.log(machineDataArray)
+     
        if (isConfigured) {
       // Updating an existing machine configuration
         try {
@@ -133,11 +132,10 @@ const handleJobChange = (selectedOption) => {
       part_no: selectedJob["value"],
       tool_codes: toolCodeNames, // Include all tool codes directly from the array
     };
-  console.log(machineData)
+
     // Submit the request
     const response = await axios.post(`${process.env.REACT_APP_URL}/webapp/update-machine/${selectedMachine.machine_id}/`, machineData);
-   console.log(response)
-    // Show success message
+  
     toast.success("Machine updated successfully", {
       position: "top-center",
       autoClose: 1000,

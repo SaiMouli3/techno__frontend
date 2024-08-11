@@ -3,7 +3,7 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
   const baseIncentive = lineItems && lineItems[0]?.incentive_value;
-  console.log(employee);
+  
   let totalIncentive = lineItems ? lineItems.reduce((acc, curr) => acc + curr.incentive_received, 0) : 0;
   if (includeBaseIncentive && baseIncentive) {
     totalIncentive += baseIncentive;

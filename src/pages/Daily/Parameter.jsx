@@ -36,11 +36,7 @@ const Parameter = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [selectedType, setSelectedType] = useState("");
 
-  // const fetchData = async () => {
-  //   const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/externals_data`);
-  //   setParameterData(response.data);
-  //   console.log(parameterData)
-  // }
+ 
    const { data: parameterData,refetch } = useQuery({
     queryKey: ["parameters"],
     queryFn: async () => {

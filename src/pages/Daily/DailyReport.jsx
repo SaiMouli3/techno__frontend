@@ -27,7 +27,7 @@ const CollapsibleTablePage = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URL}/webapp/generate-report/${selectedDate}/`);
       setData(response.data);
-      console.log(response.data)
+     
     } catch (error) {
       console.error('Error fetching data:', error.message);
     }

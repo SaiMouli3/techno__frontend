@@ -78,13 +78,13 @@ const BigChart = () => {
 
         });
       });
-      console.log(achievedData)
+   
 
       const allData = achievedData.concat(targetData);
       const minData = Math.min(...allData);
       const maxData = Math.max(...allData);
-      console.log(minData)
-      console.log(maxData)
+     
+      
       const dynamicChartOptions = {
         ...chart1_2_options,
         scales: {
