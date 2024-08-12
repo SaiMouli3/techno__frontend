@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
@@ -11,7 +11,7 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
 
   const tableRef = useRef(null);
   const hiddenTableRef = useRef(null);
-
+ const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   return (
     <div className="mt-4">
       <div>
@@ -20,6 +20,7 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
       <table ref={tableRef} className="min-w-full divide-y divide-gray-200" id="table-to-xls">
         <thead className="bg-gray-50 dark:bg-secondary-dark-bg">
           <tr>
+            
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
               Date
             </th>
@@ -37,6 +38,7 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
         <tbody className="bg-white divide-y text-center divide-gray-200 dark:bg-secondary-light-bg dark:divide-gray-700">
           {lineItems && lineItems.map((item, index) => (
             <tr key={index}>
+
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.date}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.shift_number}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{item.efficiency.toFixed(2)}</td>
@@ -53,10 +55,19 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
       <table ref={hiddenTableRef} className="hidden">
         <thead>
           <tr>
+            <th colSpan="5">Date: {date}</th>
+            
+          </tr>
+          <tr>
             <th colSpan="2">Employee SSN: {employee.emp_ssn}</th>
             <th colSpan="3">Employee Name: {employee.emp_name}</th>
           </tr>
           <tr>
+            <th colSpan="2">Base Incentive: {baseIncentive}</th>
+            <th colSpan="3">Total Incentive: {totalIncentive.toFixed(2)}</th>
+          </tr>
+          <tr>
+            <th>Sl No.</th>
             <th>Date</th>
             <th>Shift Number</th>
             <th>Efficiency</th>
@@ -66,6 +77,7 @@ const LineItemTable = ({ lineItems, includeBaseIncentive, employee }) => {
         <tbody>
           {lineItems && lineItems.map((item, index) => (
             <tr key={index}>
+              <td>{index}</td>
               <td>{item.date}</td>
               <td>{item.shift_number}</td>
               <td>{item.efficiency.toFixed(2)}</td>
